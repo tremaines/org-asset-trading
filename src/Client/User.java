@@ -32,7 +32,6 @@ public class User {
      */
     public User(String username, String password, String accountType, String organisationName) {
         users = new ArrayList<>();
-        users.add("Test");
         if(users.contains(username)) {
             System.out.println("This username is already taken! Please try another.");
         }
