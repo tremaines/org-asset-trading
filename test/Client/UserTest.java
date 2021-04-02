@@ -9,6 +9,7 @@ public class UserTest {
 
     User user1;
 
+
     @BeforeEach
     @Test
     public void setUpUser() {
@@ -25,6 +26,6 @@ public class UserTest {
     public void hashPasswordTest(){
         String pwd = "ab23";
         assertEquals(pwd.hashCode() * 2.334 + "", user1.getHashedPassword(),
-                "Adding user failed");
+                "Hashing the password failed");
     }
 }

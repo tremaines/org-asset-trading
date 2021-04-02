@@ -7,20 +7,18 @@ import java.util.List;
  * Users are accounts which have been authorised by a particular organisation unit
  * to engage on the electronic trading marketplace.
  */
-public class User {
+public class User extends Organisation {
 
     // Username to login to the marketplace
     private String username;
     // List of usernames to check against to prevent duplicates
     private List<String> users;
-    // Password to login to the marketplace
-    private String password;
     // Hashed value of the password
-    private String hashedPassword;
+    private String password;
     // Type of account (admin or non-admin)
     private String accountType;
-    // Organisation the account belongs to
-    private String organisationName;
+
+    private String org;
 
     /**
      * User constructor that creates an authorised account from an organisation
@@ -30,7 +28,8 @@ public class User {
      * @param accountType either admin or non-admin user
      * @param organisationName name of the organisation the account is a part of
      */
-    public User(String username, String password, String accountType, String organisationName) {
+    public User (String username, String password, String accountType, String organisationName) {
+        super(organisationName);
         users = new ArrayList<>();
         if(users.contains(username)) {
             System.out.println("This username is already taken! Please try another.");
@@ -38,10 +37,8 @@ public class User {
         else {
             users.add(username);
             this.username = username;
-            this.password = password;
-            this.hashedPassword = (password.hashCode() * 2.334) + "";
+            this.password = (password.hashCode() * 2.334) + ""; // Hashed password
             this.accountType = accountType;
-            this.organisationName = organisationName;
         }
     }
 
@@ -51,7 +48,7 @@ public class User {
      * @return hashed password
      */
     public String getHashedPassword() {
-        return hashedPassword;
+        return password;
     }
 
     /**
@@ -61,6 +58,15 @@ public class User {
      */
     public String getUsername() {
         return username;
+    }
+
+    /**
+     * Gets the type of the account (non-admin or admin)
+     *
+     * @return account type
+     */
+    public String getAccountType() {
+        return accountType;
     }
 
     /**

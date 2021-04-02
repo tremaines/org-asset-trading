@@ -1,5 +1,8 @@
 package Client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Resources and assets are shared across organisations. Organisations are also given budgets
  * of a certain number of electronic credits. These credits can be used to buy access to
@@ -11,10 +14,10 @@ public class Organisation {
     private String organisationName;
     // Electronic credits available to the organisation
     private int credits;
-    // Type of asset or resource owned
-    private String assetType;
-    // Amount of the asset or resource owned
-    private int assetAmount;
+    // List of asset or resource owned
+    private List<String> assetList;
+    // List of amount of each asset owned
+    private List<Integer> amount;
 
     /**
      * Organisation constructor that initialises an organisational unit
@@ -24,11 +27,15 @@ public class Organisation {
      * @param assetType type of asset
      * @param assetAmount quantity of asset type
      */
-    public Organisation(String organisationName, int credits, String assetType, int assetAmount) {
+    public Organisation(String organisationName, int credits, List<String> assetType, List<Integer> assetAmount) {
         this.organisationName = organisationName;
         this.credits = credits;
-        this.assetType = assetType;
-        this.assetAmount = assetAmount;
+        this.assetList = assetType;
+        this.amount = assetAmount;
+    }
+
+    public Organisation(String organisationName) {
+        this.organisationName = organisationName;
     }
 
     /**
