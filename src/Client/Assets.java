@@ -28,6 +28,32 @@ public class Assets {
     }
 
     /**
+     * Prevents an unapproved asset from being added to an organisation's list of assets
+     *
+     * @param assetName name of the asset
+     * @return true if asset is approved, false if otherwise
+     */
+    public boolean checkAsset(String assetName) {
+        return assets.contains(assetName);
+    }
+
+    /**
+     * Checks against every member of an organisation's list of assets to see if there are
+     * unapproved assets in the list
+     *
+     * @param assetList List of assets
+     * @return True if all assets asset is approved, false if otherwise
+     */
+    public boolean checkAssetList(List<String> assetList) {
+        for(int i = 0; i < assetList.size(); i++) {
+            if (!(checkAsset(assetList.get(i)))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Allows admin users (IT Staff) to create a new asset on the marketplace
      *
      * @param user user currently logged in
