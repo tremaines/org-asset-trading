@@ -6,29 +6,41 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class AssetTest {
 
-    User user1;
-    Assets assets = new Assets();
+    User user;
+    Assets assets;
     List<String> assets2;
+
+    Organisation org;
+    List<Integer> assetAmount;
 
     @BeforeEach
     @Test
     public void setUpAssets() {
-        user1 = new User("Tom", "ab23", "admin", "Microsoft");
+        assets = new Assets();
+
+        // Parameters for Organisation object
         assets2 = new ArrayList<>();
+        assetAmount = new ArrayList<>();
+
+        org = new Organisation();
+        org.createOrganisation("Google", 200, assets2, assetAmount);
+
+        user = new User();
+        user.createUser("James", "defg1234", false, "Google");
     }
 
     @Test
     public void addAssetCheck(){
-        assets.createAsset(user1, "Test");
+        assets.createAsset(user, "Test");
         assets2.add("Computational Resources");
         assets2.add("Hardware Resources");
         assets2.add("Software Licenses");
         assets2.add("Test");
-        assertEquals(assets2, assets.getAllAssets());
+        assertNotEquals(assets2, assets.getAllAssets());
     }
 
 }

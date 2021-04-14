@@ -2,53 +2,72 @@ package Client;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  * Users are accounts which have been authorised by a particular organisation unit
  * to engage on the electronic trading marketplace.
  */
-public class User extends Organisation {
+public class User {
 
     // Username to login to the marketplace
     private String username;
     // List of usernames to check against to prevent duplicates
-    private List<String> users;
+    private List<String> users = new ArrayList<>();
     // Hashed value of the password
     private String password;
     // Type of account (admin or non-admin)
-    private String accountType;
+    private boolean admin;
+    // Organisation name the account is registered to
+    private String organisationName;
+    // List containing all users added
+    private List<User> userList = new ArrayList<>();
+    // Org
+    private Organisation org;
 
-    private String org;
+    /**
+     * Creates an instance of the User
+     */
+    public User() {
+
+    }
 
     /**
      * User constructor that creates an authorised account from an organisation
      *
-     * @param username which will be used to login
-     * @param password used to login
-     * @param accountType either admin or non-admin user
-     * @param organisationName name of the organisation the account is a part of
+     * @param username Name of the user's account
+     * @param password Password to log in to the account
+     * @param admin Admin status (true/false)
+     * @param organisationName Name of the organisation the user is associated with
      */
-    public User (String username, String password, String accountType, String organisationName) {
-        super(organisationName);
-        users = new ArrayList<>();
+    public User (String username, String password, boolean admin, String organisationName) {
         if(users.contains(username)) {
             System.out.println("This username is already taken! Please try another.");
         }
         else {
             users.add(username);
             this.username = username;
-            this.password = (password.hashCode() * 2.334) + ""; // Hashed password
-            this.accountType = accountType;
+            // Hashed password
+            this.password = (password.hashCode() * 2.334) + "";
+            this.admin = admin;
+            this.organisationName = organisationName;
         }
     }
 
     /**
-     * Hashes a plain-text password
+     * Creates a new instance of a user and adds the user into the list of existing users
      *
-     * @return hashed password
+     * @param username Username of the account
+     * @param password Password to access the account
+     * @param admin Admin status (true/false)
+     * @param organisationName Name of the organisation the user is associated with
      */
-    public String getHashedPassword() {
-        return password;
+    public void createUser(String username, String password, boolean admin, String organisationName) {
+        User newUser = new User(username, password, admin, organisationName);
+        // List that monitors list of taken names to prevent duplicates
+        users.add(username);
+        // Adds a new user to the list of all users
+        userList.add(newUser);
     }
 
     /**
@@ -61,20 +80,65 @@ public class User extends Organisation {
     }
 
     /**
-     * Gets the type of the account (non-admin or admin)
+     * Hashes a plain-text password
      *
-     * @return account type
+     * @return hashed password
      */
-    public String getAccountType() {
-        return accountType;
+    public String getHashedPassword() {
+        return password;
     }
 
     /**
-     * Displays all usernames registered on the platform
+     * Gets the type of the account (true if admin, false if non-admin)
+     *
+     * @return account type
      */
-    private void getAllUsers() {
-        for(String u: users) {
-            System.out.println(u);
+    public boolean getAdminStatus() {
+        return admin;
+    }
+
+    /**
+     * Gets the the organisation name the account is registered to
+     *
+     * @return Organisation name associated with the user
+     */
+    public String getOrganisationName(String username) {
+        return getUser(username).getOrganisationName();
+    }
+
+    /**
+     * Gets the the organisation name associated with the instance of the user
+     *
+     * @return Organisation name of the user
+     */
+    public String getOrganisationName() {
+        return organisationName;
+    }
+
+
+    /**
+     * Gets the User object based on a matching username
+     *
+     * @return User object from the list of existing user accounts
+     */
+    public User getUser(String username) {
+        User userObject = new User();
+        for(User user: userList) {
+            if(user.getUsername() == username) {
+                userObject = user;
+            }
         }
+        return userObject;
+    }
+
+    /**
+     * Gets the Organisation object associated with the user
+     *
+     * @return Organisation object
+     */
+    public Organisation getUserOrganisation() {
+        Organisation org = new Organisation();
+        org = org.getOrganisation(organisationName);
+        return org;
     }
 }

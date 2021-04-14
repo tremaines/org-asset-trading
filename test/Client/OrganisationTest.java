@@ -5,83 +5,89 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class OrganisationTest {
 
     Organisation org;
-    List<String> assets;
-    List<Integer> assetAmount;
-    List<String> emptyList;
+    List<String> assets1;
+    List<String> assets2;
+    List<String> assets3;
+    List<Integer> assetAmount1;
+    List<Integer> assetAmount2;
+    List<Integer> assetAmount3;
+    String orgName;
 
 
     // Creating Organisation object
     @BeforeEach @Test
     public void setUpOrganisation() {
-        emptyList = new ArrayList<>();
 
         // Parameters for Organisation object
-        assets = new ArrayList<>();
-        assetAmount = new ArrayList<>();
+        assets1 = new ArrayList<>();
+        assetAmount1 = new ArrayList<>();
+        assets2 = new ArrayList<>();
+        assetAmount2 = new ArrayList<>();
+        assets3 = new ArrayList<>();
+        assetAmount3 = new ArrayList<>();
 
-        org = new Organisation("Microsoft", 200, assets, assetAmount);
+        org = new Organisation();
+
+        org.createOrganisation("Microsoft", 200, assets1, assetAmount1);
+
+        assets2.add("Hardware Resources");
+        assetAmount2.add(5);
+        assets2.add("Software Licenses");
+        assetAmount2.add(15);
+
+        org.createOrganisation("Microsoft2", 250, assets2, assetAmount2);
+
+        org.createOrganisation("Microsoft3", 201, assets3, assetAmount3);
+
+        assets3.add("Computational Resources");
+        assetAmount3.add(30);
     }
 
-    // Checks if the lists are empty, as an invalid asset will prevent the list from
-    // being populated
-    @Test
-    public void invalidAssetCheck() {
-        assets.add("Invalid");
-        assetAmount.add(50);
-        Organisation org2 = new Organisation("Google", 250, assets, assetAmount);
-        assertEquals(emptyList, org2.getAssets(), "Emptying asset list failed");
-    }
 
-    // Checks if the assetAmount array will be cleared if there is an unrecognised asset
+    // Checks the getAssetsAndAmounts() method
     @Test
-    public void invalidAmountCheck() {
-        assets.add("Invalid2");
-        assetAmount.add(55);
-        Organisation org2 = new Organisation("Google", 250, assets, assetAmount);
-        assertEquals(emptyList, org2.getAssets(), "Emptying asset amount list failed");
+    public void getAssetsAndAmountsCheck() {
+        orgName = "Microsoft3";
+        assertEquals(30, org.getOrganisation(orgName).getAssetsAndAmounts().get("Computational " +
+                "Resources"));
     }
 
     // Checks the getCredits() method
     @Test
     public void getCreditsCheck() {
-        assertEquals(200, org.getCredits(), "Adding organisation failed");
+        orgName = "Microsoft2";
+        assertEquals(250, org.getOrganisation(orgName).getCredits());
     }
 
     // Checks the setCredits() method
     @Test
     public void setCreditsCheck() {
-        org.setCredits(210);
-        assertEquals(210, org.getCredits(), "Setting credits failed");
+        orgName = "Microsoft2";
+        Organisation orgObject = org.getOrganisation(orgName);
+        orgObject.setCredits(255);
+        assertEquals(255, orgObject.getCredits());
     }
 
     // Checks the getAssets() method
     @Test
-    public void getAssets() {
-        List<String> newAssets = new ArrayList<>();
-        newAssets.add("Hardware Resources");
-        assets.add("Hardware Resources");
-        assetAmount.add(10);
-        assertEquals(newAssets, org.getAssets(), "Getting assets failed");
+    public void getAssetsCheck() {
+        orgName = "Microsoft2";
+        Organisation orgObject = org.getOrganisation(orgName);
+        assertEquals("Hardware Resources", orgObject.getAssets().get(0));
     }
 
-    // Checks the getAssetsOwned() method
+    // Checks the getAmounts() method
     @Test
-    public void getAssetsAmount() {
-        assets.add("Software Licenses");
-        assetAmount.add(125);
-        assets.add("Computational Resources");
-        assetAmount.add(20);
-        assets.add("Hardware Resources");
-        assetAmount.add(45);
-
-        // 125 is at index 0 of the assetAmount list and org.getAssetsAndAmounts().get() gets the
-        // value of the key which is "Software Licenses", which is also 125
-        assertEquals(assetAmount.toArray()[0], org.getAssetsAndAmounts().get("Software Licenses"),
-                "Getting all the assets failed");
+    public void getAmountsCheck() {
+        orgName = "Microsoft2";
+        Organisation orgObject = org.getOrganisation(orgName);
+        assertEquals(5, orgObject.getAmounts().get(0));
     }
 }
+

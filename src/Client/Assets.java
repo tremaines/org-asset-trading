@@ -45,8 +45,8 @@ public class Assets {
      * @return True if all assets asset is approved, false if otherwise
      */
     public boolean checkAssetList(List<String> assetList) {
-        for(int i = 0; i < assetList.size(); i++) {
-            if (!(checkAsset(assetList.get(i)))) {
+        for (String s : assetList) {
+            if (!(checkAsset(s))) {
                 return false;
             }
         }
@@ -60,10 +60,10 @@ public class Assets {
      * @param assetName name of the asset to be created
      */
     public void createAsset(User user, String assetName) {
-        if(user.getAccountType() == "admin" && !assets.contains(assetName)) {
+        if(user.getAdminStatus() && !assets.contains(assetName)) {
             assets.add(assetName);
         }
-        else if(user.getAccountType() != "admin") {
+        else if(!user.getAdminStatus()) {
             System.out.println("Only admins can add assets!");
         }
     }

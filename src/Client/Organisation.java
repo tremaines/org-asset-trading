@@ -11,16 +11,25 @@ import java.util.TreeMap;
  */
 public class Organisation {
 
+    // List containing all organisations added
+    private List<Organisation> organisationalList = new ArrayList<>();
     // Name of the organisation
     private String organisationName;
     // Electronic credits available to the organisation
     private int credits;
     // List of asset or resource owned
-    private List<String> assetList;
+    private List<String> assetList = new ArrayList<>();
     // List of amount of each asset owned
-    private List<Integer> amount;
+    private List<Integer> amount = new ArrayList<>();
     // Treemap of asset and asset amount
-    TreeMap<String, Integer> assetMap = new TreeMap<>();
+    private TreeMap<String, Integer> assetMap = new TreeMap<>();
+
+
+    /**
+     * Creates an instance of the Organisation
+     */
+    public Organisation() {
+    }
 
     /**
      * Organisation constructor that initialises an organisational unit
@@ -32,23 +41,6 @@ public class Organisation {
      */
     public Organisation(String organisationName, int credits, List<String> assetType,
                         List<Integer> assetAmount) {
-        Assets asset = new Assets();
-        assetList = new ArrayList<>();
-        amount= new ArrayList<>();
-
-        // Throws an exception if unapproved assets are found in the assetList and clears both
-        // assetType and assetAmount lists
-        try{
-            if(!asset.checkAssetList(assetType)) {
-                assetType.clear();
-                assetAmount.clear();
-                throw new Exception();
-            }
-        } catch (Exception e) {
-            System.out.println("An unapproved asset is contained within this organisation!");
-            return;
-        }
-
         this.organisationName = organisationName;
         this.credits = credits;
         this.assetList = assetType;
@@ -56,12 +48,53 @@ public class Organisation {
     }
 
     /**
-     * Constructs an organisation with the given organisation name
+     * Adds a new organisation into the list of organisations and gives the organisation access
+     * to the platform
      *
-     * @param organisationName The name of the organisation
+     * @param organisationName Name of the organisation
+     * @param credits Number of electronic credits
+     * @param assetList The type of the asset
+     * @param amount Amount of the asset type
      */
-    public Organisation(String organisationName) {
-        this.organisationName = organisationName;
+    public void createOrganisation(String organisationName, int credits, List<String> assetList,
+                                   List<Integer> amount) {
+        Organisation org = new Organisation(organisationName, credits, assetList,
+                amount);
+        // Adds new organisation to the list of all organisations
+        organisationalList.add(org);
+    }
+
+    /**
+     * Gets a list of all organisation objects currently added onto the platform
+     *
+     * @return List of all organisation objects
+     */
+    public List<Organisation> getOrganisationList() {
+        return organisationalList;
+    }
+
+    /**
+     * Gets the Organisation object based on a matching Organisation name
+     *
+     * @return Organisation object from the list of organisations
+     */
+    public Organisation getOrganisation(String organisationName) {
+        Organisation orgObject = new Organisation();
+        for(Organisation org: organisationalList) {
+            if(org.getOrganisationName() == organisationName) {
+                orgObject = org;
+            }
+        }
+        return orgObject;
+    }
+
+    /**
+     * Gets the name of the current organisation object
+     *
+     * @return Name of the organisation
+     */
+    public String getOrganisationName() {
+        return organisationName;
     }
 
     /**
@@ -76,7 +109,7 @@ public class Organisation {
     /**
      * Sets the electronic credits available to an organisation
      *
-     * @param amount Credit amount to be owned by an organisation
+     * @param amount New credit amount to be owned by an organisation
      */
     public void setCredits(int amount) {
         this.credits = amount;
