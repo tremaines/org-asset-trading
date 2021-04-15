@@ -89,6 +89,23 @@ public class Organisation {
     }
 
     /**
+     * Gets the Organisation object based on a matching Organisation name
+     *
+     * @param organisationList List of all Organisations to get Organisation object from
+     * @param organisationName Name of the Organisation
+     * @return Organisation object from the list of organisations
+     */
+    public Organisation getOrganisation(List<Organisation> organisationList, String organisationName) {
+        Organisation orgObject = new Organisation();
+        for(Organisation org: organisationList) {
+            if(org.getOrganisationName() == organisationName) {
+                orgObject = org;
+            }
+        }
+        return orgObject;
+    }
+
+    /**
      * Gets the name of the current organisation object
      *
      * @return Name of the organisation
@@ -144,5 +161,53 @@ public class Organisation {
             assetMap.put(assetList.get(i), amount.get(i));
         }
         return assetMap;
+    }
+
+    /**
+     * Adds an asset to the list of the organisation's assets
+     *
+     * @param assetName Name of the asset to be added
+     * @param assetQuantity Quantity of the asset to be added
+     */
+    public void addAssets(String assetName, int assetQuantity) {
+        boolean ownsAsset = assetList.contains(assetName);
+        int index;
+
+        // If the organisation already owns at least 1 unit of this asset
+        if(ownsAsset) {
+            index = assetList.indexOf(assetName);
+            int currentQuantity = amount.get(index);
+            amount.set(index, currentQuantity + assetQuantity);
+        } else {
+            assetList.add(assetName);
+            amount.add(assetQuantity);
+        }
+    }
+
+    /**
+     * Decreases the asset quantity of an organisation's asset as specified. If the new asset
+     * quantity is zero, the asset is removed from the organisation's list of assets.
+     *
+     * @param assetName Name of the asset to be removed/decreased
+     * @param assetQuantity Quantity to be decreased by
+     */
+    public void removeAssets(String assetName, int assetQuantity) {
+        // Index of the asset in the list, the index of the amount list will be the same
+        int index = assetList.indexOf(assetName);
+
+        // Gets current quantity of asset
+        int quantity = amount.get(index);
+
+        // Decreases the asset amount by the value to be removed
+        quantity = quantity - assetQuantity;
+
+        // Remove the asset if it's quantity is 0, otherwise decrease the asset amount by the
+        // value to be removed
+        if(quantity == 0) {
+            assetList.remove(index);
+            amount.remove(index);
+        } else {
+            amount.set(index, quantity);
+        }
     }
 }

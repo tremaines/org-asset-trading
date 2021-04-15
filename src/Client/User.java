@@ -24,6 +24,8 @@ public class User {
     private List<User> userList = new ArrayList<>();
     // Org
     private Organisation org;
+    // Treemap of asset and asset amount
+    private TreeMap<String, Integer> assetMap = new TreeMap<>();
 
     /**
      * Creates an instance of the User
@@ -115,7 +117,6 @@ public class User {
         return organisationName;
     }
 
-
     /**
      * Gets the User object based on a matching username
      *
@@ -129,16 +130,5 @@ public class User {
             }
         }
         return userObject;
-    }
-
-    /**
-     * Gets the Organisation object associated with the user
-     *
-     * @return Organisation object
-     */
-    public Organisation getUserOrganisation() {
-        Organisation org = new Organisation();
-        org = org.getOrganisation(organisationName);
-        return org;
     }
 }
