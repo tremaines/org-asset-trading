@@ -80,7 +80,7 @@ public class Trades {
         // Total credit cost of purchasing all the asset units of the buy listing
         int totalCredits = assetPrice * assetAmount;
 
-        // Prevents a sell listing in which a user lists more asset units than they own OR
+        // Prevents a sell listing in which a user lists more asset units than they own AND
         // prevents a buy listing where a user does not have enough credits to purchase all units
         if((type == "Sell") && (orgAssetQuantity < assetAmount)) {
             // Throw Exception here
@@ -89,6 +89,7 @@ public class Trades {
             // Throw Exception here
             System.out.println("You do not have enough credits to create this listing.");
         } else {
+
             // The TradeID of a new listing to be added will always be one greater than the size of
             // the map
             tradeID = multiValueMap.size() + 1;
@@ -121,6 +122,8 @@ public class Trades {
                     org.removeAssets(assetName, assetAmount);
                     break;
             }
+
+            // If there are at least two listings, checks if there any potential matches
             if(multiValueMap.size() > 1) {
                 matchListing(user, organisation);
             }
@@ -146,6 +149,13 @@ public class Trades {
         return multiValueMap.get(tradeID).get(tradeType);
     }
 
+    /**
+     * Gets the most recent listing created and then iterates through the list of all currently
+     * available listings to check if the two listings can be fulfilled
+     *
+     * @param user Instance of the User class
+     * @param organisation Instance of the Organisation class
+     */
     public void matchListing(User user, Organisation organisation) {
         org = organisation;
         users = user;
@@ -155,11 +165,8 @@ public class Trades {
         String typeTrade1 = multiValueMap.get(tradeID1).get(tradeType);
         String assetTrade1 = multiValueMap.get(tradeID1).get(assetType);
 
-        // For loop to iterate through map to see if any asset type of the trade ID matches asset
-        // type of opposite trade type
-
-        // Iterates through multi value map to compare each key's values against that of the key
-        // entered (tradeID)
+        // Iterates through multi value map to compare each key's values against that of the most
+        // recent listing created (tradeID1)
         for (Map.Entry<Integer, ArrayList<String>> mvMap : multiValueMap.entrySet()) {
             for (Map.Entry<Integer, ArrayList<String>> map : multiValueMap.entrySet()) {
 
@@ -168,12 +175,9 @@ public class Trades {
                 String typeTrade2 = multiValueMap.get(tradeID2).get(tradeType);
                 String assetTrade2 = multiValueMap.get(tradeID2).get(assetType);
 
-                // Values within a list for the specified key
-                ArrayList<String> tradeDetails = map.getValue();
-
-
+                // Checks if trade types are both different (Buy & Sell) and the listings contain
+                // the asset type
                 if((typeTrade1 != typeTrade2) && (assetTrade1 == assetTrade2)) {
-                    // Calls differentTradeTypes() method
                     tradeCompatibility(tradeID1, tradeID2, user, org);
                 }
             }
@@ -368,6 +372,61 @@ public class Trades {
             // Set buy order to partial and set sell order to Yes (fulfilled)
             tradeBuy.set(tradeFulfilled, "Partial");
             tradeSell.set(tradeFulfilled, "Yes");
+        }
+    }
+
+    /**
+     * Allows a user to cancel their listing and have their assets or credits refunded back into
+     * their account
+     *
+     * @param organisation Instance of the Organisation class
+     * @param tradeID ID number of the trade, which is also the key in the multi value map
+     */
+    public void cancelListing(Organisation organisation, int tradeID) {
+        // Gets the values associated with trade that the user wishes to cancel
+        ArrayList<String> tradeToCancel = multiValueMap.get(tradeID);
+        // Type of listing (Buy/Sell)
+        String listingType = tradeToCancel.get(tradeType);
+
+        // Quantity of an asset to purchase on a Buy listing
+        int listingAmount;
+        // Price per unit of an asset on a Buy listing
+        int listingPrice;
+        // Credits owned by the user
+        int currentCredits;
+
+        // Gets Organisation object associated with the user who is cancelling the trade
+        Organisation orgCancel = organisation.getOrganisation(organisation.getOrganisationList(),
+                tradeToCancel.get(orgName));
+
+        switch (listingType) {
+            case "Buy":
+                // Set trade status to "Cancelled"
+                tradeToCancel.set(tradeFulfilled, "Cancelled");
+
+                // Return credits to user
+                currentCredits = orgCancel.getCredits();
+                listingAmount = Integer.parseInt(tradeToCancel.get(assetAmount));
+                listingPrice = Integer.parseInt(tradeToCancel.get(price));
+
+                orgCancel.setCredits(currentCredits + (listingAmount * listingPrice));
+
+                // Set assetAmount to 0
+                tradeToCancel.set(assetAmount, "0");
+                break;
+
+            case "Sell":
+                // Set trade status to "Cancelled
+                tradeToCancel.set(tradeFulfilled, "Cancelled");
+
+                // Return assets to user (assetAmount)
+                orgCancel.addAssets(tradeToCancel.get(assetType),
+                        Integer.parseInt(tradeToCancel.get(assetAmount)));
+
+                // Set assetAmount to 0
+                tradeToCancel.set(assetAmount, "0");
+                break;
+
         }
     }
 }

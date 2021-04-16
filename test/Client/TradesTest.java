@@ -134,4 +134,24 @@ public class TradesTest {
 
         assertEquals(50,  org.getOrganisation("Microsoft").getCredits());
     }
+
+    // Checks whether cancelListing() method returns assets on a sell listing
+    @Test
+    public void cancelListingCheck(){
+        assets2.add("Software Licenses");
+        amount2.add(20);
+        Trades trade1 = new Trades();
+        trade1.createListing(user, org, "Fred","Sell", "Software Licenses", 20, 5);
+        trade1.cancelListing(org, 1);
+        assertEquals(20,  org.getOrganisation("Google").getAmounts().get(0));
+    }
+
+    // Checks whether cancelListing() method returns assets on a buy listing
+    @Test
+    public void cancelListingCheck2(){
+        Trades trade1 = new Trades();
+        trade1.createListing(user, org, "Fred","Buy", "Software Licenses", 20, 5);
+        trade1.cancelListing(org, 1);
+        assertEquals(300,  org.getOrganisation("Google").getCredits());
+    }
 }
