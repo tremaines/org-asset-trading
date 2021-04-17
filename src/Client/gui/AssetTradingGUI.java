@@ -29,17 +29,29 @@ public class AssetTradingGUI extends JFrame {
         topMenuPanel.setBackground(Color.GRAY);
         add(topMenuPanel, BorderLayout.NORTH);
 
-
         // Buttons in left menu
-        JButton notificationsBtn = new JButton("Notifications");
-        JButton historyBtn = new JButton("Item History");
-        JButton myListingsBtn = new JButton("My Listings");
-        JButton viewAssetsBtn = new JButton("View Assets");
+        for (int i = 0; i < 4; i++) {
+            String btnName = "";
+            switch(i) {
+                case 0:
+                    btnName = "Notifications";
+                    break;
+                case 1:
+                    btnName = "Item History";
+                    break;
+                case 2:
+                    btnName = "My Listings";
+                    break;
+                case 3:
+                    btnName = "View Assets";
+                    break;
 
-        leftMenuPanel.add(notificationsBtn);
-        leftMenuPanel.add(historyBtn);
-        leftMenuPanel.add(myListingsBtn);
-        leftMenuPanel.add(viewAssetsBtn);
+            }
+            JButton btn = new JButton(btnName);
+            btn.setPreferredSize(new Dimension(125, 25));
+            leftMenuPanel.add(btn);
+
+        }
 
         pack();
         setLocationRelativeTo(null);
