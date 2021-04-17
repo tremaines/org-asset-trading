@@ -43,4 +43,6 @@ public class AssetTest {
         assertNotEquals(assets2, assets.getAllAssets());
     }
 
+
+
 }

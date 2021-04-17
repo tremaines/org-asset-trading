@@ -15,18 +15,18 @@ public class AssetTradingGUI extends JFrame {
         super("Asset Trading");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(1000, 700));
-        setLayout(new BorderLayout(0, 7));
+        setLayout(new BorderLayout(0, 0));
 
         JPanel homePanel = new JPanel();
         JPanel leftMenuPanel = new JPanel();
         JPanel topMenuPanel = new JPanel();
 
         leftMenuPanel.setPreferredSize(new Dimension(140, 0));
-        leftMenuPanel.setBackground(Color.GRAY);
+        leftMenuPanel.setBackground(Utility.LIGHTBLUE);
         add(leftMenuPanel, BorderLayout.WEST);
 
         topMenuPanel.setPreferredSize(new Dimension(0, 60));
-        topMenuPanel.setBackground(Color.GRAY);
+        topMenuPanel.setBackground(Utility.PRIMARYBLUE);
         add(topMenuPanel, BorderLayout.NORTH);
 
         // Buttons in left menu
@@ -50,9 +50,7 @@ public class AssetTradingGUI extends JFrame {
             JButton btn = new JButton(btnName);
             btn.setPreferredSize(new Dimension(125, 25));
             leftMenuPanel.add(btn);
-
         }
-
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
