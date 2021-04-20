@@ -68,7 +68,7 @@ public class UserTest {
 
     // Create Two users
     @Test
-    public void createTwoUsers() {
+    public void createMultipleUsers() {
         User user1 = new User("Bob", "123test", true, "Microsoft");
         User user2 = new User("John", "qwerty", true, "Apple");
         assertTrue(user1.getUsername() != user2.getUsername());

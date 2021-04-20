@@ -58,7 +58,6 @@ public class AssetTradingGUI extends JFrame {
 
 
         // Buttons in top menu (Will come and refactor)
-
         for (int i = 0; i < 4; i++) {
             String btnName = "";
             switch(i) {
