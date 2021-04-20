@@ -12,12 +12,47 @@ public class LoginGUI extends JFrame {
         super("LOGIN");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(500, 500));
-        JPanel loginPanel = new JPanel(new FlowLayout());
+
+        JPanel loginPanel = new JPanel();
+
+        loginPanel.setLayout(null);
+
+        // Login label
+        JLabel headingLabel = new JLabel("LOGIN");
+        headingLabel.setBounds(195, 90, 140, 25);
+        headingLabel.setFont(new Font("Myriad Pro",Font.PLAIN,30));
+        loginPanel.add(headingLabel);
+
+        // Username label
+        JLabel usernameLabel = new JLabel("Username");
+        usernameLabel.setBounds(140, 150, 80, 25);
+        usernameLabel.setFont(new Font("Myriad Pro",Font.PLAIN,15));
+        loginPanel.add(usernameLabel);
+
+        // Username textbox
+        JTextField usernameText = new JTextField(20);
+        usernameText.setBounds(140, 180, 200, 25);
+        loginPanel.add(usernameText);
+
+        // Password label
+        JLabel passwordLabel = new JLabel("Password");
+        passwordLabel.setBounds(140, 220, 80, 25);
+        passwordLabel.setFont(new Font("Myriad Pro",Font.PLAIN,15));
+        loginPanel.add(passwordLabel);
+
+        // Password textbox
+        JPasswordField passwordText = new JPasswordField();
+        passwordText.setBounds(140, 250, 200, 25);;
+        loginPanel.add(passwordText);
 
 
-        JTextField usernameField = new JTextField("Username: ");
-        JPasswordField passwordField = new JPasswordField("Password");
+        // Submit button
+        JButton loginBtn = new JButton("Login");
+        loginBtn.setBounds(140, 310, 200, 30);
+        loginPanel.add(loginBtn);
 
+
+        add(loginPanel);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
