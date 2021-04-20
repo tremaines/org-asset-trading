@@ -18,3 +18,4 @@ public class TradesException extends Exception{
         super(cause);
     }
 }
+

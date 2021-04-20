@@ -1,7 +1,7 @@
 package Client;
 
 public class AssetsException extends Exception{
-    
+
     public AssetsException(){
         super();
     }
@@ -17,5 +17,5 @@ public class AssetsException extends Exception{
     public AssetsException(Throwable cause) {
         super(cause);
     }
-    
+
 }
