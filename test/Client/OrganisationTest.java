@@ -89,5 +89,7 @@ public class OrganisationTest {
         Organisation orgObject = org.getOrganisation(orgName);
         assertEquals(5, orgObject.getAmounts().get(0));
     }
+
+
 }
 

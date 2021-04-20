@@ -39,6 +39,7 @@ public class UserTest {
         assertEquals("Tom", user.getUser("Tom").getUsername());
     }
 
+
     // Checks the user's organisation name matches with that of the organisation name
     @Test
     public void getOrganisationCheck(){
@@ -63,6 +64,14 @@ public class UserTest {
     @Test
     public void checkAccountType(){
         assertFalse(user.getUser("Tom").getAdminStatus());
+    }
+
+    // Create Two users
+    @Test
+    public void createTwoUsers() {
+        User user1 = new User("Bob", "123test", true, "Microsoft");
+        User user2 = new User("John", "qwerty", true, "Apple");
+        assertTrue(user1.getUsername() != user2.getUsername());
     }
 
 

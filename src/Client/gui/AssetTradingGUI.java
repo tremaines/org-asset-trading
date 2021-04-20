@@ -19,7 +19,7 @@ public class AssetTradingGUI extends JFrame {
 
         JPanel homePanel = new JPanel();
         JPanel leftMenuPanel = new JPanel();
-        JPanel topMenuPanel = new JPanel();
+        JPanel topMenuPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,15));
 
         leftMenuPanel.setPreferredSize(new Dimension(140, 0));
         leftMenuPanel.setBackground(Utility.LIGHTBLUE);
@@ -51,6 +51,38 @@ public class AssetTradingGUI extends JFrame {
             btn.setPreferredSize(new Dimension(125, 25));
             leftMenuPanel.add(btn);
         }
+
+        // Just using these to test layout
+        JLabel searchLabel = new JLabel("Search for...");
+        topMenuPanel.add(searchLabel);
+
+
+        // Buttons in top menu (Will come and refactor)
+
+        for (int i = 0; i < 4; i++) {
+            String btnName = "";
+            switch(i) {
+                case 0:
+                    btnName = "Home";
+                    break;
+                case 1:
+                    btnName = "Buy";
+                    break;
+                case 2:
+                    btnName = "Sell";
+                    break;
+                case 3:
+                    btnName = "Acccount";
+                    break;
+            }
+            JButton btn = new JButton(btnName);
+            btn.setPreferredSize(new Dimension(100, 25));
+            topMenuPanel.add(btn);
+        }
+
+        JLabel creditsLabel = new JLabel("Credits: [1200]");
+        topMenuPanel.add(creditsLabel);
+
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
