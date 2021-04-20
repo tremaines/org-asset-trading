@@ -2,8 +2,10 @@ package Client.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class LoginGUI extends JFrame {
+public class LoginGUI extends JFrame implements ActionListener {
 
     final String USERNAME = "Test";
     final String PASSWORD = "123";
@@ -45,12 +47,11 @@ public class LoginGUI extends JFrame {
         passwordText.setBounds(140, 250, 200, 25);;
         loginPanel.add(passwordText);
 
-
         // Submit button
         JButton loginBtn = new JButton("Login");
         loginBtn.setBounds(140, 310, 200, 30);
+        loginBtn.addActionListener(this);
         loginPanel.add(loginBtn);
-
 
         add(loginPanel);
         pack();
@@ -65,5 +66,8 @@ public class LoginGUI extends JFrame {
         });
     }
 
-
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        new AssetTradingGUI();
+    }
 }

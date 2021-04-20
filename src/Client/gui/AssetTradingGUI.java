@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * Point of entry for the GUI of the program
  */
-public class AssetTradingGUI extends JFrame {
+public class AssetTradingGUI extends JFrame{
 
     private JTextField loginField;
     private JPasswordField passwordField;
