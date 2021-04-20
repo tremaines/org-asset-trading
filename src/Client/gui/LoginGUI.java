@@ -7,8 +7,11 @@ import java.awt.event.ActionListener;
 
 public class LoginGUI extends JFrame implements ActionListener {
 
-    final String USERNAME = "Test";
+    final String USERNAME = "ben";
     final String PASSWORD = "123";
+
+    private static JTextField usernameInput;
+    private static JPasswordField passwordInput;
 
     public LoginGUI() {
         super("LOGIN");
@@ -32,9 +35,9 @@ public class LoginGUI extends JFrame implements ActionListener {
         loginPanel.add(usernameLabel);
 
         // Username textbox
-        JTextField usernameText = new JTextField(20);
-        usernameText.setBounds(140, 180, 200, 25);
-        loginPanel.add(usernameText);
+        usernameInput = new JTextField(20);
+        usernameInput.setBounds(140, 180, 200, 25);
+        loginPanel.add(usernameInput);
 
         // Password label
         JLabel passwordLabel = new JLabel("Password");
@@ -43,9 +46,9 @@ public class LoginGUI extends JFrame implements ActionListener {
         loginPanel.add(passwordLabel);
 
         // Password textbox
-        JPasswordField passwordText = new JPasswordField();
-        passwordText.setBounds(140, 250, 200, 25);;
-        loginPanel.add(passwordText);
+        passwordInput = new JPasswordField();
+        passwordInput.setBounds(140, 250, 200, 25);;
+        loginPanel.add(passwordInput);
 
         // Submit button
         JButton loginBtn = new JButton("Login");
@@ -68,6 +71,16 @@ public class LoginGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        new AssetTradingGUI();
+
+        String user = usernameInput.getText();
+        String password = passwordInput.getText();
+
+        if (user.equals(USERNAME) && password.equals(PASSWORD)) {
+            new AssetTradingGUI();
+        } else if (!user.equals(USERNAME)){
+            JOptionPane.showMessageDialog(null, "Incorrect Username", "Invalid", JOptionPane.ERROR_MESSAGE);
+        } else if (!password.equals(PASSWORD)) {
+            JOptionPane.showMessageDialog(null, "Incorrect Password", "Invalid", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
