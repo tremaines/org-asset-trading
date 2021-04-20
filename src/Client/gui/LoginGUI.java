@@ -76,6 +76,7 @@ public class LoginGUI extends JFrame implements ActionListener {
         String password = passwordInput.getText();
 
         if (user.equals(USERNAME) && password.equals(PASSWORD)) {
+            this.setVisible(false);
             new AssetTradingGUI();
         } else if (!user.equals(USERNAME)){
             JOptionPane.showMessageDialog(null, "Incorrect Username", "Invalid", JOptionPane.ERROR_MESSAGE);
