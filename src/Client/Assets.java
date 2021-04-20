@@ -56,15 +56,23 @@ public class Assets {
     /**
      * Allows admin users (IT Staff) to create a new asset on the marketplace
      *
-     * @param user user currently logged in
-     * @param assetName name of the asset to be created
+     * @param user
+     * @param assetName
+     * @throws UserException - if the user is not an admin
+     * @throws AssetsException - if the asset already exists
      */
-    public void createAsset(User user, String assetName) {
-        if(user.getAdminStatus() && !assets.contains(assetName)) {
+    public void createAsset(User user, String assetName) throws UserException, AssetsException {
+        boolean isAdmin = user.getAdminStatus();
+        boolean assetExists = assets.contains(assetName);
+
+        if(isAdmin && !assetExists) {
             assets.add(assetName);
         }
-        else if(!user.getAdminStatus()) {
-            System.out.println("Only admins can add assets!");
+        else if(!isAdmin) {
+            throw new UserException("User must have admin rights to add an asset.");
+        }
+        else if(assetExists) {
+            throw new AssetsException("Asset already exists.");
         }
     }
 
