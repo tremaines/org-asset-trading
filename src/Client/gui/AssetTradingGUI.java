@@ -2,14 +2,25 @@ package Client.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Point of entry for the GUI of the program
  */
-public class AssetTradingGUI extends JFrame{
+public class AssetTradingGUI extends JFrame implements ActionListener {
 
     private JTextField loginField;
     private JPasswordField passwordField;
+
+    private JPanel maincontent;
+    private JPanel homePanel;
+    private JPanel buyPanel;
+    private JPanel sellPanel;
+    private JPanel accountPanel;
+
+
+    private CardLayout cardLayout = new CardLayout();
 
     public AssetTradingGUI() {
         super("Asset Trading");
@@ -83,7 +94,7 @@ public class AssetTradingGUI extends JFrame{
                     icon = new ImageIcon(this.getClass().getResource("sell.png"));
                     break;
                 case 3:
-                    btnName = "Acccount";
+                    btnName = "Account";
                     icon = new ImageIcon(this.getClass().getResource("account.png"));
                     break;
             }
@@ -92,6 +103,7 @@ public class AssetTradingGUI extends JFrame{
             btn.setBackground(Utility.PRIMARYBLUE);
             btn.setForeground(Color.WHITE);
             btn.setPreferredSize(new Dimension(130, 30));
+            btn.addActionListener(this);
 
             topMenuButtons[i] = btn;
             topMenuPanel.add(btn);
@@ -104,10 +116,27 @@ public class AssetTradingGUI extends JFrame{
 
 
         // Main content area
-        JPanel maincontent = new JPanel();
-        maincontent.setBorder(BorderFactory.createTitledBorder("Main Content"));
+        maincontent = new JPanel();
+        maincontent.setLayout(cardLayout);
         add(maincontent, BorderLayout.CENTER);
-        
+
+        homePanel = new JPanel();
+        homePanel.setBorder(BorderFactory.createTitledBorder("Home"));
+        maincontent.add(homePanel, "1");
+
+        buyPanel = new JPanel();
+        buyPanel.setBorder(BorderFactory.createTitledBorder("Buy"));
+        maincontent.add(buyPanel, "2");
+
+        sellPanel = new JPanel();
+        sellPanel.setBorder(BorderFactory.createTitledBorder("Sell"));
+        maincontent.add(sellPanel, "3");
+
+        accountPanel = new JPanel();
+        accountPanel.setBorder(BorderFactory.createTitledBorder("Account"));
+        maincontent.add(accountPanel, "4");
+
+        cardLayout.show(maincontent, "1");
 
         pack();
         setLocationRelativeTo(null);
@@ -116,6 +145,22 @@ public class AssetTradingGUI extends JFrame{
 
     public static void main(String[] args) {
         new AssetTradingGUI();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String btnSrcTxt = e.getActionCommand();
+
+
+        if (btnSrcTxt.equals("Home")) {
+            cardLayout.show(maincontent, "1");
+        } else if (btnSrcTxt.equals("Buy")) {
+            cardLayout.show(maincontent, "2");
+        } else if (btnSrcTxt.equals("Sell")) {
+            cardLayout.show(maincontent, "3");
+        } else if (btnSrcTxt.equals("Account")) {
+            cardLayout.show(maincontent, "4");
+        }
     }
 }
 
