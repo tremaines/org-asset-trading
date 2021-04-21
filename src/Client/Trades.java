@@ -54,8 +54,6 @@ public class Trades {
         this.users = user;
     }
 
-    public Trades(String organization, String user) {
-    }
 
     /**
      * User creates a new buy or sell listing for a specified amount of an asset at a set price

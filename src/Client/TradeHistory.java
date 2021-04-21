@@ -38,13 +38,14 @@ public class TradeHistory {
     public void getTrade()
     {
         // When asset is being traded
-        Trades  t = new Trades(organization,user);
+        Object organisation;
+        Trades  t = new Trades(Organisation organisation, User user);
         t.getListing();
 
         // Get the information about it
 
-        //Asset a = new Assets();
-        //a.addAsset();
+        Assets a = new Assets();
+        //
     }
 
 
