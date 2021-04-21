@@ -22,14 +22,17 @@ public class TradeHistory {
     //
     private String organisationNames;
 
-    public String user;
+    public User user;
 
-    public String organization;
+    public Organisation organisation;
+
+    private Trades trades;
 
 
-    public TradeHistory()
+    public TradeHistory(Trades trades)
     {
-
+        this.trades = trades;
+        organisation = new Organisation();
     }
 
     /***
@@ -38,9 +41,8 @@ public class TradeHistory {
     public void getTrade()
     {
         // When asset is being traded
-        Object organisation;
-        //Trades  t = new Trades(Organisation organisation, User user);
-        //t.getListing();
+        Trades  t = new Trades(organisation, user);
+        t.getListing();
 
         // Get the information about it
 
