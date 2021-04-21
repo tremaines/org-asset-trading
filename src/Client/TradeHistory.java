@@ -2,6 +2,7 @@ package Client;
 
 import java.time.LocalDate;
 
+
 /**
  * Trade History gives the information about the asset and its trade
  * value along with the users that have traded it for users to know if they should
@@ -12,9 +13,9 @@ public class TradeHistory {
     // Asset type
     private String assetName;
     //
-    private Double price;
+    private int price;
     //
-    private Integer quantity;
+    private int quantity;
     //
     private LocalDate date;
     //
@@ -38,16 +39,21 @@ public class TradeHistory {
     public void getTrade()
     {
         // When asset is being traded
-        Object organisation;
+        //Object organisation;
         //Trades  t = new Trades(Organisation organisation, User user);
         //t.getListing();
 
         // Get the information about it
+        //price = Trades.get_price();
 
-        Assets a = new Assets();
-        //
+        /*
+        public static int get_price()
+        {
+        return price;
+        }
+         */
+
     }
-
 
 
     /***
