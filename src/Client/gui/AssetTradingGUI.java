@@ -19,7 +19,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel sellPanel;
     private JPanel accountPanel;
 
-
     private CardLayout cardLayout = new CardLayout();
 
     public AssetTradingGUI() {
@@ -40,7 +39,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         topMenuPanel.setBackground(Utility.PRIMARYBLUE);
         add(topMenuPanel, BorderLayout.NORTH);
 
-        ImageIcon icon = new ImageIcon(this.getClass().getResource("bell.png"));
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("images/bell.png"));
 
         // Buttons in left menu
         JButton[] leftMenuButtons = new JButton[3];
@@ -54,11 +53,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                     break;
                 case 1:
                     btnName = "My Listings";
-                    icon = new ImageIcon(this.getClass().getResource("mylistings.png"));
+                    icon = new ImageIcon(this.getClass().getResource("images/mylistings.png"));
                     break;
                 case 2:
                     btnName = "View Assets";
-                    icon = new ImageIcon(this.getClass().getResource("viewassets.png"));
+                    icon = new ImageIcon(this.getClass().getResource("images/viewassets.png"));
                     break;
 
             }
@@ -83,19 +82,19 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             switch(i) {
                 case 0:
                     btnName = "Home";
-                    icon = new ImageIcon(this.getClass().getResource("home.png"));
+                    icon = new ImageIcon(this.getClass().getResource("images/home.png"));
                     break;
                 case 1:
                     btnName = "Buy";
-                    icon = new ImageIcon(this.getClass().getResource("buy.png"));
+                    icon = new ImageIcon(this.getClass().getResource("images/buy.png"));
                     break;
                 case 2:
                     btnName = "Sell";
-                    icon = new ImageIcon(this.getClass().getResource("sell.png"));
+                    icon = new ImageIcon(this.getClass().getResource("images/sell.png"));
                     break;
                 case 3:
                     btnName = "Account";
-                    icon = new ImageIcon(this.getClass().getResource("account.png"));
+                    icon = new ImageIcon(this.getClass().getResource("images/account.png"));
                     break;
             }
             JButton btn = new JButton(btnName, icon);
