@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class LoginGUI extends JFrame {
 
-    final String USERNAME = "ben";
+    final String USERNAME = "test";
     final String PASSWORD = "123";
 
     private static JTextField usernameInput;

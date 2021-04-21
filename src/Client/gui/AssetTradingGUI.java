@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * Point of entry for the GUI of the program
@@ -18,6 +20,27 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel buyPanel;
     private JPanel sellPanel;
     private JPanel accountPanel;
+    private JPanel assetsPanel;
+
+    String[] columnNames = {
+            "Asset Type",
+            "Description",
+            "Quantity Available",
+            "Credits Per Unit"
+    };
+
+    Object[][] data = {
+            {"CPU Hours", "CPU Hours",
+                    "700", 2},
+            {"CPU Hours", "CPU Hours",
+                    "500", 14},
+            {"CPU Hours", "CPU Hours",
+                    "1200", 17},
+            {"CPU Hours", "CPU Hours",
+                    "300", 2},
+            {"CPU Hours", "CPU Hours",
+                    "150", 1},
+    };
 
     private CardLayout cardLayout = new CardLayout();
 
@@ -66,6 +89,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             btn.setBackground(Utility.DARKGREY);
             btn.setForeground(Color.WHITE);
             btn.setPreferredSize(new Dimension(125, 40));
+            btn.addActionListener(this);
 
             leftMenuButtons[i] = btn;
             leftMenuPanel.add(btn);
@@ -119,21 +143,73 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         maincontent.setLayout(cardLayout);
         add(maincontent, BorderLayout.CENTER);
 
+        // Home Panel
         homePanel = new JPanel();
         homePanel.setBorder(BorderFactory.createTitledBorder("Home"));
         maincontent.add(homePanel, "1");
 
+        // Buy Panel
         buyPanel = new JPanel();
         buyPanel.setBorder(BorderFactory.createTitledBorder("Buy"));
         maincontent.add(buyPanel, "2");
 
+        // Sell Panel
         sellPanel = new JPanel();
         sellPanel.setBorder(BorderFactory.createTitledBorder("Sell"));
         maincontent.add(sellPanel, "3");
 
+        // Account Pannel
         accountPanel = new JPanel();
         accountPanel.setBorder(BorderFactory.createTitledBorder("Account"));
         maincontent.add(accountPanel, "4");
+
+        // Assets Pannel
+        assetsPanel = new JPanel(new BorderLayout(0, 0));
+        assetsPanel.setBorder(BorderFactory.createTitledBorder("Assets"));
+        maincontent.add(assetsPanel, "5");
+
+        // Assets Table
+        JTable assetsTable = new JTable(data, columnNames);
+        JScrollPane scrollPane = new JScrollPane(assetsTable);
+        assetsTable.setAutoCreateRowSorter(true);
+
+        // Make cells uneditable
+        assetsTable.setDefaultEditor(Object.class, null);
+
+        JButton itemHistoryBtn = new JButton("Item History");
+        JPanel topTableBar = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,15));
+        assetsPanel.add(topTableBar, BorderLayout.NORTH);
+        topTableBar.add(itemHistoryBtn);
+        assetsPanel.add(scrollPane);
+
+        assetsTable.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                String selectedCellValue = (String) assetsTable.getValueAt(assetsTable.getSelectedRow() , assetsTable.getSelectedColumn());
+                System.out.println(selectedCellValue);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
 
         cardLayout.show(maincontent, "1");
 
@@ -158,6 +234,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             cardLayout.show(maincontent, "3");
         } else if (btnSrcTxt.equals("Account")) {
             cardLayout.show(maincontent, "4");
+        } else if (btnSrcTxt.equals("View Assets")) {
+            System.out.println("CLICKED");
+            cardLayout.show(maincontent, "5");
         }
     }
 }
