@@ -29,29 +29,35 @@ public class AssetTradingGUI extends JFrame{
         topMenuPanel.setBackground(Utility.PRIMARYBLUE);
         add(topMenuPanel, BorderLayout.NORTH);
 
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("bell.png"));
+
         // Buttons in left menu
-        for (int i = 0; i < 4; i++) {
+        JButton[] leftMenuButtons = new JButton[3];
+        JButton[] topMenuButtons = new JButton[4];
+
+        for (int i = 0; i < 3; i++) {
             String btnName = "";
             switch(i) {
                 case 0:
                     btnName = "Notifications";
                     break;
                 case 1:
-                    btnName = "Item History";
+                    btnName = "My Listings";
+                    icon = new ImageIcon(this.getClass().getResource("mylistings.png"));
                     break;
                 case 2:
-                    btnName = "My Listings";
-                    break;
-                case 3:
                     btnName = "View Assets";
+                    icon = new ImageIcon(this.getClass().getResource("viewassets.png"));
                     break;
 
             }
-            JButton btn = new JButton(btnName);
+            JButton btn = new JButton(btnName, icon);
             btn.setBorderPainted(false);
             btn.setBackground(Utility.DARKGREY);
             btn.setForeground(Color.WHITE);
             btn.setPreferredSize(new Dimension(125, 40));
+
+            leftMenuButtons[i] = btn;
             leftMenuPanel.add(btn);
         }
 
@@ -60,33 +66,39 @@ public class AssetTradingGUI extends JFrame{
         searchLabel.setForeground(Color.WHITE);
         topMenuPanel.add(searchLabel);
 
-
-        // Buttons in top menu (Will come and refactor)
+        // Buttons in top menu (Will come back and refactor)
         for (int i = 0; i < 4; i++) {
             String btnName = "";
             switch(i) {
                 case 0:
                     btnName = "Home";
+                    icon = new ImageIcon(this.getClass().getResource("home.png"));
                     break;
                 case 1:
                     btnName = "Buy";
+                    icon = new ImageIcon(this.getClass().getResource("buy.png"));
                     break;
                 case 2:
                     btnName = "Sell";
+                    icon = new ImageIcon(this.getClass().getResource("sell.png"));
                     break;
                 case 3:
                     btnName = "Acccount";
+                    icon = new ImageIcon(this.getClass().getResource("account.png"));
                     break;
             }
-            JButton btn = new JButton(btnName);
+            JButton btn = new JButton(btnName, icon);
             btn.setBorderPainted(false);
             btn.setBackground(Utility.PRIMARYBLUE);
             btn.setForeground(Color.WHITE);
-            btn.setPreferredSize(new Dimension(100, 30));
+            btn.setPreferredSize(new Dimension(130, 30));
+
+            topMenuButtons[i] = btn;
             topMenuPanel.add(btn);
         }
 
         JLabel creditsLabel = new JLabel("Credits: [1200]");
+        creditsLabel.setPreferredSize(new Dimension(100, 30));
         creditsLabel.setForeground(Color.WHITE);
         topMenuPanel.add(creditsLabel);
 
