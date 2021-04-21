@@ -12,6 +12,7 @@ public class TradesTest {
     Organisation org;
     User user;
     Trades trade;
+    Trades trade1;
     int tradeID;
 
     List<String> assets;
@@ -57,13 +58,16 @@ public class TradesTest {
         user.createUser("Tom", "abc123", false, "Microsoft");
         user.createUser("Fred", "aaa123", false, "Google");
 
-        trade = new Trades();
+        trade = new Trades(org, user);
+
+        // Separate Trade class to test other methods
+        trade1 = new Trades(org, user);
     }
 
     // Checks that a listing can be created
     @Test
     public void createListingCheck(){
-        trade.createListing(user, org, "Tom","Buy", "Software Licenses", 10, 5);
+        trade.createListing("Tom","Buy", "Software Licenses", 10, 5);
         // The TradeID of the most recent listing will always be equal to the size of the map
         tradeID = trade.getListing().size();
 
@@ -74,7 +78,7 @@ public class TradesTest {
     // Checking values of the trade listing
     @Test
     public void getListingCheck(){
-        trade.createListing(user, org, "Tom","Buy", "Software Licenses", 10, 5);
+        trade.createListing("Tom","Buy", "Software Licenses", 10, 5);
         // The TradeID of the most recent listing will always be equal to the size of the map
         tradeID = trade.getListing().size();
 
@@ -85,7 +89,7 @@ public class TradesTest {
     // after creating a buy listing
     @Test
     public void getListingCheck2(){
-        trade.createListing(user, org,"Tom","Buy", "Software Licenses", 10, 5);
+        trade.createListing("Tom","Buy", "Software Licenses", 10, 5);
         // The TradeID of the most recent listing will always be equal to the size of the map
         tradeID = trade.getListing().size();
 
@@ -96,7 +100,7 @@ public class TradesTest {
     // creating a sell listing
     @Test
     public void getListingCheck3(){
-        trade.createListing(user, org, "Tom","Sell", "Hardware Resources", 30, 5);
+        trade.createListing("Tom","Sell", "Hardware Resources", 30, 5);
         tradeID = trade.getListing().size();
 
         List<String> emptyList = new ArrayList<>();
@@ -107,18 +111,16 @@ public class TradesTest {
     // matchListing() method is automatically called when a new listing is created!
     @Test
     public void matchListingCheck(){
-        Trades trade1 = new Trades();
-        trade1.createListing(user, org, "Tom","Sell", "Hardware Resources", 10, 5);
-        trade1.createListing(user, org, "Fred","Buy", "Hardware Resources", 5, 5);
+        trade1.createListing("Tom","Sell", "Hardware Resources", 10, 5);
+        trade1.createListing("Fred","Buy", "Hardware Resources", 5, 5);
 
         assertEquals(275,  org.getOrganisation("Google").getCredits());
     }
 
     @Test
     public void matchListingCheck2(){
-        Trades trade1 = new Trades();
-        trade1.createListing(user, org, "Tom","Sell", "Hardware Resources", 10, 5);
-        trade1.createListing(user, org, "Fred","Buy", "Hardware Resources", 10, 5);
+        trade1.createListing("Tom","Sell", "Hardware Resources", 10, 5);
+        trade1.createListing("Fred","Buy", "Hardware Resources", 10, 5);
 
         assertEquals(250,  org.getOrganisation("Google").getCredits());
     }
@@ -127,9 +129,8 @@ public class TradesTest {
     public void matchListingCheck3(){
         assets2.add("Software Licenses");
         amount2.add(20);
-        Trades trade1 = new Trades();
-        trade1.createListing(user, org, "Fred","Sell", "Software Licenses", 10, 5);
-        trade1.createListing(user, org, "Tom","Buy", "Software Licenses", 20, 10);
+        trade1.createListing("Fred","Sell", "Software Licenses", 10, 5);
+        trade1.createListing("Tom","Buy", "Software Licenses", 20, 10);
 
 
         assertEquals(50,  org.getOrganisation("Microsoft").getCredits());
@@ -140,18 +141,16 @@ public class TradesTest {
     public void cancelListingCheck(){
         assets2.add("Software Licenses");
         amount2.add(20);
-        Trades trade1 = new Trades();
-        trade1.createListing(user, org, "Fred","Sell", "Software Licenses", 20, 5);
-        trade1.cancelListing(org, 1);
+        trade1.createListing("Fred","Sell", "Software Licenses", 20, 5);
+        trade1.cancelListing( 1);
         assertEquals(20,  org.getOrganisation("Google").getAmounts().get(0));
     }
 
     // Checks whether cancelListing() method returns assets on a buy listing
     @Test
     public void cancelListingCheck2(){
-        Trades trade1 = new Trades();
-        trade1.createListing(user, org, "Fred","Buy", "Software Licenses", 20, 5);
-        trade1.cancelListing(org, 1);
+        trade1.createListing("Fred","Buy", "Software Licenses", 20, 5);
+        trade1.cancelListing(1);
         assertEquals(300,  org.getOrganisation("Google").getCredits());
     }
 }

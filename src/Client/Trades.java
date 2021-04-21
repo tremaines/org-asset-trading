@@ -44,38 +44,45 @@ public class Trades {
     Map<Integer, ArrayList<String>> multiValueMap = new HashMap<>();
 
     /**
+     * Trade constructor that takes instances of the organisational and user classes
+     *
+     * @param organisation Instance of the Organisation class
+     * @param user Instance of the User class
+     */
+    public Trades(Organisation organisation, User user) {
+        this.org = organisation;
+        this.users = user;
+    }
+
+    /**
      * User creates a new buy or sell listing for a specified amount of an asset at a set price
      *
-     * @param user Instance of the User object
-     * @param organisation Instance of the Organisation object
      * @param username Username of the account creating the listing
      * @param type Type of listing (Buy/Sell)
      * @param assetName Name of the asset being traded
      * @param assetAmount Amount of the asset to be traded
      * @param assetPrice Price of the asset per unit
      */
-    public void createListing(User user, Organisation organisation, String username,
+    public void createListing(String username,
                               String type,
                               String assetName, int assetAmount, int assetPrice) {
         // Gets the instance of the Organisation associated with the user from the list of all
         // Organisations
-        org = new Organisation();
-        org = organisation.getOrganisation(organisation.getOrganisationList(),
-                user.getOrganisationName(username));
-        users = new User();
-        users = user;
+        Organisation listingOrganisation = new Organisation();
+        listingOrganisation = org.getOrganisation(org.getOrganisationList(),
+                users.getOrganisationName(username));
 
         // Index of the asset in the list of assets owned by the user's organisation
         int index;
         if(type == "Sell") {
-            index = org.getAssets().indexOf(assetName);
+            index = listingOrganisation.getAssets().indexOf(assetName);
 
             // Current quantity of the asset that the organisation is listing owns
-            orgAssetQuantity = org.getAmounts().get(index);
+            orgAssetQuantity = listingOrganisation.getAmounts().get(index);
         }
 
         // Gets current credits owned by an organisation (For buy listing)
-        int currentCredits = org.getCredits();
+        int currentCredits = listingOrganisation.getCredits();
 
         // Total credit cost of purchasing all the asset units of the buy listing
         int totalCredits = assetPrice * assetAmount;
@@ -106,26 +113,26 @@ public class Trades {
             // Stores a copy of the original listing amount (other assetAmount will get modified)
             multiValueMap.get(tradeID).add(assetAmount + "");
             multiValueMap.get(tradeID).add(username);
-            multiValueMap.get(tradeID).add(user.getOrganisationName(username));
+            multiValueMap.get(tradeID).add(users.getOrganisationName(username));
             multiValueMap.get(tradeID).add("No");
             multiValueMap.get(tradeID).add(LocalDate.now().toString());
 
             switch(type) {
                 case "Buy":
                     // Removes total credits cost for the buy listing purchase
-                    org.setCredits(currentCredits - totalCredits);
+                    listingOrganisation.setCredits(currentCredits - totalCredits);
                     break;
                 case "Sell":
                     // Remove asset quantity by listing amount if listing amount is less than
                     // the total asset amount, otherwise removes asset and asset quantity from the
                     // organisation's asset and asset amount lists, respectively
-                    org.removeAssets(assetName, assetAmount);
+                    listingOrganisation.removeAssets(assetName, assetAmount);
                     break;
             }
 
             // If there are at least two listings, checks if there any potential matches
             if(multiValueMap.size() > 1) {
-                matchListing(user, organisation);
+                matchListing();
             }
         }
     }
@@ -152,13 +159,8 @@ public class Trades {
     /**
      * Gets the most recent listing created and then iterates through the list of all currently
      * available listings to check if the two listings can be fulfilled
-     *
-     * @param user Instance of the User class
-     * @param organisation Instance of the Organisation class
      */
-    public void matchListing(User user, Organisation organisation) {
-        org = organisation;
-        users = user;
+    public void matchListing() {
 
         // The tradeID for the listed trade will the size of the multi value map
         int tradeID1 = multiValueMap.size();
@@ -178,7 +180,7 @@ public class Trades {
                 // Checks if trade types are both different (Buy & Sell) and the listings contain
                 // the asset type
                 if((typeTrade1 != typeTrade2) && (assetTrade1 == assetTrade2)) {
-                    tradeCompatibility(tradeID1, tradeID2, user, org);
+                    tradeCompatibility(tradeID1, tradeID2);
                 }
             }
         }
@@ -190,13 +192,8 @@ public class Trades {
      *
      * @param tradeID1 Trade ID of a listing
      * @param tradeID2 Trade ID of a listing
-     * @param user Instance of the User class
-     * @param organisation Instance of the Organisation class
      */
-    private void tradeCompatibility(int tradeID1, int tradeID2, User user,
-                                     Organisation organisation) {
-        org = organisation;
-        users = user;
+    private void tradeCompatibility(int tradeID1, int tradeID2) {
 
         // Variable used to swap tradeIDs if tradeID1 is not the Buy listing
         int tradeIDSpare;
@@ -237,7 +234,7 @@ public class Trades {
             if((tradeBuy.get(orgName) != tradeSell.get(orgName)) &&
                     (!tradeBuyFulfilled && !tradeSellFulfilled)) {
                 // Calls completeTrade() method, see documentation
-                completeTrade(tradeID1, tradeID2, users, org);
+                completeTrade(tradeID1, tradeID2);
             }
         }
     }
@@ -248,13 +245,8 @@ public class Trades {
      *
      * @param tradeID1 Trade ID of the buy listing
      * @param tradeID2 Trade ID of the sell listing
-     * @param user Instance of the User class
-     * @param organisation Instance of the Organisation class
      */
-    private void completeTrade(int tradeID1, int tradeID2, User user,
-                                            Organisation organisation) {
-        org = organisation;
-        users = user;
+    private void completeTrade(int tradeID1, int tradeID2) {
 
         // Buy listing
         ArrayList<String> tradeBuy = multiValueMap.get(tradeID1);
@@ -263,11 +255,11 @@ public class Trades {
         ArrayList<String> tradeSell = multiValueMap.get(tradeID2);
 
         // Gets Organisation object associated with the user who created the Buy listing
-        Organisation orgBuyer = organisation.getOrganisation(organisation.getOrganisationList(),
+        Organisation orgBuyer = org.getOrganisation(org.getOrganisationList(),
                 tradeBuy.get(orgName));
 
         // Gets Organisation object associated with the user who created the Sell listing
-        Organisation orgSeller = organisation.getOrganisation(organisation.getOrganisationList(),
+        Organisation orgSeller = org.getOrganisation(org.getOrganisationList(),
                 tradeSell.get(orgName));
 
         // Buy price per unit of an asset
@@ -379,10 +371,9 @@ public class Trades {
      * Allows a user to cancel their listing and have their assets or credits refunded back into
      * their account
      *
-     * @param organisation Instance of the Organisation class
      * @param tradeID ID number of the trade, which is also the key in the multi value map
      */
-    public void cancelListing(Organisation organisation, int tradeID) {
+    public void cancelListing(int tradeID) {
         // Gets the values associated with trade that the user wishes to cancel
         ArrayList<String> tradeToCancel = multiValueMap.get(tradeID);
         // Type of listing (Buy/Sell)
@@ -396,7 +387,7 @@ public class Trades {
         int currentCredits;
 
         // Gets Organisation object associated with the user who is cancelling the trade
-        Organisation orgCancel = organisation.getOrganisation(organisation.getOrganisationList(),
+        Organisation orgCancel = org.getOrganisation(org.getOrganisationList(),
                 tradeToCancel.get(orgName));
 
         switch (listingType) {
