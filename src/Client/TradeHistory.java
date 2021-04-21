@@ -39,8 +39,8 @@ public class TradeHistory {
     {
         // When asset is being traded
         Object organisation;
-        Trades  t = new Trades(Organisation organisation, User user);
-        t.getListing();
+        //Trades  t = new Trades(Organisation organisation, User user);
+        //t.getListing();
 
         // Get the information about it
 
