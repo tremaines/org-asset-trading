@@ -22,7 +22,7 @@ public class AssetTradingGUI extends JFrame{
         JPanel topMenuPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,15));
 
         leftMenuPanel.setPreferredSize(new Dimension(140, 0));
-        leftMenuPanel.setBackground(Utility.LIGHTBLUE);
+        leftMenuPanel.setBackground(Utility.DARKGREY);
         add(leftMenuPanel, BorderLayout.WEST);
 
         topMenuPanel.setPreferredSize(new Dimension(0, 60));
@@ -48,12 +48,16 @@ public class AssetTradingGUI extends JFrame{
 
             }
             JButton btn = new JButton(btnName);
-            btn.setPreferredSize(new Dimension(125, 25));
+            btn.setBorderPainted(false);
+            btn.setBackground(Utility.DARKGREY);
+            btn.setForeground(Color.WHITE);
+            btn.setPreferredSize(new Dimension(125, 40));
             leftMenuPanel.add(btn);
         }
 
         // Just using these to test layout
         JLabel searchLabel = new JLabel("Search for...");
+        searchLabel.setForeground(Color.WHITE);
         topMenuPanel.add(searchLabel);
 
 
@@ -75,11 +79,15 @@ public class AssetTradingGUI extends JFrame{
                     break;
             }
             JButton btn = new JButton(btnName);
-            btn.setPreferredSize(new Dimension(100, 25));
+            btn.setBorderPainted(false);
+            btn.setBackground(Utility.PRIMARYBLUE);
+            btn.setForeground(Color.WHITE);
+            btn.setPreferredSize(new Dimension(100, 30));
             topMenuPanel.add(btn);
         }
 
         JLabel creditsLabel = new JLabel("Credits: [1200]");
+        creditsLabel.setForeground(Color.WHITE);
         topMenuPanel.add(creditsLabel);
 
         pack();

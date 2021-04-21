@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginGUI extends JFrame implements ActionListener {
+public class LoginGUI extends JFrame {
 
     final String USERNAME = "ben";
     final String PASSWORD = "123";
@@ -50,10 +50,27 @@ public class LoginGUI extends JFrame implements ActionListener {
         passwordInput.setBounds(140, 250, 200, 25);;
         loginPanel.add(passwordInput);
 
-        // Submit button
+        // Login button
         JButton loginBtn = new JButton("Login");
         loginBtn.setBounds(140, 310, 200, 30);
-        loginBtn.addActionListener(this);
+
+        loginBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String user = usernameInput.getText();
+                String password = passwordInput.getText();
+
+                if (user.equals(USERNAME) && password.equals(PASSWORD)) {
+                    setVisible(false);
+                    new AssetTradingGUI();
+                } else if (!user.equals(USERNAME)){
+                    JOptionPane.showMessageDialog(null, "Incorrect Username", "Invalid", JOptionPane.ERROR_MESSAGE);
+                } else if (!password.equals(PASSWORD)) {
+                    JOptionPane.showMessageDialog(null, "Incorrect Password", "Invalid", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         loginPanel.add(loginBtn);
 
         add(loginPanel);
@@ -67,21 +84,5 @@ public class LoginGUI extends JFrame implements ActionListener {
         java.awt.EventQueue.invokeLater(() -> {
             new LoginGUI();
         });
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        String user = usernameInput.getText();
-        String password = passwordInput.getText();
-
-        if (user.equals(USERNAME) && password.equals(PASSWORD)) {
-            this.setVisible(false);
-            new AssetTradingGUI();
-        } else if (!user.equals(USERNAME)){
-            JOptionPane.showMessageDialog(null, "Incorrect Username", "Invalid", JOptionPane.ERROR_MESSAGE);
-        } else if (!password.equals(PASSWORD)) {
-            JOptionPane.showMessageDialog(null, "Incorrect Password", "Invalid", JOptionPane.ERROR_MESSAGE);
-        }
     }
 }
