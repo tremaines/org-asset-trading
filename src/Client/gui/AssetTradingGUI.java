@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 /**
  * Point of entry for the GUI of the program
@@ -21,26 +19,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel sellPanel;
     private JPanel accountPanel;
     private JPanel assetsPanel;
-
-    String[] columnNames = {
-            "Asset Type",
-            "Description",
-            "Quantity Available",
-            "Credits Per Unit"
-    };
-
-    Object[][] data = {
-            {"CPU Hours", "CPU Hours",
-                    "700", 2},
-            {"CPU Hours", "CPU Hours",
-                    "500", 14},
-            {"CPU Hours", "CPU Hours",
-                    "1200", 17},
-            {"CPU Hours", "CPU Hours",
-                    "300", 2},
-            {"CPU Hours", "CPU Hours",
-                    "150", 1},
-    };
 
     private CardLayout cardLayout = new CardLayout();
 
@@ -168,48 +146,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         assetsPanel.setBorder(BorderFactory.createTitledBorder("Assets"));
         maincontent.add(assetsPanel, "5");
 
-        // Assets Table
-        JTable assetsTable = new JTable(data, columnNames);
-        JScrollPane scrollPane = new JScrollPane(assetsTable);
-        assetsTable.setAutoCreateRowSorter(true);
-
-        // Make cells uneditable
-        assetsTable.setDefaultEditor(Object.class, null);
-
-        JButton itemHistoryBtn = new JButton("Item History");
-        JPanel topTableBar = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,15));
-        assetsPanel.add(topTableBar, BorderLayout.NORTH);
-        topTableBar.add(itemHistoryBtn);
-        assetsPanel.add(scrollPane);
-
-        assetsTable.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                String selectedCellValue = (String) assetsTable.getValueAt(assetsTable.getSelectedRow() , assetsTable.getSelectedColumn());
-                System.out.println(selectedCellValue);
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-
+        AssetsTable table = new AssetsTable(assetsPanel);
 
         cardLayout.show(maincontent, "1");
 
