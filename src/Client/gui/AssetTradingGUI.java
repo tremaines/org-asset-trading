@@ -150,7 +150,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String btnSrcTxt = e.getActionCommand();
 
-
         if (btnSrcTxt.equals("Home")) {
             cardLayout.show(maincontent, "1");
         } else if (btnSrcTxt.equals("Buy")) {

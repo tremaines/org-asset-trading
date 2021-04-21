@@ -17,14 +17,21 @@ public class LoginGUI extends JFrame {
         super("LOGIN");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(500, 500));
+        setResizable(false);
 
         JPanel loginPanel = new JPanel();
 
         loginPanel.setLayout(null);
 
+        // Login icon
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("images/lock.png"));
+        JLabel iconLabel = new JLabel(icon);
+        iconLabel.setBounds(240, 80, 100, 45);
+        loginPanel.add(iconLabel);
+
         // Login label
         JLabel headingLabel = new JLabel("LOGIN");
-        headingLabel.setBounds(195, 90, 140, 25);
+        headingLabel.setBounds(170, 90, 140, 25);
         headingLabel.setFont(new Font("Myriad Pro",Font.PLAIN,30));
         loginPanel.add(headingLabel);
 
