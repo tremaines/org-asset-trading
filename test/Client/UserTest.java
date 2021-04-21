@@ -28,7 +28,7 @@ public class UserTest {
 
         org = new Organisation();
         org.createOrganisation("Microsoft", 200, assets, assetAmount);
-        user = new User();
+        user = new User(org);
         user.createUser("Tom", "abc123", false, "Microsoft");
 
     }
@@ -73,6 +73,4 @@ public class UserTest {
         User user2 = new User("John", "qwerty", true, "Apple");
         assertTrue(user1.getUsername() != user2.getUsername());
     }
-
-
 }

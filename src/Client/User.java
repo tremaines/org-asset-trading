@@ -28,10 +28,12 @@ public class User {
     private TreeMap<String, Integer> assetMap = new TreeMap<>();
 
     /**
-     * Creates an instance of the User
+     * Creates an instance of users
+     *
+     * @param organisation Instance of the Organisation class
      */
-    public User() {
-
+    public User(Organisation organisation) {
+        this.org = organisation;
     }
 
     /**
@@ -43,17 +45,12 @@ public class User {
      * @param organisationName Name of the organisation the user is associated with
      */
     public User (String username, String password, boolean admin, String organisationName) {
-        if(users.contains(username)) {
-            System.out.println("This username is already taken! Please try another.");
-        }
-        else {
-            users.add(username);
-            this.username = username;
-            // Hashed password
-            this.password = (password.hashCode() * 2.334) + "";
-            this.admin = admin;
-            this.organisationName = organisationName;
-        }
+        users.add(username);
+        this.username = username;
+        // Hashed password
+        this.password = (password.hashCode() * 2.334) + "";
+        this.admin = admin;
+        this.organisationName = organisationName;
     }
 
     /**
@@ -65,11 +62,19 @@ public class User {
      * @param organisationName Name of the organisation the user is associated with
      */
     public void createUser(String username, String password, boolean admin, String organisationName) {
-        User newUser = new User(username, password, admin, organisationName);
-        // List that monitors list of taken names to prevent duplicates
-        users.add(username);
-        // Adds a new user to the list of all users
-        userList.add(newUser);
+        if(users.contains(username)) {
+            // Throw Exception here
+            System.out.println("This username is already taken! Please try another.");
+        } else {
+            // List that monitors list of taken names to prevent duplicates
+            users.add(username);
+
+            // Creates the new user account if the chosen username is available
+            User newUser = new User(username, password, admin, organisationName);
+
+            // Adds a new user to the list of all users
+            userList.add(newUser);
+        }
     }
 
     /**
@@ -123,7 +128,7 @@ public class User {
      * @return User object from the list of existing user accounts
      */
     public User getUser(String username) {
-        User userObject = new User();
+        User userObject = new User(org);
         for(User user: userList) {
             if(user.getUsername() == username) {
                 userObject = user;
