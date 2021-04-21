@@ -19,7 +19,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel sellPanel;
     private JPanel accountPanel;
 
-
     private CardLayout cardLayout = new CardLayout();
 
     public AssetTradingGUI() {

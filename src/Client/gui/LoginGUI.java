@@ -52,6 +52,9 @@ public class LoginGUI extends JFrame {
 
         // Login button
         JButton loginBtn = new JButton("Login");
+        loginBtn.setBackground(Utility.PRIMARYBLUE);
+        loginBtn.setForeground(Color.WHITE);
+        loginBtn.setFont(new Font("Myriad Pro",Font.PLAIN,15));
         loginBtn.setBounds(140, 310, 200, 30);
 
         loginBtn.addActionListener(new ActionListener() {
