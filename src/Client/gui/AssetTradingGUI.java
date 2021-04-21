@@ -102,6 +102,13 @@ public class AssetTradingGUI extends JFrame{
         creditsLabel.setForeground(Color.WHITE);
         topMenuPanel.add(creditsLabel);
 
+
+        // Main content area
+        JPanel maincontent = new JPanel();
+        maincontent.setBorder(BorderFactory.createTitledBorder("Main Content"));
+        add(maincontent, BorderLayout.CENTER);
+        
+
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
