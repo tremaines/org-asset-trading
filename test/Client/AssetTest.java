@@ -30,7 +30,7 @@ public class AssetTest {
         org = new Organisation();
         org.createOrganisation("Google", 200, assets2, assetAmount);
 
-        user = new User();
+        user = new User(org);
         user.createUser("James", "defg1234", false, "Google");
         adminUser = new User("Alice", "password1", true, "AI");
     }

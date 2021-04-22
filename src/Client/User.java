@@ -2,7 +2,6 @@ package Client;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 /**
  * Users are accounts which have been authorised by a particular organisation unit
@@ -22,18 +21,16 @@ public class User extends Organisation {
     private String organisationName;
     // List containing all users added
     private List<User> userList = new ArrayList<>();
-    // Org
+    // Collection of Organisation instances
     private Organisation org;
-    // Treemap of asset and asset amount
-    private TreeMap<String, Integer> assetMap = new TreeMap<>();
 
     /**
-     * Creates an instance of users and gets the list of all organisations from its parent
-     * class (Organisation)
+     * Creates an instance of users
      *
+     * @param organisation Instance of the Organisation class
      */
-    public User() {
-        super.getOrganisationList();
+    public User(Organisation organisation) {
+        this.org = organisation;
     }
 
     /**
@@ -129,7 +126,7 @@ public class User extends Organisation {
      * @return User object from the list of existing user accounts
      */
     public User getUser(String username) {
-        User userObject = new User();
+        User userObject = new User(org);
         for(User user: userList) {
             if(user.getUsername() == username) {
                 userObject = user;

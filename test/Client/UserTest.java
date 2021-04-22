@@ -28,7 +28,7 @@ public class UserTest {
 
         org = new Organisation();
         org.createOrganisation("Microsoft", 200, assets, assetAmount);
-        user = new User();
+        user = new User(org);
         user.createUser("Tom", "abc123", false, "Microsoft");
 
     }
