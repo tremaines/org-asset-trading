@@ -54,7 +54,7 @@ public class TradesTest {
         org = new Organisation();
         org.createOrganisation("Microsoft", 200, assets, amount);
         org.createOrganisation("Google", 300, assets2, amount2);
-        user = new User(org);
+        user = new User();
         user.createUser("Tom", "abc123", false, "Microsoft");
         user.createUser("Fred", "aaa123", false, "Google");
 

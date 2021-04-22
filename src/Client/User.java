@@ -8,7 +8,7 @@ import java.util.TreeMap;
  * Users are accounts which have been authorised by a particular organisation unit
  * to engage on the electronic trading marketplace.
  */
-public class User {
+public class User extends Organisation {
 
     // Username to login to the marketplace
     private String username;
@@ -28,12 +28,12 @@ public class User {
     private TreeMap<String, Integer> assetMap = new TreeMap<>();
 
     /**
-     * Creates an instance of users
+     * Creates an instance of users and gets the list of all organisations from its parent
+     * class (Organisation)
      *
-     * @param organisation Instance of the Organisation class
      */
-    public User(Organisation organisation) {
-        this.org = organisation;
+    public User() {
+        super.getOrganisationList();
     }
 
     /**
@@ -47,6 +47,7 @@ public class User {
     public User (String username, String password, boolean admin, String organisationName) {
         users.add(username);
         this.username = username;
+
         // Hashed password
         this.password = (password.hashCode() * 2.334) + "";
         this.admin = admin;
@@ -128,7 +129,7 @@ public class User {
      * @return User object from the list of existing user accounts
      */
     public User getUser(String username) {
-        User userObject = new User(org);
+        User userObject = new User();
         for(User user: userList) {
             if(user.getUsername() == username) {
                 userObject = user;

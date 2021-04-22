@@ -29,6 +29,8 @@ public class TradeHistory {
     private Trades trades;
 
 
+    // For the graph, get Asset name, get Date (x-axis), get Asset buy price (y-axis)
+
     public TradeHistory(Trades trades)
     {
         this.trades = trades;
