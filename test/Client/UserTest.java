@@ -18,7 +18,7 @@ public class UserTest {
 
     @BeforeEach
     @Test
-    public void setUpUser() {
+    public void setUpUser() throws UserException {
         // Parameters for Organisation object
         assets = new ArrayList<>();
         assetAmount = new ArrayList<>();
@@ -31,6 +31,14 @@ public class UserTest {
         user = new User(org);
         user.createUser("Tom", "abc123", false, "Microsoft");
 
+    }
+
+    // Checks that an exception is thrown if a username is already taken
+    @Test
+    public void createUserCheck(){
+        assertThrows(UserException.class, () -> {
+            user.createUser("Tom", "abc123", false, "Microsoft");
+        });
     }
 
     // Checks the getUsername() method

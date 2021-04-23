@@ -44,8 +44,7 @@ public class TradeHistoryTest {
 
     // Creating TradeHistory object
     @BeforeEach @Test
-    public void setUpTradeHistory()
-    {
+    public void setUpTradeHistory() throws UserException {
         // Parameters for Organisation object
         assets = new ArrayList<>();
         amount = new ArrayList<>();
@@ -71,8 +70,7 @@ public class TradeHistoryTest {
     }
 
     @Test
-    public void checkSummaryHistory()
-    {
+    public void checkSummaryHistory() throws TradesException {
         trade1.createListing("Tom","Sell", "Hardware Resources", 10, 5);
         trade1.createListing("Fred","Buy", "Hardware Resources", 5, 5);
 
@@ -82,8 +80,7 @@ public class TradeHistoryTest {
     }
 
     @Test
-    public void checkExtendedHistory()
-    {
+    public void checkExtendedHistory() throws TradesException {
         trade1.createListing("Tom","Sell", "Hardware Resources", 10, 5);
         trade1.createListing("Fred","Buy", "Hardware Resources", 5, 5);
 

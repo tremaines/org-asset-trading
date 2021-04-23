@@ -41,7 +41,7 @@ public class TradesTest {
 
     // Creating Trades Object
     @BeforeEach @Test
-    public void setUpTrades() {
+    public void setUpTrades() throws UserException {
         // Parameters for Organisation object
         assets = new ArrayList<>();
         amount = new ArrayList<>();
@@ -66,7 +66,7 @@ public class TradesTest {
 
     // Checks that a listing can be created
     @Test
-    public void createListingCheck(){
+    public void createListingCheck1() throws TradesException {
         trade.createListing("Tom","Buy", "Software Licenses", 10, 5);
         // The TradeID of the most recent listing will always be equal to the size of the map
         tradeID = trade.getListing().size();
@@ -75,9 +75,27 @@ public class TradesTest {
         assertNotNull(trade.getListing().get(tradeID));
     }
 
+    // Checks that an exception will be thrown if user doesn't have enough credits to make the buy
+    // listing
+    @Test
+    public void createListingCheck2() throws TradesException {
+        assertThrows(TradesException.class, () -> {
+            trade.createListing("Tom","Buy", "Software Licenses", 50, 10);
+        });
+    }
+
+    // Checks that an exception will be thrown if user doesn't have enough assets to make the sell
+    // listing
+    @Test
+    public void createListingCheck3() throws TradesException {
+        assertThrows(TradesException.class, () -> {
+            trade.createListing("Tom","Sell", "Hardware Resources", 50, 10);
+        });
+    }
+
     // Checking values of the trade listing
     @Test
-    public void getListingCheck(){
+    public void getListingCheck() throws TradesException {
         trade.createListing("Tom","Buy", "Software Licenses", 10, 5);
         // The TradeID of the most recent listing will always be equal to the size of the map
         tradeID = trade.getListing().size();
@@ -88,7 +106,7 @@ public class TradesTest {
     // Checks that the credits will be removed corresponding to the total credit cost from the
     // after creating a buy listing
     @Test
-    public void getListingCheck2(){
+    public void getListingCheck2() throws TradesException {
         trade.createListing("Tom","Buy", "Software Licenses", 10, 5);
         // The TradeID of the most recent listing will always be equal to the size of the map
         tradeID = trade.getListing().size();
@@ -99,7 +117,7 @@ public class TradesTest {
     // Checks that the asset and asset amount will be removed from the organisation after
     // creating a sell listing
     @Test
-    public void getListingCheck3(){
+    public void getListingCheck3() throws TradesException {
         trade.createListing("Tom","Sell", "Hardware Resources", 30, 5);
         tradeID = trade.getListing().size();
 
@@ -110,7 +128,7 @@ public class TradesTest {
 
     // matchListing() method is automatically called when a new listing is created!
     @Test
-    public void matchListingCheck(){
+    public void matchListingCheck() throws TradesException {
         trade1.createListing("Tom","Sell", "Hardware Resources", 10, 5);
         trade1.createListing("Fred","Buy", "Hardware Resources", 5, 5);
 
@@ -118,7 +136,7 @@ public class TradesTest {
     }
 
     @Test
-    public void matchListingCheck2(){
+    public void matchListingCheck2() throws TradesException {
         trade1.createListing("Tom","Sell", "Hardware Resources", 10, 5);
         trade1.createListing("Fred","Buy", "Hardware Resources", 10, 5);
 
@@ -126,19 +144,31 @@ public class TradesTest {
     }
 
     @Test
-    public void matchListingCheck3(){
+    public void matchListingCheck3() throws TradesException {
         assets2.add("Software Licenses");
         amount2.add(20);
         trade1.createListing("Fred","Sell", "Software Licenses", 10, 5);
         trade1.createListing("Tom","Buy", "Software Licenses", 20, 10);
 
-
+        // The buy amount for Tom is for 200 credits, hence 50 credits are returned. As the trade
+        // listing is still active, the user will now possess 50 credits.
         assertEquals(50,  org.getOrganisation("Microsoft").getCredits());
+    }
+
+    @Test
+    public void matchListingCheck4() throws TradesException {
+        assets2.add("Software Licenses");
+        amount2.add(20);
+        trade1.createListing("Fred","Sell", "Software Licenses", 10, 5);
+        trade1.createListing("Tom","Buy", "Software Licenses", 20, 10);
+        trade1.createListing("Tom","Sell", "Software Licenses", 10, 5);
+        trade1.createListing("Fred","Buy", "Software Licenses", 20, 10);
+        assertEquals(200,  org.getOrganisation("Google").getCredits());
     }
 
     // Checks whether cancelListing() method returns assets on a sell listing
     @Test
-    public void cancelListingCheck(){
+    public void cancelListingCheck() throws TradesException {
         assets2.add("Software Licenses");
         amount2.add(20);
         trade1.createListing("Fred","Sell", "Software Licenses", 20, 5);
@@ -148,7 +178,7 @@ public class TradesTest {
 
     // Checks whether cancelListing() method returns assets on a buy listing
     @Test
-    public void cancelListingCheck2(){
+    public void cancelListingCheck2() throws TradesException {
         trade1.createListing("Fred","Buy", "Software Licenses", 20, 5);
         trade1.cancelListing(1);
         assertEquals(300,  org.getOrganisation("Google").getCredits());

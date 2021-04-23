@@ -59,10 +59,9 @@ public class User extends Organisation {
      * @param admin Admin status (true/false)
      * @param organisationName Name of the organisation the user is associated with
      */
-    public void createUser(String username, String password, boolean admin, String organisationName) {
+    public void createUser(String username, String password, boolean admin, String organisationName) throws UserException {
         if(users.contains(username)) {
-            // Throw Exception here
-            System.out.println("This username is already taken! Please try another.");
+            throw new UserException("This username is already taken! Please try another.");
         } else {
             // List that monitors list of taken names to prevent duplicates
             users.add(username);

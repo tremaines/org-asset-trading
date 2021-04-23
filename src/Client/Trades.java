@@ -70,7 +70,7 @@ public class Trades {
      */
     public void createListing(String username,
                               String type,
-                              String assetName, int assetAmount, int assetPrice) {
+                              String assetName, int assetAmount, int assetPrice) throws TradesException {
         // Gets the instance of the Organisation associated with the user from the list of all
         // Organisations
         Organisation listingOrganisation = new Organisation();
@@ -95,11 +95,9 @@ public class Trades {
         // Prevents a sell listing in which a user lists more asset units than they own AND
         // prevents a buy listing where a user does not have enough credits to purchase all units
         if((type == "Sell") && (orgAssetQuantity < assetAmount)) {
-            // Throw Exception here
-            System.out.println("You are attempting to list more assets than you currently own.");
+            throw new TradesException("You do not have enough assets to create this listing.");
         } else if(type == "Buy" && (totalCredits > currentCredits)) {
-            // Throw Exception here
-            System.out.println("You do not have enough credits to create this listing.");
+            throw new TradesException("You do not have enough credits to create this listing.");
         } else {
 
             // The TradeID of a new listing to be added will always be one greater than the size of
@@ -456,9 +454,9 @@ public class Trades {
         ArrayList<String> tradeSell = multiValueMap.get(sellTradeID);
 
         tradeHistory.put(tradeHistoryID, new ArrayList<String>());
-        tradeHistory.get(sellTradeID).add(tradeSell.get(assetType));
-        tradeHistory.get(sellTradeID).add(tradeSell.get(price) + "");
-        tradeHistory.get(sellTradeID).add(LocalDate.now().toString());
+        tradeHistory.get(tradeHistoryID).add(tradeSell.get(assetType));
+        tradeHistory.get(tradeHistoryID).add(tradeSell.get(price) + "");
+        tradeHistory.get(tradeHistoryID).add(LocalDate.now().toString());
     }
 
     /**

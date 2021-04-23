@@ -20,7 +20,7 @@ public class AssetTest {
 
     @BeforeEach
     @Test
-    public void setUpAssets() {
+    public void setUpAssets() throws UserException {
         assets = new Assets();
 
         // Parameters for Organisation object
