@@ -172,14 +172,22 @@ public class Trades {
         String typeTrade1 = multiValueMap.get(tradeID1).get(tradeType);
         String assetTrade1 = multiValueMap.get(tradeID1).get(assetType);
 
+        // TradeID to be compared with the most recently listed trade
+        int tradeID2;
+
         // Iterates through multi value map to compare each key's values against that of the most
         // recent listing created (tradeID1)
         for (Map.Entry<Integer, ArrayList<String>> mvMap : multiValueMap.entrySet()) {
-            for (Map.Entry<Integer, ArrayList<String>> map : multiValueMap.entrySet()) {
+
+            if(mvMap.getKey() <= multiValueMap.size()) {
 
                 // The key of the map is the trade ID
-                Integer tradeID2 = map.getKey();
+                tradeID2 = mvMap.getKey();
+
+                // TradeID2's listing type
                 String typeTrade2 = multiValueMap.get(tradeID2).get(tradeType);
+
+                // TradeID2's asset type
                 String assetTrade2 = multiValueMap.get(tradeID2).get(assetType);
 
                 // Checks if trade types are both different (Buy & Sell) and the listings contain
