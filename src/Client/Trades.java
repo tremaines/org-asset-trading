@@ -448,9 +448,9 @@ public class Trades {
         ArrayList<String> tradeSell = multiValueMap.get(sellTradeID);
 
         tradeHistory.put(tradeHistoryID, new ArrayList<String>());
-        tradeHistory.get(tradeID).add(tradeSell.get(assetType));
-        tradeHistory.get(tradeID).add(tradeSell.get(price) + "");
-        tradeHistory.get(tradeID).add(LocalDate.now().toString());
+        tradeHistory.get(sellTradeID).add(tradeSell.get(assetType));
+        tradeHistory.get(sellTradeID).add(tradeSell.get(price) + "");
+        tradeHistory.get(sellTradeID).add(LocalDate.now().toString());
     }
 
     /**

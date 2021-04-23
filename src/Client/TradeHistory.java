@@ -56,6 +56,15 @@ public class TradeHistory {
      *
      * @return Summary data of sell listings
      */
+    public Map<Integer, ArrayList<String>> getExtendedTradeHistory() {
+        return extendedTradeHistory;
+    }
+
+    /**
+     * Gets the summary trade history data that can be used to form a graph for recent sell prices
+     *
+     * @return Summary data of sell listings
+     */
     public Map<Integer, ArrayList<String>> getSummaryTradeHistory() {
         return trades.getTradeHistory();
     }
