@@ -43,6 +43,10 @@ public class Trades {
     // Multi valued map of a key (tradeID) and its values
     Map<Integer, ArrayList<String>> multiValueMap = new HashMap<>();
 
+    // Multi valued map containing summary data of a completed or partially completed sell listing
+    Map<Integer, ArrayList<String>> tradeHistory = new HashMap<>();
+
+
     /**
      * Trade constructor that takes instances of the organisational and user classes
      *
@@ -312,6 +316,9 @@ public class Trades {
             tradeBuy.set(tradeFulfilled, "Yes");
             tradeSell.set(tradeFulfilled, "Partial");
 
+            // Stores summary of sell listing data
+            addTradeHistory(tradeID2);
+
         } else if (sellAmount == buyAmount) {
             // Gets the amount of credits to be returned to the buyer (if any)
             priceDifference = buyPrice - sellPrice;
@@ -336,6 +343,9 @@ public class Trades {
             // Set both orders status to "Yes", as they have been fulfilled
             tradeBuy.set(tradeFulfilled, "Yes");
             tradeSell.set(tradeFulfilled, "Yes");
+
+            // Stores summary of sell listing data
+            addTradeHistory(tradeID2);
 
         } else {
             // Gets the amount of credits to be returned to the buyer (if any)
@@ -365,6 +375,9 @@ public class Trades {
             // Set buy order to partial and set sell order to Yes (fulfilled)
             tradeBuy.set(tradeFulfilled, "Partial");
             tradeSell.set(tradeFulfilled, "Yes");
+
+            // Stores summary of sell listing data
+            addTradeHistory(tradeID2);
         }
     }
 
@@ -418,7 +431,35 @@ public class Trades {
                 // Set assetAmount to 0
                 tradeToCancel.set(assetAmount, "0");
                 break;
-
         }
+    }
+
+    /**
+     * Adds summary trade history data into a multi value map
+     *
+     * @param sellTradeID Trade ID of the sell listing that has been completed or partially
+     *                    completed
+     */
+    public void addTradeHistory(int sellTradeID) {
+        // The IDs of the history of completed trades will the size of the tradeHistory map
+        int tradeHistoryID = tradeHistory.size() + 1;
+
+        // Sell listing
+        ArrayList<String> tradeSell = multiValueMap.get(sellTradeID);
+
+        tradeHistory.put(tradeHistoryID, new ArrayList<String>());
+        tradeHistory.get(tradeID).add(tradeSell.get(assetType));
+        tradeHistory.get(tradeID).add(tradeSell.get(price) + "");
+        tradeHistory.get(tradeID).add(LocalDate.now().toString());
+    }
+
+    /**
+     * Gets the map of the trade history data required to form a graph of an asset's price vs the
+     * data
+     *
+     * @return Summary data of all completed trades
+     */
+    public Map<Integer, ArrayList<String>> getTradeHistory() {
+        return tradeHistory;
     }
 }
