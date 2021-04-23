@@ -3,8 +3,8 @@ package Client;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TradesTest {
@@ -127,14 +127,16 @@ public class TradesTest {
     }
 
     // matchListing() method is automatically called when a new listing is created!
+    // Basic matchListing() check that verifies credits returned are correct
     @Test
-    public void matchListingCheck() throws TradesException {
+    public void matchListingCheck1() throws TradesException {
         trade1.createListing("Tom","Sell", "Hardware Resources", 10, 5);
         trade1.createListing("Fred","Buy", "Hardware Resources", 5, 5);
 
         assertEquals(275,  org.getOrganisation("Google").getCredits());
     }
 
+    // Basic matchListing() check2 that verifies no credits are returned
     @Test
     public void matchListingCheck2() throws TradesException {
         trade1.createListing("Tom","Sell", "Hardware Resources", 10, 5);
@@ -143,6 +145,7 @@ public class TradesTest {
         assertEquals(250,  org.getOrganisation("Google").getCredits());
     }
 
+    // Basic matchListing() check3 that verifies credits returned are correct
     @Test
     public void matchListingCheck3() throws TradesException {
         assets2.add("Software Licenses");
@@ -155,6 +158,8 @@ public class TradesTest {
         assertEquals(50,  org.getOrganisation("Microsoft").getCredits());
     }
 
+    // More advanced matchListing() check that verifies that an organisation gets the expected
+    // amount of credits and assets when a trade is completed
     @Test
     public void matchListingCheck4() throws TradesException {
         assets2.add("Software Licenses");
@@ -163,7 +168,42 @@ public class TradesTest {
         trade1.createListing("Tom","Buy", "Software Licenses", 20, 10);
         trade1.createListing("Tom","Sell", "Software Licenses", 10, 5);
         trade1.createListing("Fred","Buy", "Software Licenses", 20, 10);
+
+        Map<String, Integer> expectedResult = new HashMap<>();
+        expectedResult.put("Software Licenses", 20);
+
         assertEquals(200,  org.getOrganisation("Google").getCredits());
+        assertEquals(expectedResult,  org.getOrganisation("Google").getAssetsAndAmounts());
+    }
+
+    // Checks that credits will be refunded on a partially completed trade
+    @Test
+    public void matchListingCheck5() throws TradesException {
+        assets2.add("Software Licenses");
+        amount2.add(20);
+        trade1.createListing("Fred","Sell", "Software Licenses", 10, 5);
+        trade1.createListing("Tom","Buy", "Software Licenses", 20, 10);
+        trade1.cancelListing(2);
+
+        // The buy amount for Tom is for 200 credits, hence 50 credits are returned. After the
+        // trade listing is cancelled, the remaining 100 credits are refunded back, therefore the
+        // organisation now has 150 credits.
+        assertEquals(150,  org.getOrganisation("Microsoft").getCredits());
+    }
+
+    // Checks that assets will be refunded on a partially completed trade
+    @Test
+    public void matchListingCheck6() throws TradesException {
+        assets2.add("Software Licenses");
+        amount2.add(20);
+        trade1.createListing("Fred","Sell", "Software Licenses", 20, 5);
+        trade1.createListing("Tom","Buy", "Software Licenses", 10, 10);
+        trade1.cancelListing(1);
+
+        Map<String, Integer> expectedResult = new HashMap<>();
+        expectedResult.put("Software Licenses", 10);
+
+        assertEquals(expectedResult,  org.getOrganisation("Google").getAssetsAndAmounts());
     }
 
     // Checks whether cancelListing() method returns assets on a sell listing
