@@ -81,17 +81,14 @@ public class TradeHistoryTest {
         assertEquals(1, size);
     }
 
-//    @Test
-//    public void checkExtendedHistory()
-//    {
-//        trade1.createListing("Tom","Sell", "Hardware Resources", 10, 5);
-//        trade1.createListing("Fred","Buy", "Hardware Resources", 5, 5);
-//
-//        int size = history.getExtendedTradeHistory().size();
-//
-//        assertEquals(2, size);
-//    }
+    @Test
+    public void checkExtendedHistory()
+    {
+        trade1.createListing("Tom","Sell", "Hardware Resources", 10, 5);
+        trade1.createListing("Fred","Buy", "Hardware Resources", 5, 5);
 
-
-
+        // Adding both buy and sell listings at the SAME index
+        int size = history.getExtendedTradeHistory().size();
+        assertEquals(2, size);
+    }
 }

@@ -25,27 +25,28 @@ public class TradeHistory {
     }
 
     /**
-     * Keeps track of the full trade history of completed buy and sell listings, and stores it
-     * into a multi valued map.
+     * Gets the summary trade history data that can be used to form a graph for recent sell prices
+     *
+     * @return Summary data of sell listings
      */
     public void addExtendedTradeHistory() {
         Map<Integer, ArrayList<String>> multiValueMap = trades.getListing();
 
         // Iterates through multi value map to get all partially completed or completed trades
         for (Map.Entry<Integer, ArrayList<String>> mvMap : multiValueMap.entrySet()) {
-            for (Map.Entry<Integer, ArrayList<String>> map : multiValueMap.entrySet()) {
-
+            if(multiValueMap.size() <= mvMap.getKey()) {
                 // The key of the map is the trade ID
-                Integer tradeID = map.getKey();
+                Integer tradeID = mvMap.getKey();
 
                 String tradeStatus = multiValueMap.get(tradeID).get(tradeFulfilled);
-                boolean tradeCompleted = tradeStatus == "Yes" || tradeStatus == "Partially";
+                boolean tradeCompleted = tradeStatus == "Yes" || tradeStatus == "Partial";
 
                 // TradeIDs for the extended trade history
-                int index = multiValueMap.size() + 1;
+                int index = extendedTradeHistory.size() + 1;
 
                 if(tradeCompleted) {
                     extendedTradeHistory.put(index, multiValueMap.get(tradeID));
+
                 }
             }
         }
@@ -57,6 +58,7 @@ public class TradeHistory {
      * @return Summary data of sell listings
      */
     public Map<Integer, ArrayList<String>> getExtendedTradeHistory() {
+        addExtendedTradeHistory();
         return extendedTradeHistory;
     }
 
