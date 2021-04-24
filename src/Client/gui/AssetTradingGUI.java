@@ -28,11 +28,17 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
     private CardLayout cardLayout = new CardLayout();
 
-    private Organisation organisation;
-    private User user;
+    private Organisation org;
+    private User userLoggedIn;
 
-    public AssetTradingGUI() {
+    public AssetTradingGUI(Organisation organisation, User userAccount) {
         super("Asset Trading");
+
+        // Collection of all instances of Organisation objects
+        org = organisation;
+        // Current User object of the user account logged in
+        userLoggedIn = userAccount;
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(1000, 700));
         setLayout(new BorderLayout(0, 0));
@@ -119,11 +125,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             topMenuPanel.add(btn);
         }
 
-        JLabel creditsLabel = new JLabel("Credits: [1200]");
+        JLabel creditsLabel =
+                new JLabel("Credits: [" + org.getOrganisation(userLoggedIn.getOrganisationName()).getCredits() + "]");
         creditsLabel.setPreferredSize(new Dimension(100, 30));
         creditsLabel.setForeground(Color.WHITE);
         topMenuPanel.add(creditsLabel);
-
 
         // Main content area
         maincontent = new JPanel();
@@ -131,8 +137,12 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         add(maincontent, BorderLayout.CENTER);
 
         // Home Panel
+        JLabel welcomeMessage = new JLabel("Welcome, " + userLoggedIn.getUsername() + "!");
+
         homePanel = new JPanel();
+        homePanel.add(welcomeMessage);
         homePanel.setBorder(BorderFactory.createTitledBorder("Home"));
+
         maincontent.add(homePanel, "1");
 
         // Buy Panel
@@ -172,9 +182,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         User user = new User(organisation);
         user.createUser("test", "test123", false, "Microsoft");
         new LoginGUI(user, organisation);
-
-        // LoginGUI calls AssetTradingGUI after successful login
-        //new AssetTradingGUI();
     }
 
     @Override

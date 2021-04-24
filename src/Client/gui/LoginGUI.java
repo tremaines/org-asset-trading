@@ -81,7 +81,8 @@ public class LoginGUI extends JFrame {
                 } else if (userLoggingIn.loginSuccessful(username, password)) {
                     setVisible(false);
                     System.out.printf("Login attempt for user '" + username + "' was successful");
-                    new AssetTradingGUI();
+                    userLoggingIn = user.getUser(username);
+                    new AssetTradingGUI(organisation, userLoggingIn);
                 }
             }
         });
