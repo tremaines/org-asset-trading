@@ -441,6 +441,38 @@ public class Trades {
     }
 
     /**
+     * Gets the total quantity available to be purchased from all sale listings
+     *
+     * @param assetName Name of the asset
+     * @return Total quantity available
+     */
+    public int getAssetQuantity(String assetName) {
+        int total = 0;
+
+        // Iterates through multi value map to get all sell listings that are not completed
+        for (Map.Entry<Integer, ArrayList<String>> mvMap : multiValueMap.entrySet()) {
+
+            if(mvMap.getKey() <= multiValueMap.size()) {
+                Integer tradeID = mvMap.getKey();
+                ArrayList<String> tradeListing = multiValueMap.get(tradeID);
+
+                // Checks that it is a Sell listing, the asset name matches and the order is not
+                // completed
+                boolean matching = tradeListing.get(tradeType) == "Sell" &&
+                        tradeListing.get(assetType) == assetName &&
+                        !(tradeListing.get(tradeFulfilled) == "Yes" ||
+                                tradeListing.get(tradeFulfilled) == "Cancelled");
+
+                // Add the total available asset amount from the listing to the cumulative total
+                if(matching) {
+                    total = total + Integer.parseInt(tradeListing.get(assetAmount));
+                }
+            }
+        }
+        return total;
+    }
+
+    /**
      * Adds summary trade history data into a multi value map
      *
      * @param sellTradeID Trade ID of the sell listing that has been completed or partially

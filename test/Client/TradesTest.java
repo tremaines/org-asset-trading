@@ -223,4 +223,17 @@ public class TradesTest {
         trade1.cancelListing(1);
         assertEquals(300,  org.getOrganisation("Google").getCredits());
     }
+
+    // Checks whether cancelListing() method returns assets on a buy listing
+    @Test
+    public void checkGetAssetQuantity() throws TradesException {
+        assets2.add("Software Licenses");
+        amount2.add(20);
+        assets.add("Software Licenses");
+        amount.add(20);
+        trade1.createListing("Fred","Sell", "Software Licenses", 20, 5);
+        trade1.createListing("Tom","Sell", "Software Licenses", 20, 5);
+        int quantity = trade1.getAssetQuantity("Software Licenses");
+        assertEquals(40,  quantity);
+    }
 }

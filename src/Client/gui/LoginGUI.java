@@ -80,7 +80,7 @@ public class LoginGUI extends JFrame {
                     JOptionPane.showMessageDialog(null, "Incorrect Password", "Invalid", JOptionPane.ERROR_MESSAGE);
                 } else if (userLoggingIn.loginSuccessful(username, password)) {
                     setVisible(false);
-                    System.out.printf("Login attempt for user '" + username + "' was successful");
+                    System.out.printf("Login attempt for user '" + username + "' was successful\n");
                     userLoggingIn = user.getUser(username);
                     new AssetTradingGUI(organisation, userLoggingIn);
                 }
