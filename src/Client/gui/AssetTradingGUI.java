@@ -155,12 +155,72 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         sellPanel.setBorder(BorderFactory.createTitledBorder("Sell"));
         maincontent.add(sellPanel, "3");
 
-        // Account Pannel
+        // Account Panel
+        setSize(800,600);
+        JLabel label1 , label2, label3 , label4, label5;
+        JTextField t1, t2, t3,t4;
+        JComboBox day, month, year;
+        // Access level add?
+        JRadioButton AccUser, AccAdmin;
+        JTextArea ta1;
+        JCheckBox terms;
+        JButton submit;
+        JLabel msg;
+
         accountPanel = new JPanel();
         accountPanel.setBorder(BorderFactory.createTitledBorder("Account"));
+
+        label1 = new JLabel("First Name");
+        label1.setBounds(30, 50, 100, 20);
+
+        t1 = new JTextField();
+        t1.setBounds(140 , 50, 100 , 20);
+
+        label2 = new JLabel("Last Name");
+        //label2.setBounds();
+
+        t2 = new JTextField();
+        //t2.setBounds()
+
+        label3 = new JLabel("Email");
+        //label3.setBounds();
+
+        t3 = new JTextField();
+        //t3.setBounds();
+
+        label4 = new JLabel("Unit");
+        //label4.setBounds();
+
+        t4 = new JTextField();
+        //t4.setBounds();
+
+        label5 = new JLabel("Access Level");
+        //label5.setBounds();
+
+        AccUser  = new JRadioButton("Access Level: User");
+        AccAdmin = new JRadioButton("Access Level: Admin");
+        //AccUser.setBounds();
+        //AccAdmin.setBounds();
+
+        // accountPanel.add();
+        accountPanel.add(label1);
+        accountPanel.add(t1);
+        accountPanel.add(label2);
+        accountPanel.add(t2);
+        accountPanel.add(label3);
+        accountPanel.add(t3);
+        accountPanel.add(label4);
+        accountPanel.add(t4);
+        accountPanel.add(label5);
+
+
+        // check out adding the account panel
         maincontent.add(accountPanel, "4");
 
-        // Assets Pannel
+
+
+
+        // Assets Panel
         assetsPanel = new JPanel(new BorderLayout(0, 0));
         assetsPanel.setBorder(BorderFactory.createTitledBorder("Assets"));
         maincontent.add(assetsPanel, "5");
@@ -173,6 +233,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
+
 
     public static void main(String[] args) throws UserException {
         Organisation organisation = new Organisation();
