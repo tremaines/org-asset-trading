@@ -1,9 +1,15 @@
 package Client.gui;
 
+import Client.Organisation;
+import Client.User;
+import Client.UserException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Point of entry for the GUI of the program
@@ -21,6 +27,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel assetsPanel;
 
     private CardLayout cardLayout = new CardLayout();
+
+    private Organisation organisation;
+    private User user;
 
     public AssetTradingGUI() {
         super("Asset Trading");
@@ -155,8 +164,17 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new AssetTradingGUI();
+    public static void main(String[] args) throws UserException {
+        Organisation organisation = new Organisation();
+        List<String> assets = new ArrayList<>();
+        List<Integer> amounts = new ArrayList<>();
+        organisation.createOrganisation("Microsoft", 100, assets, amounts);
+        User user = new User(organisation);
+        user.createUser("test", "test123", false, "Microsoft");
+        new LoginGUI(user, organisation);
+
+        // LoginGUI calls AssetTradingGUI after successful login
+        //new AssetTradingGUI();
     }
 
     @Override

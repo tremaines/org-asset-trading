@@ -13,10 +13,11 @@ public class TradeHistory {
 
     // Collection of all instances of the Trades class
     private Trades trades;
-    // Trade fulfilled status (Yes/No/Partially/Cancelled)
-    private static final int tradeFulfilled = 7;
     // Multi valued map of the entire trade history
     Map<Integer, ArrayList<String>> extendedTradeHistory = new HashMap<>();
+
+    // Trade fulfilled status (Yes/No/Partially/Cancelled)
+    private static final int tradeFulfilled = 7;
 
     // Constructor for the TradeHistory class that takes a collection of all trades
     public TradeHistory(Trades trades)

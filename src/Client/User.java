@@ -7,7 +7,7 @@ import java.util.List;
  * Users are accounts which have been authorised by a particular organisation unit
  * to engage on the electronic trading marketplace.
  */
-public class User extends Organisation {
+public class User {
 
     // Username to login to the marketplace
     private String username;
@@ -30,7 +30,8 @@ public class User extends Organisation {
      * @param organisation Instance of the Organisation class
      */
     public User(Organisation organisation) {
-        this.org = organisation;
+        org = new Organisation();
+        org = organisation;
     }
 
     /**
@@ -46,7 +47,7 @@ public class User extends Organisation {
         this.username = username;
 
         // Hashed password
-        this.password = (password.hashCode() * 2.334) + "";
+        this.password = hashPassword(password);
         this.admin = admin;
         this.organisationName = organisationName;
     }
@@ -81,6 +82,17 @@ public class User extends Organisation {
      */
     public String getUsername() {
         return username;
+    }
+
+    /**
+     * Hashes the plain-text password value
+     *
+     * @param password Password for a user account
+     * @return Hashed string value of plain-text password
+     */
+    public String hashPassword(String password) {
+        String hashedPassword = (password.hashCode() * 2.334) + "";
+        return hashedPassword;
     }
 
     /**
@@ -120,15 +132,51 @@ public class User extends Organisation {
     }
 
     /**
+     * Checks whether a the username and password details entered match those of the actual user
+     * account
+     *
+     * @param username Name of the user account
+     * @param password Password for the user account
+     * @return True or false
+     */
+    public boolean loginSuccessful(String username, String password) {
+        if(users.contains(username)) {
+            User userToLogin = getUser(username);
+
+            String hashedPassword = hashPassword(password);
+
+            if(hashedPassword.equals(userToLogin.getHashedPassword())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks the list of usernames to verify whether the username entered exists within the list
+     *
+     * @param username Name of the user account
+     * @return True or false
+     */
+    public boolean userExists(String username) {
+        if(users.contains(username)) {
+            User userToLogin = getUser(username);
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Gets the User object based on a matching username
      *
-     * @return User object from the list of existing user accounts
+     * @return User object of the user account
      */
     public User getUser(String username) {
         User userObject = new User(org);
-        for(User user: userList) {
-            if(user.getUsername() == username) {
-                userObject = user;
+
+        for(int i = 0; i < userList.size(); i++) {
+            if(userList.get(i).getUsername().equals(username)) {
+                userObject = userList.get(i);
             }
         }
         return userObject;

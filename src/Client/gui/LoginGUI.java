@@ -1,5 +1,8 @@
 package Client.gui;
 
+import Client.Organisation;
+import Client.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,14 +10,15 @@ import java.awt.event.ActionListener;
 
 public class LoginGUI extends JFrame {
 
-    final String USERNAME = "test";
-    final String PASSWORD = "123";
-
     private static JTextField usernameInput;
     private static JPasswordField passwordInput;
 
-    public LoginGUI() {
+    private User userLoggingIn;
+
+    public LoginGUI(User user, Organisation organisation) {
         super("LOGIN");
+        this.userLoggingIn = user;
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(500, 500));
         setResizable(false);
@@ -67,16 +71,17 @@ public class LoginGUI extends JFrame {
         loginBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String user = usernameInput.getText();
+                String username = usernameInput.getText();
                 String password = passwordInput.getText();
 
-                if (user.equals(USERNAME) && password.equals(PASSWORD)) {
-                    setVisible(false);
-                    new AssetTradingGUI();
-                } else if (!user.equals(USERNAME)){
+                if(!userLoggingIn.userExists(username)) {
                     JOptionPane.showMessageDialog(null, "Incorrect Username", "Invalid", JOptionPane.ERROR_MESSAGE);
-                } else if (!password.equals(PASSWORD)) {
+                } else if (!userLoggingIn.loginSuccessful(username, password)) {
                     JOptionPane.showMessageDialog(null, "Incorrect Password", "Invalid", JOptionPane.ERROR_MESSAGE);
+                } else if (userLoggingIn.loginSuccessful(username, password)) {
+                    setVisible(false);
+                    System.out.printf("Login attempt for user '" + username + "' was successful");
+                    new AssetTradingGUI();
                 }
             }
         });
@@ -87,12 +92,5 @@ public class LoginGUI extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
-    }
-
-    public static void main(String args[]) {
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new LoginGUI();
-        });
     }
 }

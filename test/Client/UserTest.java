@@ -81,4 +81,12 @@ public class UserTest {
         User user2 = new User("John", "qwerty", true, "Apple");
         assertTrue(user1.getUsername() != user2.getUsername());
     }
+
+    // Create Two users
+    @Test
+    public void getUserCheck() throws UserException {
+        user.createUser("Bob", "123test", true, "Microsoft");
+        String orgName = user.getUser("Bob").getOrganisationName();
+        assertEquals("Microsoft", orgName);
+    }
 }
