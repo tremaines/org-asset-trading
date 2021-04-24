@@ -159,10 +159,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setSize(800,600);
         JLabel label1 , label2, label3 , label4, label5;
         JTextField t1, t2, t3,t4;
-        JComboBox day, month, year;
-        // Access level add?
+        //JComboBox day, month, year;
         JRadioButton AccUser, AccAdmin;
-        JTextArea ta1;
+        //JTextArea ta1;
         JCheckBox terms;
         JButton submit;
         JLabel msg;
@@ -177,30 +176,41 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         t1.setBounds(140 , 50, 100 , 20);
 
         label2 = new JLabel("Last Name");
-        //label2.setBounds();
+        label2.setBounds(140 , 60, 100 , 20);
 
         t2 = new JTextField();
-        //t2.setBounds()
+        t2.setBounds(140 , 60, 100 , 20);
 
         label3 = new JLabel("Email");
-        //label3.setBounds();
+        label3.setBounds(140 , 70, 100 , 20);
 
         t3 = new JTextField();
-        //t3.setBounds();
+        t3.setBounds(140 , 70, 100 , 20);
 
         label4 = new JLabel("Unit");
-        //label4.setBounds();
+        label4.setBounds(140 , 80, 100 , 20);
 
         t4 = new JTextField();
-        //t4.setBounds();
+        t4.setBounds(140 , 80, 100 , 20);
 
         label5 = new JLabel("Access Level");
-        //label5.setBounds();
+        label5.setBounds(140 , 90, 100 , 20);
 
         AccUser  = new JRadioButton("Access Level: User");
         AccAdmin = new JRadioButton("Access Level: Admin");
-        //AccUser.setBounds();
-        //AccAdmin.setBounds();
+        AccUser.setBounds(140 , 90, 100 , 20);
+        AccAdmin.setBounds(140 , 90, 100 , 20);
+        AccUser.setSelected(true);
+
+        terms = new JCheckBox("Please Accept that the " +
+                "details you have entered are correct");
+        terms.setBounds(140 , 100, 100 , 20);
+
+        submit = new JButton("Submit");
+        submit.setBounds(140 , 110, 100 , 20);
+
+        msg = new JLabel("");
+        msg.setBounds(140 , 120, 100 , 20);
 
         // accountPanel.add();
         accountPanel.add(label1);
@@ -212,9 +222,12 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         accountPanel.add(label4);
         accountPanel.add(t4);
         accountPanel.add(label5);
+        accountPanel.add(AccUser);
+        accountPanel.add(AccAdmin);
+        accountPanel.add(terms);
+        accountPanel.add(submit);
+        accountPanel.add(msg);
 
-
-        // check out adding the account panel
         maincontent.add(accountPanel, "4");
 
 
