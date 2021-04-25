@@ -208,25 +208,57 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public void setupBuyPanel() {
-        buyPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPanel innerPanel = new JPanel();
-        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
-        buyPanel.add(innerPanel);
+
+        buyPanel = new JPanel(new BorderLayout(0, 0));
         buyPanel.setBorder(BorderFactory.createTitledBorder("Buy"));
-        innerPanel.add(Box.createRigidArea(new Dimension(0, 25)));
-        JLabel buyOrderLabel = new JLabel("Buy Order");
-        buyOrderLabel.setFont(new Font("Myriad Pro",Font.PLAIN,15));
 
-        innerPanel.add(buyOrderLabel);
+        setSize(800,600);
+        JLabel label1 , label2, label3 , label4, label5;
+        JTextField t1, t2, t3,t4;
+        String[] messageStrings = {"Computational Resources" , "Hardware Resources", "Software Licenses"};
 
-        innerPanel.add(Box.createRigidArea(new Dimension(0, 25)));
-        String[] options = {"Dog", "Cat", "Bird"};
-        JComboBox assetOptions = new JComboBox(options);
-        innerPanel.add(assetOptions);
+        JCheckBox terms;
+        JButton submit;
+        JLabel msg;
 
-        JButton submitBtn = new JButton("Submit");
-        innerPanel.add(submitBtn);
-        submitBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        label1 = new JLabel("Asset Type");
+        label1.setBounds(30, 50, 100, 20);
+
+        JComboBox assetTypeList = new JComboBox(messageStrings);
+        assetTypeList.setBounds(140 , 50, 150 , 20);
+        
+        label2 = new JLabel("Amount");
+        label2.setBounds(30 , 80, 100 , 20);
+
+        t2 = new JTextField();
+        t2.setBounds(140 , 80, 150 , 20);
+
+        label3 = new JLabel("Cost Per Unit");
+        label3.setBounds(30 , 110, 100 , 20);
+
+        t3 = new JTextField();
+        t3.setBounds(140 , 110, 150 , 20);
+
+        terms = new JCheckBox("Please Accept that the " +
+                "details you have entered are correct");
+        terms.setBounds(27 , 143, 400 , 20);
+
+        submit = new JButton("Submit");
+        submit.setBounds(30 , 180, 100 , 20);
+
+        msg = new JLabel("");
+        msg.setBounds(140 , 230, 100 , 20);
+
+        // accountPanel.add();
+        buyPanel.add(label1);
+        buyPanel.add(label2);
+        buyPanel.add(t2);
+        buyPanel.add(label3);
+        buyPanel.add(t3);
+        buyPanel.add(assetTypeList);
+        buyPanel.add(terms);
+        buyPanel.add(submit);
+        buyPanel.add(msg);
 
         maincontent.add(buyPanel, "1");
 
