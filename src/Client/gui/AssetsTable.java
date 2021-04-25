@@ -13,42 +13,24 @@ public class AssetsTable extends JFrame {
     private Assets allAssets;
     private Trades allTrades;
 
-    // Dummy data to test table
-
-    String[] columnNames = {
-            "Asset Type",
-            "Description",
-            "Quantity Available"
-    };
-
-    Object[][] data = {
-            {"CPU Hours", "CPU Hours",
-                    "700"},
-            {"CPU Hours", "CPU Hours",
-                    "500"},
-            {"CPU Hours", "CPU Hours",
-                    "1200"},
-            {"CPU Hours", "CPU Hours",
-                    "300"},
-            {"CPU Hours", "CPU Hours",
-                    "150"},
-    };
-
     public AssetsTable(JPanel panel, Assets assets, Trades trades) {
         this.allAssets = assets;
         this.allTrades = trades;
 
+        // Row data in the table
         Object tableData[] = new Object[3];
+
         DefaultTableModel model = new DefaultTableModel();
 
         // Assets Table
-        //JTable assetsTable = new JTable(data, columnNames);
         JTable assetsTable = new JTable(model);
 
+        // Column names
         model.addColumn("Asset Type");
         model.addColumn("Quantity Available");
         model.addColumn("Lowest Price per Unit");
 
+        // Adds a row for each Asset type
         for(int i = 0; i < assets.getAllAssets().size(); i++) {
             model.addRow(new Object[]{assets.getAllAssets().get(i),
                     trades.getAssetQuantity(assets.getAllAssets().get(i)),
