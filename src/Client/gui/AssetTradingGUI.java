@@ -63,103 +63,15 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         maincontent.setLayout(cardLayout);
         add(maincontent, BorderLayout.CENTER);
 
-        // Top and left menus
+        // Setup Panels
         addTopMenu();
         addSideMenu();
+        setupBuyPanel();
+        setupSellPanel();
+        setupAccountPanel();
+        setupAssetsPanel();
 
-        // Buy Panel
-        buyPanel = new JPanel();
-        buyPanel.setBorder(BorderFactory.createTitledBorder("Buy"));
-        maincontent.add(buyPanel, "1");
-
-        // Sell Panel
-        sellPanel = new JPanel();
-        sellPanel.setBorder(BorderFactory.createTitledBorder("Sell"));
-        maincontent.add(sellPanel, "2");
-
-        // Account Panel
-        setSize(800,600);
-        JLabel label1 , label2, label3 , label4, label5;
-        JTextField t1, t2, t3,t4;
-        //JComboBox day, month, year;
-        JRadioButton AccUser, AccAdmin;
-        //JTextArea ta1;
-        JCheckBox terms;
-        JButton submit;
-        JLabel msg;
-
-        accountPanel = new JPanel();
-        accountPanel.setBorder(BorderFactory.createTitledBorder("Account"));
-
-        label1 = new JLabel("First Name");
-        label1.setBounds(30, 50, 100, 20);
-
-        t1 = new JTextField();
-        t1.setBounds(140 , 50, 100 , 20);
-
-        label2 = new JLabel("Last Name");
-        label2.setBounds(140 , 60, 100 , 20);
-
-        t2 = new JTextField();
-        t2.setBounds(140 , 60, 100 , 20);
-
-        label3 = new JLabel("Email");
-        label3.setBounds(140 , 70, 100 , 20);
-
-        t3 = new JTextField();
-        t3.setBounds(140 , 70, 100 , 20);
-
-        label4 = new JLabel("Unit");
-        label4.setBounds(140 , 80, 100 , 20);
-
-        t4 = new JTextField();
-        t4.setBounds(140 , 80, 100 , 20);
-
-        label5 = new JLabel("Access Level");
-        label5.setBounds(140 , 90, 100 , 20);
-
-        AccUser  = new JRadioButton("Access Level: User");
-        AccAdmin = new JRadioButton("Access Level: Admin");
-        AccUser.setBounds(140 , 90, 100 , 20);
-        AccAdmin.setBounds(140 , 90, 100 , 20);
-        AccUser.setSelected(true);
-
-        terms = new JCheckBox("Please Accept that the " +
-                "details you have entered are correct");
-        terms.setBounds(140 , 100, 100 , 20);
-
-        submit = new JButton("Submit");
-        submit.setBounds(140 , 110, 100 , 20);
-
-        msg = new JLabel("");
-        msg.setBounds(140 , 120, 100 , 20);
-
-        // accountPanel.add();
-        accountPanel.add(label1);
-        accountPanel.add(t1);
-        accountPanel.add(label2);
-        accountPanel.add(t2);
-        accountPanel.add(label3);
-        accountPanel.add(t3);
-        accountPanel.add(label4);
-        accountPanel.add(t4);
-        accountPanel.add(label5);
-        accountPanel.add(AccUser);
-        accountPanel.add(AccAdmin);
-        accountPanel.add(terms);
-        accountPanel.add(submit);
-        accountPanel.add(msg);
-
-        maincontent.add(accountPanel, "3");
-
-        // Assets Panel
-        assetsPanel = new JPanel(new BorderLayout(0, 0));
-        assetsPanel.setBorder(BorderFactory.createTitledBorder("Assets"));
-        maincontent.add(assetsPanel, "4");
-
-        AssetsTable table = new AssetsTable(assetsPanel, allAssets, allTrades);
-
-        // Display 'View Assets' page as default
+        // Display assets panel on startup
         cardLayout.show(maincontent, "4");
 
         pack();
@@ -285,6 +197,101 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 topLeft.add(btn);
             }
         }
+    }
+
+    public void setupBuyPanel() {
+        buyPanel = new JPanel();
+        buyPanel.setBorder(BorderFactory.createTitledBorder("Buy"));
+        maincontent.add(buyPanel, "1");
+    }
+
+    public void setupSellPanel() {
+        sellPanel = new JPanel();
+        sellPanel.setBorder(BorderFactory.createTitledBorder("Sell"));
+        maincontent.add(sellPanel, "2");
+    }
+
+    public void setupAccountPanel() {
+        setSize(800,600);
+        JLabel label1 , label2, label3 , label4, label5;
+        JTextField t1, t2, t3,t4;
+        //JComboBox day, month, year;
+        JRadioButton AccUser, AccAdmin;
+        //JTextArea ta1;
+        JCheckBox terms;
+        JButton submit;
+        JLabel msg;
+
+        accountPanel = new JPanel();
+        accountPanel.setBorder(BorderFactory.createTitledBorder("Account"));
+
+        label1 = new JLabel("First Name");
+        label1.setBounds(30, 50, 100, 20);
+
+        t1 = new JTextField();
+        t1.setBounds(140 , 50, 100 , 20);
+
+        label2 = new JLabel("Last Name");
+        label2.setBounds(140 , 60, 100 , 20);
+
+        t2 = new JTextField();
+        t2.setBounds(140 , 60, 100 , 20);
+
+        label3 = new JLabel("Email");
+        label3.setBounds(140 , 70, 100 , 20);
+
+        t3 = new JTextField();
+        t3.setBounds(140 , 70, 100 , 20);
+
+        label4 = new JLabel("Unit");
+        label4.setBounds(140 , 80, 100 , 20);
+
+        t4 = new JTextField();
+        t4.setBounds(140 , 80, 100 , 20);
+
+        label5 = new JLabel("Access Level");
+        label5.setBounds(140 , 90, 100 , 20);
+
+        AccUser  = new JRadioButton("Access Level: User");
+        AccAdmin = new JRadioButton("Access Level: Admin");
+        AccUser.setBounds(140 , 90, 100 , 20);
+        AccAdmin.setBounds(140 , 90, 100 , 20);
+        AccUser.setSelected(true);
+
+        terms = new JCheckBox("Please Accept that the " +
+                "details you have entered are correct");
+        terms.setBounds(140 , 100, 100 , 20);
+
+        submit = new JButton("Submit");
+        submit.setBounds(140 , 110, 100 , 20);
+
+        msg = new JLabel("");
+        msg.setBounds(140 , 120, 100 , 20);
+
+        // accountPanel.add();
+        accountPanel.add(label1);
+        accountPanel.add(t1);
+        accountPanel.add(label2);
+        accountPanel.add(t2);
+        accountPanel.add(label3);
+        accountPanel.add(t3);
+        accountPanel.add(label4);
+        accountPanel.add(t4);
+        accountPanel.add(label5);
+        accountPanel.add(AccUser);
+        accountPanel.add(AccAdmin);
+        accountPanel.add(terms);
+        accountPanel.add(submit);
+        accountPanel.add(msg);
+
+        maincontent.add(accountPanel, "3");
+    }
+
+    public void setupAssetsPanel() {
+        assetsPanel = new JPanel(new BorderLayout(0, 0));
+        assetsPanel.setBorder(BorderFactory.createTitledBorder("Assets"));
+        maincontent.add(assetsPanel, "4");
+        AssetsTable table = new AssetsTable(assetsPanel, allAssets, allTrades);
     }
 
     @Override
