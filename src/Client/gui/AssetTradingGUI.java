@@ -24,6 +24,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel sellPanel;
     private JPanel accountPanel;
     private JPanel assetsPanel;
+    private JPanel notificationsPanel;
     private static JTextField searchBox;
 
     private CardLayout cardLayout = new CardLayout();
@@ -95,6 +96,14 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             leftMenuPanel.add(btn);
         }
 
+        // Welcome message
+        JLabel welcomeMessage = new JLabel("Welcome, " + userLoggedIn.getUsername() + "!");
+        welcomeMessage.setFont(new Font("Myriad Pro",Font.BOLD,16));
+        welcomeMessage.setForeground(Color.WHITE);
+        welcomeMessage.setPreferredSize(new Dimension(240, 25));
+
+        topMenuPanel.add(welcomeMessage);
+
         // Just using these to test layout
         JLabel searchLabel = new JLabel("Search assets");
         searchBox = new JTextField(10);
@@ -103,22 +112,18 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         topMenuPanel.add(searchBox);
 
         // Buttons in top menu (Will come back and refactor)
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             String btnName = "";
             switch(i) {
                 case 0:
-                    btnName = "Home";
-                    icon = new ImageIcon(this.getClass().getResource("images/home.png"));
-                    break;
-                case 1:
                     btnName = "Buy";
                     icon = new ImageIcon(this.getClass().getResource("images/buy.png"));
                     break;
-                case 2:
+                case 1:
                     btnName = "Sell";
                     icon = new ImageIcon(this.getClass().getResource("images/sell.png"));
                     break;
-                case 3:
+                case 2:
                     btnName = "Account";
                     icon = new ImageIcon(this.getClass().getResource("images/account.png"));
                     break;
@@ -145,25 +150,15 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         maincontent.setLayout(cardLayout);
         add(maincontent, BorderLayout.CENTER);
 
-        // Home Panel
-        JLabel welcomeMessage = new JLabel("Welcome, " + userLoggedIn.getUsername() + "!");
-        welcomeMessage.setFont(new Font("Myriad Pro",Font.BOLD,16));
-
-        homePanel = new JPanel();
-        homePanel.add(welcomeMessage);
-        homePanel.setBorder(BorderFactory.createTitledBorder("Home"));
-
-        maincontent.add(homePanel, "1");
-
         // Buy Panel
         buyPanel = new JPanel();
         buyPanel.setBorder(BorderFactory.createTitledBorder("Buy"));
-        maincontent.add(buyPanel, "2");
+        maincontent.add(buyPanel, "1");
 
         // Sell Panel
         sellPanel = new JPanel();
         sellPanel.setBorder(BorderFactory.createTitledBorder("Sell"));
-        maincontent.add(sellPanel, "3");
+        maincontent.add(sellPanel, "2");
 
         // Account Panel
         setSize(800,600);
@@ -238,23 +233,22 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         accountPanel.add(submit);
         accountPanel.add(msg);
 
-        maincontent.add(accountPanel, "4");
+        maincontent.add(accountPanel, "3");
 
         // Assets Panel
         assetsPanel = new JPanel(new BorderLayout(0, 0));
         assetsPanel.setBorder(BorderFactory.createTitledBorder("Assets"));
-        maincontent.add(assetsPanel, "5");
+        maincontent.add(assetsPanel, "4");
 
         AssetsTable table = new AssetsTable(assetsPanel, allAssets, allTrades);
 
-        cardLayout.show(maincontent, "1");
+        // Display 'View Assets' page as default
+        cardLayout.show(maincontent, "4");
 
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
     }
-
-
 
     public static void main(String[] args) throws UserException, TradesException {
         Organisation organisation = new Organisation();
@@ -275,17 +269,14 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String btnSrcTxt = e.getActionCommand();
 
-        if (btnSrcTxt.equals("Home")) {
+        if (btnSrcTxt.equals("Buy")) {
             cardLayout.show(maincontent, "1");
-        } else if (btnSrcTxt.equals("Buy")) {
-            cardLayout.show(maincontent, "2");
         } else if (btnSrcTxt.equals("Sell")) {
-            cardLayout.show(maincontent, "3");
+            cardLayout.show(maincontent, "2");
         } else if (btnSrcTxt.equals("Account")) {
-            cardLayout.show(maincontent, "4");
+            cardLayout.show(maincontent, "3");
         } else if (btnSrcTxt.equals("View Assets")) {
-            System.out.println("CLICKED");
-            cardLayout.show(maincontent, "5");
+            cardLayout.show(maincontent, "4");
         }
     }
 }
