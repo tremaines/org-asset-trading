@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Point of entry for the GUI of the program
  */
@@ -23,6 +24,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel sellPanel;
     private JPanel accountPanel;
     private JPanel assetsPanel;
+    private static JTextField searchBox;
 
     private CardLayout cardLayout = new CardLayout();
 
@@ -43,8 +45,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         allAssets = assets;
         // Current Trades object
         allTrades = trades;
-
-
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(1000, 700));
@@ -96,9 +96,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         }
 
         // Just using these to test layout
-        JLabel searchLabel = new JLabel("Search for...");
+        JLabel searchLabel = new JLabel("Search assets");
+        searchBox = new JTextField(10);
         searchLabel.setForeground(Color.WHITE);
         topMenuPanel.add(searchLabel);
+        topMenuPanel.add(searchBox);
 
         // Buttons in top menu (Will come back and refactor)
         for (int i = 0; i < 4; i++) {
@@ -125,7 +127,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             btn.setBorderPainted(false);
             btn.setBackground(Utility.PRIMARYBLUE);
             btn.setForeground(Color.WHITE);
-            btn.setPreferredSize(new Dimension(130, 30));
+            btn.setPreferredSize(new Dimension(120, 30));
             btn.addActionListener(this);
 
             topMenuButtons[i] = btn;
@@ -145,6 +147,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         // Home Panel
         JLabel welcomeMessage = new JLabel("Welcome, " + userLoggedIn.getUsername() + "!");
+        welcomeMessage.setFont(new Font("Myriad Pro",Font.BOLD,16));
 
         homePanel = new JPanel();
         homePanel.add(welcomeMessage);
@@ -236,9 +239,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         accountPanel.add(msg);
 
         maincontent.add(accountPanel, "4");
-
-
-
 
         // Assets Panel
         assetsPanel = new JPanel(new BorderLayout(0, 0));
