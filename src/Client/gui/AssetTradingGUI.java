@@ -1,8 +1,6 @@
 package Client.gui;
 
-import Client.Organisation;
-import Client.User;
-import Client.UserException;
+import Client.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,14 +28,23 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
     private Organisation org;
     private User userLoggedIn;
+    private Assets allAssets;
+    private Trades allTrades;
 
-    public AssetTradingGUI(Organisation organisation, User userAccount) {
+    public AssetTradingGUI(Organisation organisation, User userAccount, Assets assets,
+                           Trades trades) {
         super("Asset Trading");
 
         // Collection of all instances of Organisation objects
         org = organisation;
         // Current User object of the user account logged in
         userLoggedIn = userAccount;
+        // Current Asset object
+        allAssets = assets;
+        // Current Trades object
+        allTrades = trades;
+
+
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(1000, 700));
@@ -238,7 +245,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         assetsPanel.setBorder(BorderFactory.createTitledBorder("Assets"));
         maincontent.add(assetsPanel, "5");
 
-        AssetsTable table = new AssetsTable(assetsPanel);
+        AssetsTable table = new AssetsTable(assetsPanel, allAssets, allTrades);
 
         cardLayout.show(maincontent, "1");
 
@@ -249,14 +256,19 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
 
 
-    public static void main(String[] args) throws UserException {
+    public static void main(String[] args) throws UserException, TradesException {
         Organisation organisation = new Organisation();
-        List<String> assets = new ArrayList<>();
-        List<Integer> amounts = new ArrayList<>();
-        organisation.createOrganisation("Microsoft", 100, assets, amounts);
+        List<String> assetsList = new ArrayList<>();
+        assetsList.add("Hardware Resources");
+        List<Integer> assetAmountsList = new ArrayList<>();
+        assetAmountsList.add(10);
+        organisation.createOrganisation("Microsoft", 100, assetsList, assetAmountsList);
         User user = new User(organisation);
         user.createUser("test", "test123", false, "Microsoft");
-        new LoginGUI(user, organisation);
+        Assets assets = new Assets();
+        Trades trades = new Trades(organisation, user);
+        trades.createListing("test", "Sell", "Hardware Resources", 10, 25);
+        new LoginGUI(user, organisation, assets, trades);
     }
 
     @Override

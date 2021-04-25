@@ -1,6 +1,8 @@
 package Client.gui;
 
+import Client.Assets;
 import Client.Organisation;
+import Client.Trades;
 import Client.User;
 
 import javax.swing.*;
@@ -13,11 +15,19 @@ public class LoginGUI extends JFrame {
     private static JTextField usernameInput;
     private static JPasswordField passwordInput;
 
+    private Organisation org;
     private User userLoggingIn;
+    private Trades allTrades;
+    private Assets allAssets;
 
-    public LoginGUI(User user, Organisation organisation) {
+    public LoginGUI(User user, Organisation organisation, Assets assets,
+                    Trades trades) {
         super("LOGIN");
+
+        this.org = organisation;
         this.userLoggingIn = user;
+        this.allAssets = assets;
+        this.allTrades = trades;
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(500, 500));
@@ -82,7 +92,7 @@ public class LoginGUI extends JFrame {
                     setVisible(false);
                     System.out.printf("Login attempt for user '" + username + "' was successful\n");
                     userLoggingIn = user.getUser(username);
-                    new AssetTradingGUI(organisation, userLoggingIn);
+                    new AssetTradingGUI(org, userLoggingIn, allAssets, allTrades);
                 }
             }
         });

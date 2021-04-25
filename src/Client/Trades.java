@@ -449,27 +449,74 @@ public class Trades {
     public int getAssetQuantity(String assetName) {
         int total = 0;
 
-        // Iterates through multi value map to get all sell listings that are not completed
-        for (Map.Entry<Integer, ArrayList<String>> mvMap : multiValueMap.entrySet()) {
+        if(multiValueMap.size() > 0 ) {
 
-            if(mvMap.getKey() <= multiValueMap.size()) {
-                Integer tradeID = mvMap.getKey();
-                ArrayList<String> tradeListing = multiValueMap.get(tradeID);
+            // Iterates through multi value map to get all sell listings that are not completed
+            for (Map.Entry<Integer, ArrayList<String>> mvMap : multiValueMap.entrySet()) {
 
-                // Checks that it is a Sell listing, the asset name matches and the order is not
-                // completed
-                boolean matching = tradeListing.get(tradeType) == "Sell" &&
-                        tradeListing.get(assetType) == assetName &&
-                        !(tradeListing.get(tradeFulfilled) == "Yes" ||
-                                tradeListing.get(tradeFulfilled) == "Cancelled");
+                if(mvMap.getKey() <= multiValueMap.size()) {
+                    Integer tradeID = mvMap.getKey();
+                    ArrayList<String> tradeListing = multiValueMap.get(tradeID);
 
-                // Add the total available asset amount from the listing to the cumulative total
-                if(matching) {
-                    total = total + Integer.parseInt(tradeListing.get(assetAmount));
+                    // Checks that it is a Sell listing, the asset name matches and the order is not
+                    // completed
+                    boolean matching = tradeListing.get(tradeType) == "Sell" &&
+                            tradeListing.get(assetType) == assetName &&
+                            !(tradeListing.get(tradeFulfilled) == "Yes" ||
+                                    tradeListing.get(tradeFulfilled) == "Cancelled");
+
+                    // Add the total available asset amount from the listing to the cumulative total
+                    if(matching) {
+                        total = total + Integer.parseInt(tradeListing.get(assetAmount));
+                    }
                 }
             }
         }
         return total;
+    }
+
+    /**
+     * Gets the lowest price per unit of an asset
+     *
+     * @param assetName Name of the asset
+     * @return Lowest price for the asset
+     */
+    public int getLowestPrice(String assetName) {
+        int defaultPrice = 0;
+
+        if(multiValueMap.size() > 0 ) {
+            // Arbitrary large number to be compared to
+            int lowestPrice = 1000000000;
+
+            // Iterates through multi value map to get all sell listings that are not completed
+            for (Map.Entry<Integer, ArrayList<String>> mvMap : multiValueMap.entrySet()) {
+
+                if(mvMap.getKey() <= multiValueMap.size()) {
+                    Integer tradeID = mvMap.getKey();
+                    ArrayList<String> tradeListing = multiValueMap.get(tradeID);
+
+                    // Checks that it is a Sell listing, the asset name matches and the order is not
+                    // completed
+                    boolean matching = tradeListing.get(tradeType) == "Sell" &&
+                            tradeListing.get(assetType) == assetName &&
+                            !(tradeListing.get(tradeFulfilled) == "Yes" ||
+                                    tradeListing.get(tradeFulfilled) == "Cancelled");
+
+                    int currentPrice;
+
+                    // Add the total available asset amount from the listing to the cumulative total
+                    if(matching) {
+                        currentPrice = Integer.parseInt(tradeListing.get(price));
+                        
+                        if(currentPrice < lowestPrice) {
+                            lowestPrice = currentPrice;
+                            defaultPrice = lowestPrice;
+                        }
+                    }
+                }
+            }
+        }
+        return defaultPrice;
     }
 
     /**

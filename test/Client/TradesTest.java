@@ -224,7 +224,7 @@ public class TradesTest {
         assertEquals(300,  org.getOrganisation("Google").getCredits());
     }
 
-    // Checks whether cancelListing() method returns assets on a buy listing
+    // Checks getAssetQuantity() method
     @Test
     public void checkGetAssetQuantity() throws TradesException {
         assets2.add("Software Licenses");
@@ -235,5 +235,18 @@ public class TradesTest {
         trade1.createListing("Tom","Sell", "Software Licenses", 20, 5);
         int quantity = trade1.getAssetQuantity("Software Licenses");
         assertEquals(40,  quantity);
+    }
+
+    // Checks getLowestPrice() method
+    @Test
+    public void checkGetLowestPrice() throws TradesException {
+        assets2.add("Software Licenses");
+        amount2.add(20);
+        assets.add("Software Licenses");
+        amount.add(20);
+        trade1.createListing("Fred","Sell", "Software Licenses", 20, 5);
+        trade1.createListing("Tom","Sell", "Software Licenses", 20, 4);
+        int quantity = trade1.getLowestPrice("Software Licenses");
+        assertEquals(4,  quantity);
     }
 }
