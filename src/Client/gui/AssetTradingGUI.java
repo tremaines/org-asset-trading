@@ -40,15 +40,15 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         super("Asset Trading");
 
         // Collection of all instances of Organisation objects
-        org = organisation;
+        this.org = organisation;
         // Current User object of the user account logged in
-        userLoggedIn = userAccount;
+        this.userLoggedIn = userAccount;
         // Collection of all instances of User objects
-        allUsers = allUserAccounts;
+        this.allUsers = allUserAccounts;
         // Current Asset object
-        allAssets = assets;
+        this.allAssets = assets;
         // Current Trades object
-        allTrades = trades;
+        this.allTrades = trades;
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(1000, 700));
