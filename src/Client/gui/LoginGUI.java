@@ -17,15 +17,17 @@ public class LoginGUI extends JFrame {
 
     private Organisation org;
     private User userLoggingIn;
+    private User allUsers;
     private Trades allTrades;
     private Assets allAssets;
 
-    public LoginGUI(User user, Organisation organisation, Assets assets,
+    public LoginGUI(User user, User userToLogin, Organisation organisation, Assets assets,
                     Trades trades) {
         super("LOGIN");
 
         this.org = organisation;
-        this.userLoggingIn = user;
+        this.userLoggingIn = userToLogin;
+        this.allUsers = user;
         this.allAssets = assets;
         this.allTrades = trades;
 
@@ -84,15 +86,15 @@ public class LoginGUI extends JFrame {
                 String username = usernameInput.getText();
                 String password = passwordInput.getText();
 
-                if(!userLoggingIn.userExists(username)) {
+                if(!allUsers.userExists(username)) {
                     JOptionPane.showMessageDialog(null, "Incorrect Username", "Invalid", JOptionPane.ERROR_MESSAGE);
-                } else if (!userLoggingIn.loginSuccessful(username, password)) {
+                } else if (!allUsers.loginSuccessful(username, password)) {
                     JOptionPane.showMessageDialog(null, "Incorrect Password", "Invalid", JOptionPane.ERROR_MESSAGE);
-                } else if (userLoggingIn.loginSuccessful(username, password)) {
+                } else if (allUsers.loginSuccessful(username, password)) {
                     setVisible(false);
                     System.out.printf("Login attempt for user '" + username + "' was successful\n");
-                    userLoggingIn = user.getUser(username);
-                    new AssetTradingGUI(org, userLoggingIn, allAssets, allTrades);
+                    userLoggingIn = allUsers.getUser(username);
+                    new AssetTradingGUI(org, userLoggingIn, allUsers, allAssets, allTrades);
                 }
             }
         });

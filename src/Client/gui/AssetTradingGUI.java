@@ -30,10 +30,12 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
     private Organisation org;
     private User userLoggedIn;
+    private User allUsers;
     private Assets allAssets;
     private Trades allTrades;
 
-    public AssetTradingGUI(Organisation organisation, User userAccount, Assets assets,
+    public AssetTradingGUI(Organisation organisation, User userAccount,
+                           User allUserAccounts, Assets assets,
                            Trades trades) {
         super("Asset Trading");
 
@@ -41,6 +43,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         org = organisation;
         // Current User object of the user account logged in
         userLoggedIn = userAccount;
+        // Collection of all instances of User objects
+        allUsers = allUserAccounts;
         // Current Asset object
         allAssets = assets;
         // Current Trades object
@@ -273,7 +277,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         Assets assets = new Assets();
         Trades trades = new Trades(organisation, user);
         trades.createListing("test", "Sell", "Hardware Resources", 10, 25);
-        new LoginGUI(user, organisation, assets, trades);
+        new LoginGUI(user, user, organisation, assets, trades);
     }
 
     @Override
@@ -290,7 +294,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             cardLayout.show(maincontent, "4");
         } else if (btnSrcTxt.equals("Logout")) {
             setVisible(false);
-            new LoginGUI(userLoggedIn, org, allAssets, allTrades);
+            new LoginGUI(allUsers, userLoggedIn, org, allAssets, allTrades);
         }
     }
 }
