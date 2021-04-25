@@ -256,7 +256,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         JLabel msg;
 
 
-
         label1 = new JLabel("First Name");
         label1.setBounds(30, 50, 100, 20);
 
