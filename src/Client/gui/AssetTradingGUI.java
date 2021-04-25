@@ -212,6 +212,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public void setupAccountPanel() {
+        accountPanel = new JPanel(new BorderLayout(0, 0));
+        accountPanel.setBorder(BorderFactory.createTitledBorder("Account"));
+
         setSize(800,600);
         JLabel label1 , label2, label3 , label4, label5;
         JTextField t1, t2, t3,t4;
@@ -222,8 +225,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         JButton submit;
         JLabel msg;
 
-        accountPanel = new JPanel();
-        accountPanel.setBorder(BorderFactory.createTitledBorder("Account"));
+
 
         label1 = new JLabel("First Name");
         label1.setBounds(30, 50, 100, 20);
@@ -232,41 +234,41 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         t1.setBounds(140 , 50, 100 , 20);
 
         label2 = new JLabel("Last Name");
-        label2.setBounds(140 , 60, 100 , 20);
+        label2.setBounds(30 , 80, 100 , 20);
 
         t2 = new JTextField();
-        t2.setBounds(140 , 60, 100 , 20);
+        t2.setBounds(140 , 80, 100 , 20);
 
         label3 = new JLabel("Email");
-        label3.setBounds(140 , 70, 100 , 20);
+        label3.setBounds(30 , 110, 100 , 20);
 
         t3 = new JTextField();
-        t3.setBounds(140 , 70, 100 , 20);
+        t3.setBounds(140 , 110, 100 , 20);
 
         label4 = new JLabel("Unit");
-        label4.setBounds(140 , 80, 100 , 20);
+        label4.setBounds(30 , 140, 100 , 20);
 
         t4 = new JTextField();
-        t4.setBounds(140 , 80, 100 , 20);
+        t4.setBounds(140 , 140, 100 , 20);
 
         label5 = new JLabel("Access Level");
-        label5.setBounds(140 , 90, 100 , 20);
+        label5.setBounds(30 , 170, 100 , 20);
 
-        AccUser  = new JRadioButton("Access Level: User");
-        AccAdmin = new JRadioButton("Access Level: Admin");
-        AccUser.setBounds(140 , 90, 100 , 20);
-        AccAdmin.setBounds(140 , 90, 100 , 20);
+        AccUser  = new JRadioButton("User");
+        AccAdmin = new JRadioButton("Admin");
+        AccUser.setBounds(140 , 170, 100 , 20);
+        AccAdmin.setBounds(240 , 170, 100 , 20);
         AccUser.setSelected(true);
 
         terms = new JCheckBox("Please Accept that the " +
                 "details you have entered are correct");
-        terms.setBounds(140 , 100, 100 , 20);
+        terms.setBounds(30 , 200, 400 , 20);
 
         submit = new JButton("Submit");
-        submit.setBounds(140 , 110, 100 , 20);
+        submit.setBounds(30 , 230, 100 , 20);
 
         msg = new JLabel("");
-        msg.setBounds(140 , 120, 100 , 20);
+        msg.setBounds(140 , 230, 100 , 20);
 
         // accountPanel.add();
         accountPanel.add(label1);
