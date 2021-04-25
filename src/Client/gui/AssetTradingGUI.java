@@ -19,7 +19,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPasswordField passwordField;
 
     private JPanel maincontent;
-    private JPanel homePanel;
     private JPanel buyPanel;
     private JPanel sellPanel;
     private JPanel accountPanel;
@@ -51,13 +50,17 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setPreferredSize(new Dimension(1000, 700));
         setLayout(new BorderLayout(0, 0));
 
-        JPanel homePanel = new JPanel();
         JPanel leftMenuPanel = new JPanel();
         JPanel topMenuPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,15));
 
         leftMenuPanel.setPreferredSize(new Dimension(140, 0));
+        leftMenuPanel.setLayout(new BorderLayout());
         leftMenuPanel.setBackground(Utility.DARKGREY);
         add(leftMenuPanel, BorderLayout.WEST);
+        JPanel topLeft = new JPanel();
+        JPanel bottomLeft = new JPanel();
+        topLeft.setBackground(Utility.DARKGREY);
+        bottomLeft.setBackground(Utility.DARKGREY);
 
         topMenuPanel.setPreferredSize(new Dimension(0, 60));
         topMenuPanel.setBackground(Utility.PRIMARYBLUE);
@@ -66,10 +69,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/bell.png"));
 
         // Buttons in left menu
-        JButton[] leftMenuButtons = new JButton[3];
+        JButton[] leftMenuButtons = new JButton[4];
         JButton[] topMenuButtons = new JButton[4];
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             String btnName = "";
             switch(i) {
                 case 0:
@@ -83,6 +86,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                     btnName = "View Assets";
                     icon = new ImageIcon(this.getClass().getResource("images/viewassets.png"));
                     break;
+                case 3:
+                    btnName = "Logout";
+                    icon = new ImageIcon(this.getClass().getResource("images/logout.png"));
+                    break;
 
             }
             JButton btn = new JButton(btnName, icon);
@@ -91,17 +98,21 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             btn.setForeground(Color.WHITE);
             btn.setPreferredSize(new Dimension(125, 40));
             btn.addActionListener(this);
-
             leftMenuButtons[i] = btn;
-            leftMenuPanel.add(btn);
+            if(btnName.equals("Logout")) {
+                bottomLeft.add(btn, BorderLayout.SOUTH);
+            } else  {
+                topLeft.add(btn);
+            }
         }
+        leftMenuPanel.add(topLeft);
+        leftMenuPanel.add(bottomLeft, BorderLayout.SOUTH);
 
         // Welcome message
         JLabel welcomeMessage = new JLabel("Welcome, " + userLoggedIn.getUsername() + "!");
         welcomeMessage.setFont(new Font("Myriad Pro",Font.BOLD,16));
         welcomeMessage.setForeground(Color.WHITE);
         welcomeMessage.setPreferredSize(new Dimension(240, 25));
-
         topMenuPanel.add(welcomeMessage);
 
         // Just using these to test layout
@@ -277,6 +288,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             cardLayout.show(maincontent, "3");
         } else if (btnSrcTxt.equals("View Assets")) {
             cardLayout.show(maincontent, "4");
+        } else if (btnSrcTxt.equals("Logout")) {
+            setVisible(false);
         }
     }
 }
