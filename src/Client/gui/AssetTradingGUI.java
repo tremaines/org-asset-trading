@@ -290,6 +290,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             cardLayout.show(maincontent, "4");
         } else if (btnSrcTxt.equals("Logout")) {
             setVisible(false);
+            new LoginGUI(userLoggedIn, org, allAssets, allTrades);
         }
     }
 }
