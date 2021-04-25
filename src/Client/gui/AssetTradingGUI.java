@@ -3,6 +3,7 @@ package Client.gui;
 import Client.*;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,10 +25,15 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel accountPanel;
     private JPanel assetsPanel;
     private JPanel notificationsPanel;
-    private JTextField searchBox;
-    private JPanel topMenuPanel;
-    private JPanel topLeft;
-    private JPanel bottomLeft;
+
+    // Top menu components
+    private JPanel topMenuContainer;
+    private JPanel topMenuRight;
+    private JPanel topMenuLeft;
+
+    // Side menu components
+    private JPanel sideMenuTop;
+    private JPanel sideMenuBottom;
 
     private CardLayout cardLayout = new CardLayout();
 
@@ -95,24 +101,26 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public void addTopMenu() {
-        topMenuPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,15));
-        topMenuPanel.setPreferredSize(new Dimension(0, 60));
-        topMenuPanel.setBackground(Utility.PRIMARYBLUE);
-        add(topMenuPanel, BorderLayout.NORTH);
+        // Contains all components
+        topMenuContainer = new JPanel(new BorderLayout());
+        topMenuContainer.setBackground(Utility.PRIMARYBLUE);
 
-        // Welcome message
-        JLabel welcomeMessage = new JLabel("Welcome, " + userLoggedIn.getUsername() + "!");
-        welcomeMessage.setFont(new Font("Myriad Pro",Font.BOLD,16));
-        welcomeMessage.setForeground(Color.WHITE);
-        welcomeMessage.setPreferredSize(new Dimension(240, 25));
-        topMenuPanel.add(welcomeMessage);
+        topMenuRight = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,15));
+        topMenuRight.setBackground(Utility.PRIMARYBLUE);
 
-        // Search box
-        JLabel searchLabel = new JLabel("Search assets");
-        searchBox = new JTextField(10);
-        searchLabel.setForeground(Color.WHITE);
-        topMenuPanel.add(searchLabel);
-        topMenuPanel.add(searchBox);
+        topMenuLeft = new JPanel();
+        topMenuLeft.setBorder(new EmptyBorder(0, 20, 0, 0));
+        topMenuLeft.setBackground(Utility.PRIMARYBLUE);
+
+        add(topMenuContainer, BorderLayout.NORTH);
+        topMenuContainer.add(topMenuLeft, BorderLayout.WEST);
+        topMenuContainer.add(topMenuRight, BorderLayout.EAST);
+
+        // Display username in top left corner
+        JLabel userLabel = new JLabel(userLoggedIn.getUsername());
+        userLabel.setPreferredSize(new Dimension(60, 50));
+        userLabel.setForeground(Color.WHITE);
+        topMenuLeft.add(userLabel);
 
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/bell.png"));
 
@@ -139,14 +147,14 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             btn.setForeground(Color.WHITE);
             btn.setPreferredSize(new Dimension(120, 30));
             btn.addActionListener(this);
-            topMenuPanel.add(btn);
+            topMenuRight.add(btn);
         }
 
         JLabel creditsLabel =
                 new JLabel("Credits: [" + org.getOrganisation(userLoggedIn.getOrganisationName()).getCredits() + "]");
         creditsLabel.setPreferredSize(new Dimension(100, 30));
         creditsLabel.setForeground(Color.WHITE);
-        topMenuPanel.add(creditsLabel);
+        topMenuRight.add(creditsLabel);
     }
 
     public void addSideMenu() {
@@ -156,12 +164,12 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         leftMenuPanel.setLayout(new BorderLayout());
         leftMenuPanel.setBackground(Utility.DARKGREY);
         add(leftMenuPanel, BorderLayout.WEST);
-        topLeft = new JPanel();
-        bottomLeft = new JPanel();
-        topLeft.setBackground(Utility.DARKGREY);
-        bottomLeft.setBackground(Utility.DARKGREY);
-        leftMenuPanel.add(topLeft);
-        leftMenuPanel.add(bottomLeft, BorderLayout.SOUTH);
+        sideMenuTop = new JPanel();
+        sideMenuBottom = new JPanel();
+        sideMenuTop.setBackground(Utility.DARKGREY);
+        sideMenuBottom.setBackground(Utility.DARKGREY);
+        leftMenuPanel.add(sideMenuTop);
+        leftMenuPanel.add(sideMenuBottom, BorderLayout.SOUTH);
 
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/bell.png"));
 
@@ -192,17 +200,36 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             btn.setPreferredSize(new Dimension(125, 40));
             btn.addActionListener(this);
             if(btnName.equals("Logout")) {
-                bottomLeft.add(btn, BorderLayout.SOUTH);
+                sideMenuBottom.add(btn, BorderLayout.SOUTH);
             } else  {
-                topLeft.add(btn);
+                sideMenuTop.add(btn);
             }
         }
     }
 
     public void setupBuyPanel() {
-        buyPanel = new JPanel();
+        buyPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel innerPanel = new JPanel();
+        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
+        buyPanel.add(innerPanel);
         buyPanel.setBorder(BorderFactory.createTitledBorder("Buy"));
+        innerPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+        JLabel buyOrderLabel = new JLabel("Buy Order");
+        buyOrderLabel.setFont(new Font("Myriad Pro",Font.PLAIN,15));
+
+        innerPanel.add(buyOrderLabel);
+
+        innerPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+        String[] options = {"Dog", "Cat", "Bird"};
+        JComboBox assetOptions = new JComboBox(options);
+        innerPanel.add(assetOptions);
+
+        JButton submitBtn = new JButton("Submit");
+        innerPanel.add(submitBtn);
+        submitBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         maincontent.add(buyPanel, "1");
+
     }
 
     public void setupSellPanel() {

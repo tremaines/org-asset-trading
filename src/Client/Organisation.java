@@ -24,7 +24,6 @@ public class Organisation {
     // Treemap of asset and asset amount
     private TreeMap<String, Integer> assetMap = new TreeMap<>();
 
-
     /**
      * Creates an instance of the Organisation
      */

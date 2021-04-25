@@ -58,7 +58,6 @@ public class Trades {
         this.users = user;
     }
 
-
     /**
      * User creates a new buy or sell listing for a specified amount of an asset at a set price
      *
