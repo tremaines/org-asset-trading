@@ -93,6 +93,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         topMenuLeft.setVisible(false);
         addTopMenu();
         setupAssetsPanel();
+        setupMyListingsPanel();
     }
 
     public static void main(String[] args) throws UserException, TradesException, AssetsException {
@@ -400,6 +401,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         sellPanel.add(msg);
 
         mainContent.add(sellPanel, "2");
+        //AssetsTable table = new AssetsTable(sellPanel, allAssets, allTrades);
 
     }
 
@@ -498,8 +500,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         myListingsPanel = new JPanel(new GridLayout(0, 2, 10, 20));
         myListingsPanel.setBorder(BorderFactory.createTitledBorder("My Listings"));
 
-        MyListingsTableBuy buyTable = new MyListingsTableBuy(myListingsPanel);
-        MyListingsTableSell sellTable = new MyListingsTableSell(myListingsPanel);
+        MyListingsTableBuy buyTable = new MyListingsTableBuy(myListingsPanel, allAssets,
+                allTrades, userLoggedIn, allUsers, org);
+        MyListingsTableSell sellTable = new MyListingsTableSell(myListingsPanel, allAssets,
+                allTrades, userLoggedIn, allUsers, org);
 
         mainContent.add(myListingsPanel, "5");
     }
@@ -521,6 +525,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             setVisible(false);
             new LoginGUI(allUsers, userLoggedIn, org, allAssets, allTrades);
         } else if (btnSrcTxt.equals("My Listings")) {
+            refreshGUI();
             cardLayout.show(mainContent, "5");
         }
 

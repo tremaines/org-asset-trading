@@ -10,11 +10,11 @@ import java.awt.*;
 
 public class AssetsTable extends JFrame {
 
-    private Assets allAssets;
+    private Assets assets;
     private Trades allTrades;
 
     public AssetsTable(JPanel panel, Assets assets, Trades trades) {
-        this.allAssets = assets;
+        this.assets = assets;
         this.allTrades = trades;
 
         // Row data in the table
