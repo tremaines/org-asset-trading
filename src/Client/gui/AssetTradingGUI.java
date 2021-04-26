@@ -19,7 +19,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JTextField loginField;
     private JPasswordField passwordField;
 
-    private JPanel maincontent;
+    private JPanel mainContent;
     private JPanel buyPanel;
     private JPanel sellPanel;
     private JPanel accountPanel;
@@ -66,9 +66,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setLayout(new BorderLayout(0, 0));
 
         // Main content in center
-        maincontent = new JPanel();
-        maincontent.setLayout(cardLayout);
-        add(maincontent, BorderLayout.CENTER);
+        mainContent = new JPanel();
+        mainContent.setLayout(cardLayout);
+        add(mainContent, BorderLayout.CENTER);
 
         // Setup Panels
         addTopMenu();
@@ -80,7 +80,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupMyListingsPanel();
 
         // Display assets panel on startup
-        cardLayout.show(maincontent, "4");
+        cardLayout.show(mainContent, "4");
 
         pack();
         setLocationRelativeTo(null);
@@ -99,7 +99,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         List<String> assetsList = new ArrayList<>();
         assetsList.add("Hardware Resources");
         List<Integer> assetAmountsList = new ArrayList<>();
-        assetAmountsList.add(10);
+        assetAmountsList.add(20);
         organisation.createOrganisation("Microsoft", 100, assetsList, assetAmountsList);
         User user = new User(organisation);
         user.createUser("test", "test123", false, "Microsoft");
@@ -305,14 +305,101 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         buyPanel.add(submit);
         buyPanel.add(msg);
 
-        maincontent.add(buyPanel, "1");
+        mainContent.add(buyPanel, "1");
 
     }
 
     public void setupSellPanel() {
-        sellPanel = new JPanel();
+
+        sellPanel = new JPanel(new BorderLayout(0, 0));
         sellPanel.setBorder(BorderFactory.createTitledBorder("Sell"));
-        maincontent.add(sellPanel, "2");
+
+        setSize(800,600);
+        JLabel label1 , label2, label3 , label4, label5;
+        JSpinner s2, s3;
+
+        JCheckBox terms;
+        JButton submit;
+        JLabel msg;
+
+        label1 = new JLabel("Asset Type");
+        label1.setBounds(30, 50, 100, 20);
+
+        JComboBox assetOwnedList =
+                new JComboBox(org.getOrganisation(userLoggedIn.getOrganisationName()).getAssets().toArray(new String[0]));
+        assetOwnedList.setBounds(140 , 50, 150 , 20);
+
+        label2 = new JLabel("Amount");
+        label2.setBounds(30 , 80, 100 , 20);
+
+        s2 = new JSpinner();
+        s2.setBounds(140 , 80, 150 , 20);
+
+        label3 = new JLabel("Cost Per Unit");
+        label3.setBounds(30 , 110, 100 , 20);
+
+        s3 = new JSpinner();
+        s3.setBounds(140 , 110, 150 , 20);
+
+        terms = new JCheckBox("Please confirm that the details you have entered are correct");
+        terms.setBounds(27 , 143, 400 , 20);
+
+        submit = new JButton("Submit");
+        submit.setBounds(30 , 180, 100 , 20);
+
+        msg = new JLabel("");
+        msg.setBounds(140 , 230, 100 , 20);
+
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String type = (String) assetOwnedList.getSelectedItem();
+                String amount = s2.getValue() + "";
+                String price = s3.getValue() + "";
+                boolean boxSelected = terms.isSelected();
+
+                // Checks if the amount and price values are positive and non-zero
+                if(Integer.parseInt(amount) > 0 && Integer.parseInt(price) > 0) {
+
+                    // If the checkbox is selected
+                    if(boxSelected) {
+                        try {
+                            allTrades.createListing(userLoggedIn.getUsername(), "Sell", type,
+                                    Integer.parseInt(amount), Integer.parseInt(price));
+                            refreshGUI();
+                        } catch (TradesException tradesException) {
+                            JOptionPane.showMessageDialog(null, "You do not have enough assets " +
+                                            "to create this listing", "Assets Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                            tradesException.printStackTrace();
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "You have not accepted " +
+                                        "the terms. Please select the checkbox.", "Checkbox Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid entry: Please enter a positive " +
+                                    "non-zero number for both Amount and Cost", "Checkbox Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+        });
+
+        // accountPanel.add();
+        sellPanel.add(label1);
+        sellPanel.add(label2);
+        sellPanel.add(s2);
+        sellPanel.add(label3);
+        sellPanel.add(s3);
+        sellPanel.add(assetOwnedList);
+        sellPanel.add(terms);
+        sellPanel.add(submit);
+        sellPanel.add(msg);
+
+        mainContent.add(sellPanel, "2");
+
     }
 
     public void setupAccountPanel() {
@@ -396,13 +483,13 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         accountPanel.add(submit);
         accountPanel.add(msg);
 
-        maincontent.add(accountPanel, "3");
+        mainContent.add(accountPanel, "3");
     }
 
     public void setupAssetsPanel() {
         assetsPanel = new JPanel(new BorderLayout(0, 0));
         assetsPanel.setBorder(BorderFactory.createTitledBorder("Assets"));
-        maincontent.add(assetsPanel, "4");
+        mainContent.add(assetsPanel, "4");
         AssetsTable table = new AssetsTable(assetsPanel, allAssets, allTrades);
     }
 
@@ -413,7 +500,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         MyListingsTableBuy buyTable = new MyListingsTableBuy(myListingsPanel);
         MyListingsTableSell sellTable = new MyListingsTableSell(myListingsPanel);
 
-        maincontent.add(myListingsPanel, "5");
+        mainContent.add(myListingsPanel, "5");
     }
 
     @Override
@@ -421,18 +508,18 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         String btnSrcTxt = e.getActionCommand();
 
         if (btnSrcTxt.equals("Buy")) {
-            cardLayout.show(maincontent, "1");
+            cardLayout.show(mainContent, "1");
         } else if (btnSrcTxt.equals("Sell")) {
-            cardLayout.show(maincontent, "2");
+            cardLayout.show(mainContent, "2");
         } else if (btnSrcTxt.equals("Account")) {
-            cardLayout.show(maincontent, "3");
+            cardLayout.show(mainContent, "3");
         } else if (btnSrcTxt.equals("View Assets")) {
-            cardLayout.show(maincontent, "4");
+            cardLayout.show(mainContent, "4");
         } else if (btnSrcTxt.equals("Logout")) {
             setVisible(false);
             new LoginGUI(allUsers, userLoggedIn, org, allAssets, allTrades);
         } else if (btnSrcTxt.equals("My Listings")) {
-            cardLayout.show(maincontent, "5");
+            cardLayout.show(mainContent, "5");
         }
 
     }
