@@ -92,6 +92,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         topMenuContainer.setVisible(false);
         topMenuLeft.setVisible(false);
         addTopMenu();
+        setupAssetsPanel();
     }
 
     public static void main(String[] args) throws UserException, TradesException, AssetsException {
@@ -514,6 +515,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         } else if (btnSrcTxt.equals("Account")) {
             cardLayout.show(mainContent, "3");
         } else if (btnSrcTxt.equals("View Assets")) {
+            refreshGUI();
             cardLayout.show(mainContent, "4");
         } else if (btnSrcTxt.equals("Logout")) {
             setVisible(false);
