@@ -276,6 +276,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                         try {
                             allTrades.createListing(userLoggedIn.getUsername(), "Buy", type,
                                     Integer.parseInt(amount), Integer.parseInt(price));
+                            JOptionPane.showMessageDialog(null, "Buy oder was placed!", "Successful", JOptionPane.INFORMATION_MESSAGE);
                             refreshGUI();
                         } catch (TradesException tradesException) {
                             JOptionPane.showMessageDialog(null, "You do not have enough credits to " +
@@ -369,6 +370,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                         try {
                             allTrades.createListing(userLoggedIn.getUsername(), "Sell", type,
                                     Integer.parseInt(amount), Integer.parseInt(price));
+                            JOptionPane.showMessageDialog(null, "Sell oder was placed!", "Successful", JOptionPane.INFORMATION_MESSAGE);
                             refreshGUI();
                         } catch (TradesException tradesException) {
                             JOptionPane.showMessageDialog(null, "You do not have enough assets " +
@@ -458,8 +460,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         newPasswordInput = new JPasswordField();
         newPasswordInput.setBounds(140 , 340, 100 , 20);
 
-        changePassword = new JButton("Change Password");
-        changePassword.setBounds(30 , 370, 150 , 20);
+        changePassword = new JButton("Change");
+        changePassword.setBounds(30 , 370, 100 , 20);
 
         changePassword.addActionListener(new ActionListener() {
             @Override
