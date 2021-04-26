@@ -247,8 +247,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         s3 = new JSpinner();
         s3.setBounds(140 , 110, 150 , 20);
 
-        terms = new JCheckBox("Please Accept that the " +
-                "details you have entered are correct");
+        terms = new JCheckBox("Please accept that the details you have entered are correct");
         terms.setBounds(27 , 143, 400 , 20);
 
         submit = new JButton("Submit");
@@ -263,13 +262,23 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 String type = (String) assetTypeList.getSelectedItem();
                 String amount = s2.getValue() + "";
                 String price = s3.getValue() + "";
+                boolean boxSelected = terms.isSelected();
 
-                try {
-                    allTrades.createListing(userLoggedIn.getUsername(), "Buy", type,
-                            Integer.parseInt(amount), Integer.parseInt(price));
-                    refreshGUI();
-                } catch (TradesException tradesException) {
-                    tradesException.printStackTrace();
+                if(boxSelected) {
+                    try {
+                        allTrades.createListing(userLoggedIn.getUsername(), "Buy", type,
+                                Integer.parseInt(amount), Integer.parseInt(price));
+                        refreshGUI();
+                    } catch (TradesException tradesException) {
+                        JOptionPane.showMessageDialog(null, "You do not have enough credits to " +
+                                        "create this listing.", "Credits Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        tradesException.printStackTrace();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "You have not accepted " +
+                                    "the terms. Please select the checkbox.", "Checkbox Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
