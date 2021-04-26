@@ -411,8 +411,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         accountPanel.setBorder(BorderFactory.createTitledBorder("Account"));
 
         setSize(800,600);
-        JLabel label1 , label2, label3 , label4, label5;
+        JLabel label1 , label2, label3 , label4, label5, label6;
         JTextField t1, t2, t3,t4;
+        JPasswordField newPasswordInput;
         //JComboBox day, month, year;
         //JRadioButton AccUser, AccAdmin;
         //JTextArea ta1;
@@ -420,7 +421,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         //JLabel lbltext = new JLabel();
         JCheckBox terms;
-        JButton submit;
+        JButton submit, changePassword;
         JLabel msg;
 
 
@@ -451,6 +452,28 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label5 = new JLabel("Access Level");
         label5.setBounds(30 , 170, 100 , 20);
 
+        label6 = new JLabel("New Password");
+        label6.setBounds(30 , 340, 100 , 20);
+
+        newPasswordInput = new JPasswordField();
+        newPasswordInput.setBounds(140 , 340, 100 , 20);
+
+        changePassword = new JButton("Change Password");
+        changePassword.setBounds(30 , 370, 150 , 20);
+
+        changePassword.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String newPassword = newPasswordInput.getText();
+                if (newPassword.length() != 0) {
+                    JOptionPane.showMessageDialog(null, "Password has been changed", "Successful", JOptionPane.INFORMATION_MESSAGE);
+                    userLoggedIn.changePassword(newPassword);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Password field cannot be empty", "Invalid", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         //AccUser  = new JRadioButton("User");
         //AccAdmin = new JRadioButton("Admin");
         //AccUser.setBounds(140 , 170, 100 , 20);
@@ -480,12 +503,18 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         accountPanel.add(label4);
         accountPanel.add(t4);
         accountPanel.add(label5);
+        accountPanel.add(label6);
+        accountPanel.add(newPasswordInput);
+        accountPanel.add(changePassword);
         //accountPanel.add(AccUser);
         //accountPanel.add(AccAdmin);
         accountPanel.add(cmbMessageList);
         accountPanel.add(terms);
         accountPanel.add(submit);
         accountPanel.add(msg);
+
+
+        // Change Password
 
         mainContent.add(accountPanel, "3");
     }
