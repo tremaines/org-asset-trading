@@ -226,7 +226,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         JComboBox assetTypeList = new JComboBox(allAssets.getAllAssets().toArray(new String[0]));
         assetTypeList.setBounds(140 , 50, 150 , 20);
-        
+
         label2 = new JLabel("Amount");
         label2.setBounds(30 , 80, 100 , 20);
 

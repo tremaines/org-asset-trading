@@ -1,38 +1,22 @@
 package Client;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Users are accounts which have been authorised by a particular organisation unit
  * to engage on the electronic trading marketplace.
  */
 public class User {
 
+    private String firstName;
+    private String lastName;
+    private String email;
     // Username to login to the marketplace
     private String username;
-    // List of usernames to check against to prevent duplicates
-    private List<String> users = new ArrayList<>();
     // Hashed value of the password
     private String password;
     // Type of account (admin or non-admin)
     private boolean admin;
-    // Organisation name the account is registered to
-    private String organisationName;
-    // List containing all users added
-    private List<User> userList = new ArrayList<>();
-    // Collection of Organisation instances
-    private Organisation org;
-
-    /**
-     * Creates an instance of users
-     *
-     * @param organisation Instance of the Organisation class
-     */
-    public User(Organisation organisation) {
-        org = new Organisation();
-        org = organisation;
-    }
+    // Units name the account is registered to
+    private String unit;
 
     /**
      * User constructor that creates an authorised account from an organisation
@@ -40,40 +24,27 @@ public class User {
      * @param username Name of the user's account
      * @param password Password to log in to the account
      * @param admin Admin status (true/false)
-     * @param organisationName Name of the organisation the user is associated with
+     * @param unit Name of the unit the user is associated with
      */
-    public User (String username, String password, boolean admin, String organisationName) {
-        users.add(username);
+    public User (String firstName, String lastName, String email, String username,
+                 String password, boolean admin, String unit) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
-
+        this.email = email;
         // Hashed password
         this.password = hashPassword(password);
         this.admin = admin;
-        this.organisationName = organisationName;
+        this.unit = unit;
     }
 
-    /**
-     * Creates a new instance of a user and adds the user into the list of existing users
-     *
-     * @param username Username of the account
-     * @param password Password to access the account
-     * @param admin Admin status (true/false)
-     * @param organisationName Name of the organisation the user is associated with
-     */
-    public void createUser(String username, String password, boolean admin, String organisationName) throws UserException {
-        if(users.contains(username)) {
-            throw new UserException("This username is already taken! Please try another.");
-        } else {
-            // List that monitors list of taken names to prevent duplicates
-            users.add(username);
-
-            // Creates the new user account if the chosen username is available
-            User newUser = new User(username, password, admin, organisationName);
-
-            // Adds a new user to the list of all users
-            userList.add(newUser);
-        }
+    public String getFirstName() {
+        return firstName;
     }
+    public String getLastName() {
+        return lastName;
+    }
+    public String getEmail() { return email; }
 
     /**
      * Gets the username of the account
@@ -114,71 +85,60 @@ public class User {
     }
 
     /**
-     * Gets the the organisation name the account is registered to
-     *
-     * @return Organisation name associated with the user
-     */
-    public String getOrganisationName(String username) {
-        return getUser(username).getOrganisationName();
-    }
-
-    /**
      * Gets the the organisation name associated with the instance of the user
      *
-     * @return Organisation name of the user
+     * @return Units name of the user
      */
-    public String getOrganisationName() {
-        return organisationName;
-    }
+    public String getUnitName() { return unit; }
 
-    /**
-     * Checks whether a the username and password details entered match those of the actual user
-     * account
-     *
-     * @param username Name of the user account
-     * @param password Password for the user account
-     * @return True or false
-     */
-    public boolean loginSuccessful(String username, String password) {
-        if(users.contains(username)) {
-            User userToLogin = getUser(username);
-
-            String hashedPassword = hashPassword(password);
-
-            if(hashedPassword.equals(userToLogin.getHashedPassword())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks the list of usernames to verify whether the username entered exists within the list
-     *
-     * @param username Name of the user account
-     * @return True or false
-     */
-    public boolean userExists(String username) {
-        if(users.contains(username)) {
-            User userToLogin = getUser(username);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Gets the User object based on a matching username
-     *
-     * @return User object of the user account
-     */
-    public User getUser(String username) {
-        User userObject = new User(org);
-
-        for(int i = 0; i < userList.size(); i++) {
-            if(userList.get(i).getUsername().equals(username)) {
-                userObject = userList.get(i);
-            }
-        }
-        return userObject;
-    }
+//    /**
+//     * Checks whether a the username and password details entered match those of the actual user
+//     * account
+//     *
+//     * @param username Name of the user account
+//     * @param password Password for the user account
+//     * @return True or false
+//     */
+//    public boolean loginSuccessful(String username, String password) {
+//        if(users.contains(username)) {
+//            User userToLogin = getUser(username);
+//
+//            String hashedPassword = hashPassword(password);
+//
+//            if(hashedPassword.equals(userToLogin.getHashedPassword())) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    /**
+//     * Checks the list of usernames to verify whether the username entered exists within the list
+//     *
+//     * @param username Name of the user account
+//     * @return True or false
+//     */
+//    public boolean userExists(String username) {
+//        if(users.contains(username)) {
+//            User userToLogin = getUser(username);
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    /**
+//     * Gets the User object based on a matching username
+//     *
+//     * @return User object of the user account
+//     */
+//    public User getUser(String username) {
+//        User userObject = new User(org);
+//
+//        for(int i = 0; i < userList.size(); i++) {
+//            if(userList.get(i).getUsername().equals(username)) {
+//                userObject = userList.get(i);
+//            }
+//        }
+//        return userObject;
+//    }
 }
