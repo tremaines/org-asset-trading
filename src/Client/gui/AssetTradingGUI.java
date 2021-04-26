@@ -85,7 +85,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public static void main(String[] args) throws UserException, TradesException {
+    public static void main(String[] args) throws UserException, TradesException, AssetsException {
         Organisation organisation = new Organisation();
         List<String> assetsList = new ArrayList<>();
         assetsList.add("Hardware Resources");
@@ -94,6 +94,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         organisation.createOrganisation("Microsoft", 100, assetsList, assetAmountsList);
         User user = new User(organisation);
         user.createUser("test", "test123", false, "Microsoft");
+        user.createUser("admin", "admin", true, "");
         Assets assets = new Assets();
         Trades trades = new Trades(organisation, user);
         trades.createListing("test", "Sell", "Hardware Resources", 10, 25);
@@ -215,7 +216,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setSize(800,600);
         JLabel label1 , label2, label3 , label4, label5;
         JTextField t1, t2, t3,t4;
-        String[] messageStrings = {"Computational Resources" , "Hardware Resources", "Software Licenses"};
 
         JCheckBox terms;
         JButton submit;
@@ -224,7 +224,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label1 = new JLabel("Asset Type");
         label1.setBounds(30, 50, 100, 20);
 
-        JComboBox assetTypeList = new JComboBox(messageStrings);
+        JComboBox assetTypeList = new JComboBox(allAssets.getAllAssets().toArray(new String[0]));
         assetTypeList.setBounds(140 , 50, 150 , 20);
         
         label2 = new JLabel("Amount");
