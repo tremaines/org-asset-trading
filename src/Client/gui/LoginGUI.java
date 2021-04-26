@@ -90,7 +90,6 @@ public class LoginGUI extends JFrame {
                     User user = db.getUser(username);
                     System.out.printf("Login attempt for user '" + user.getFirstName() + "' was successful\n");
                     new AssetTradingGUI(user);
-                    db.closeConnection();
                 }
             }
         });
