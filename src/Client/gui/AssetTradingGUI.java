@@ -24,7 +24,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel sellPanel;
     private JPanel accountPanel;
     private JPanel assetsPanel;
-    private JPanel listingsPanel;
+    private JPanel myListingsPanel;
     private JPanel notificationsPanel;
 
     // Top menu components
@@ -77,6 +77,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupSellPanel();
         setupAccountPanel();
         setupAssetsPanel();
+        setupMyListingsPanel();
 
         // Display assets panel on startup
         cardLayout.show(maincontent, "4");
@@ -388,15 +389,21 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         maincontent.add(accountPanel, "3");
     }
 
-    public void setupMyListingsPanel() {
-
-    }
-
     public void setupAssetsPanel() {
         assetsPanel = new JPanel(new BorderLayout(0, 0));
         assetsPanel.setBorder(BorderFactory.createTitledBorder("Assets"));
         maincontent.add(assetsPanel, "4");
         AssetsTable table = new AssetsTable(assetsPanel, allAssets, allTrades);
+    }
+
+    public void setupMyListingsPanel() {
+        myListingsPanel = new JPanel(new GridLayout(0, 2, 10, 20));
+        myListingsPanel.setBorder(BorderFactory.createTitledBorder("My Listings"));
+
+        MyListingsTableBuy buyTable = new MyListingsTableBuy(myListingsPanel);
+        MyListingsTableSell sellTable = new MyListingsTableSell(myListingsPanel);
+
+        maincontent.add(myListingsPanel, "5");
     }
 
     @Override
@@ -414,7 +421,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         } else if (btnSrcTxt.equals("Logout")) {
             setVisible(false);
             new LoginGUI(allUsers, userLoggedIn, org, allAssets, allTrades);
+        } else if (btnSrcTxt.equals("My Listings")) {
+            cardLayout.show(maincontent, "5");
         }
+
     }
 }
 
