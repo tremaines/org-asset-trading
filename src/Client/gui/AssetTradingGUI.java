@@ -7,6 +7,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -163,6 +165,33 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             btn.setForeground(Color.WHITE);
             btn.setPreferredSize(new Dimension(120, 30));
             btn.addActionListener(this);
+            btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            btn.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    btn.setBackground(Utility.PRIMARYBLUE.darker());
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    btn.setBackground(Utility.PRIMARYBLUE);
+                }
+            });
             topMenuRight.add(btn);
         }
 
@@ -215,6 +244,33 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             btn.setForeground(Color.WHITE);
             btn.setPreferredSize(new Dimension(125, 40));
             btn.addActionListener(this);
+            btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            btn.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    btn.setBackground(Utility.DARKGREY.darker());
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    btn.setBackground(Utility.DARKGREY);
+                }
+            });
             if(btnName.equals("Logout")) {
                 sideMenuBottom.add(btn, BorderLayout.SOUTH);
             } else  {

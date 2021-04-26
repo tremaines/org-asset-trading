@@ -98,4 +98,16 @@ public class UserTest {
         user.getUser("Bob").changePassword(newPwd);
         assertEquals(newPwd.hashCode() * 2.334 + "", user.getUser("Bob").getHashedPassword());
     }
+
+    // Change password multiple times
+    @Test
+    public void changePasswordManyTimes() throws UserException {
+        user.createUser("Bob", "123test", true, "Microsoft");
+        user.getUser("Bob").changePassword("pwdtest1");
+        user.getUser("Bob").changePassword("pwdtest2");
+        user.getUser("Bob").changePassword("pwdtest3");
+        user.getUser("Bob").changePassword("pwdtest4");
+        assertEquals("pwdtest4".hashCode() * 2.334 + "", user.getUser("Bob").getHashedPassword());
+    }
+
 }
