@@ -58,12 +58,13 @@ public class User {
     }
 
     /**
-     * Hashes the plain-text password value
+     * Hashes the plain-text password value - public so we can use it to has the user input
+     * at login time
      *
      * @param password Password for a user account
      * @return Hashed string value of plain-text password
      */
-    public String hashPassword(String password) {
+    public static String hashPassword(String password) {
         String hashedPassword = (password.hashCode() * 2.334) + "";
         return hashedPassword;
     }

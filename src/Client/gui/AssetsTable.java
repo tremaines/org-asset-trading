@@ -1,21 +1,19 @@
 package Client.gui;
 
-import Client.Assets;
-import Client.Trades;
+import Server.TradeDBSource;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.HashMap;
 
 
 public class AssetsTable extends JFrame {
 
-    private Assets allAssets;
-    private Trades allTrades;
 
-    public AssetsTable(JPanel panel, Assets assets, Trades trades) {
-        this.allAssets = assets;
-        this.allTrades = trades;
+    public AssetsTable(JPanel panel, TradeDBSource db) {
+
+        HashMap<String, int[]> trades = db.getTrades();
 
         // Row data in the table
         Object tableData[] = new Object[3];
@@ -30,11 +28,11 @@ public class AssetsTable extends JFrame {
         model.addColumn("Quantity Available");
         model.addColumn("Lowest Price per Unit");
 
-        // Adds a row for each Asset type
-        for(int i = 0; i < assets.getAllAssets().size(); i++) {
-            model.addRow(new Object[]{assets.getAllAssets().get(i),
-                    trades.getAssetQuantity(assets.getAllAssets().get(i)),
-                    trades.getLowestPrice(assets.getAllAssets().get(i))});
+        // Adds a row for each Asset type by cycling through the HashMap
+        for(String asset : trades.keySet()) {
+            model.addRow(new Object[]{asset.toString(),
+                    trades.get(asset)[0],
+                    trades.get(asset)[1]});
         }
 
 
@@ -51,3 +49,5 @@ public class AssetsTable extends JFrame {
         panel.add(scrollPane);
     }
 }
+
+

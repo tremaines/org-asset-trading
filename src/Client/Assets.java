@@ -1,43 +1,63 @@
-//package Client;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-///**
-// * Assets are available to be purchased or sold on the electronic marketplace, with
-// * users spending credits to obtain said assets.
-// */
-//public class Assets {
-//
-//    // List of asset types available to be bought or sold
-//    private List<String> assets;
-//    // Asset type
-//    private String assetName;
-//
-//    /**
-//     * Constructor of the asset classes that initialises the list of assets and adds the default
-//     * assets available onto the marketplace.
-//     */
-//    public Assets() {
-//        assets = new ArrayList<>();
-//
-//        // Default assets available on the marketplace
-//        assets.add("Computational Resources");
-//        assets.add("Hardware Resources");
-//        assets.add("Software Licenses");
-//    }
-//
-//    /**
-//     * Prevents an unapproved asset from being added to an organisation's list of assets
-//     *
-//     * @param assetName name of the asset
-//     * @return true if asset is approved, false if otherwise
-//     */
-//    public boolean checkAsset(String assetName) {
-//        return assets.contains(assetName);
-//    }
-//
-//    /**
+package Client;
+
+/**
+ * Assets are available to be purchased or sold on the electronic marketplace, with
+ * users spending credits to obtain said assets.
+ */
+public class Assets {
+
+    private String assetID;
+    private String assetName;
+    private int quantity;
+    private String unitID;
+
+    /**
+     * Constructor of the asset classes that initialises the list of assets and adds the default
+     * assets available onto the marketplace.
+     */
+    public Assets() {
+    }
+
+    public Assets(String assetID, String assetName, int quantity, String unitID) {
+        this.assetID = assetID;
+        this.assetName = assetName;
+        this.quantity = quantity;
+        this.unitID = unitID;
+    }
+
+    public String getAssetID() {
+        return assetID;
+    }
+
+    public String getAssetName() {
+        return assetName;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getUnitID() {
+        return unitID;
+    }
+
+    public void setAssetID(String assetID) {
+        this.assetID = assetID;
+    }
+
+    public void setAssetName(String assetName) {
+        this.assetName = assetName;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setUnitID(String unitID) {
+        this.unitID = unitID;
+    }
+
+    //    /**
 //     * Checks against every member of an organisation's list of assets to see if there are
 //     * unapproved assets in the list
 //     *
@@ -84,4 +104,4 @@
 //    public List<String> getAllAssets() {
 //        return assets;
 //    }
-//}
+}

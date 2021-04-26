@@ -92,10 +92,14 @@ public class DBConnection {
     private static final String[] createTables = {CREATE_UNITS, CREATE_USERS, CREATE_ASSETS_PRO, CREATE_TRADES,
             CREATE_TRADES_HX, CREATE_ASSETS_PUR};
 
+    // CREATE statements for first uni (IT Admin) and user (root)
     private static final String ADD_FIRST_UNIT = "INSERT INTO units(unit_id, unit_name, credits) VALUES (?, ?, ?)";
     private static final String ADD_FIRST_ADMIN = "INSERT INTO users(user_name, first_name, last_name, email, " +
             "admin_status, unit, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
+    // TODO: Need to have the addRoot method run only if it needs to
+    // TODO: Note to self - instead of having a try-catch in the create database method, have it throw an exception
+    // TODO: that stops the createTable method and addRoot methods from running
     /***
      * Constructor initialises connection, creates database and tables if necessary
      * @param path
@@ -138,6 +142,9 @@ public class DBConnection {
         }
     }
 
+    /***
+     * Helper method to execute the CREATE DATABASE statement
+     */
     private void createDatabase() {
         try {
             Statement stmnt = connection.createStatement();
@@ -147,6 +154,9 @@ public class DBConnection {
         }
     }
 
+    /***
+     * Helper method to execute the CREATE TABLE statements
+     */
     private void createTables() {
         try {
             Statement stmnt = connection.createStatement();
@@ -158,46 +168,48 @@ public class DBConnection {
         }
     }
 
+    /***
+     * Helper method to create an initial unit and user
+     * @param org The first organisation to be added (IT Admin)
+     * @param root The first user (root)
+     */
     private void addRoot(Units org, User root) {
         try {
             PreparedStatement addUnit = connection.prepareStatement(ADD_FIRST_UNIT);
             PreparedStatement addRoot = connection.prepareStatement(ADD_FIRST_ADMIN);
 
+            // Add unit details
             addUnit.setString(1, org.getUnitID());
             addUnit.setString(2, org.getUnitName());
             addUnit.setInt(3, org.getCredits());
-
             addUnit.execute();
-
+            //Add user details
             addRoot.setString(1, root.getUsername());
             addRoot.setString(2, root.getFirstName());
             addRoot.setString(3, root.getLastName());
             addRoot.setString(4, root.getEmail());
             addRoot.setBoolean(5, root.getAdminStatus());
-            addRoot.setString(6, "itadmn");
+            addRoot.setString(6, org.getUnitID());
             addRoot.setString(7, root.getHashedPassword());
-
             addRoot.execute();
         } catch (SQLException sqle) {
             System.err.println(sqle);
         }
     }
 
+    //TODO: At this stage, I'm not sure how this works as far as differences between client and server go
+    //TODO: Clients will have to have their own .prods file so will need to suss that out later
+    /***
+     * Public method to create a connection to the database
+     *
+     * @param path The location of the .props file
+     *
+     * @return A conenction to the database
+     */
     public static Connection getConnection(String path) {
         if (connection  == null) {
             new DBConnection(path);
         }
         return connection;
-    }
-
-    public static void main(String[] args){
-        Connection instance = DBConnection.getConnection("./src/Server/dbserver.props");
-
-        try {
-            System.out.println();
-            System.out.println(connection.getCatalog());
-        } catch (SQLException sqle) {
-            System.out.println("Error");
-        }
     }
 }

@@ -7,19 +7,27 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/***
+ * A wrapper class for accessing the users table
+ */
 public class UserDBSource {
-
+    // SELECT statements
     private static final String GET_PASSWORD = "SELECT password FROM users WHERE user_name=?";
-    private static final String CHECK_USERNAME = "SELECT COUNT(user_name) FROM users WHERE user_name=?";
+    private static final String CHECK_USERNAME = "SELECT * FROM users WHERE user_name=?";
     private static final String GET_USER = "SELECT * FROM users WHERE user_name=?";
 
-    private Connection connection;
-
+    // Prepared statements
     private PreparedStatement getPassword;
     private PreparedStatement checkUserName;
     private PreparedStatement getUser;
 
+    private Connection connection;
 
+    /***
+     * Constructor
+     *
+     * @param connection Takes a connection to the trading_platform database
+     */
     public UserDBSource(Connection connection) {
         this.connection = connection;
         try{
@@ -31,6 +39,12 @@ public class UserDBSource {
         }
     }
 
+    /***
+     * Retrieves a user's password as a string (hashed)
+     *
+     * @param username The unique username of the user
+     * @return The user's password (if they exist)
+     */
     public String userPassword(String username) {
         String password = "";
 
@@ -48,6 +62,12 @@ public class UserDBSource {
         return password;
     }
 
+    /***
+     * Check if the username provided exists in the database (useful for login)
+     *
+     * @param username The username as a string
+     * @return True if the user exists, false otherwise
+     */
     public boolean checkUsername(String username) {
         boolean exists = false;
         ResultSet rs = null;
@@ -62,6 +82,12 @@ public class UserDBSource {
         return exists;
     }
 
+    /***
+     * Creates an instance of the user class based on a provided username
+     *
+     * @param username The username as a string
+     * @return An instance of the User class (if the username exists)
+     */
     public User getUser(String username) {
         User user = new User();
         ResultSet rs = null;
@@ -85,6 +111,9 @@ public class UserDBSource {
         return user;
     }
 
+    /***
+     * Closes the connection to the database
+     */
     public void closeConnection(){
         try{
             connection.close();

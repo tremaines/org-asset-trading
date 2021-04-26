@@ -1,8 +1,5 @@
 package Client.gui;
 
-import Client.Assets;
-import Client.Organisation;
-import Client.Trades;
 import Client.User;
 import Server.DBConnection;
 import Server.UserDBSource;
@@ -20,11 +17,8 @@ public class LoginGUI extends JFrame {
 
     private UserDBSource db;
 
-    private Organisation org;
     private User userLoggingIn;
     private User allUsers;
-    private Trades allTrades;
-    private Assets allAssets;
 
     public LoginGUI() {
         super("LOGIN");
@@ -85,11 +79,11 @@ public class LoginGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = usernameInput.getText();
-                String password = passwordInput.getText();
+                String password = User.hashPassword(passwordInput.getText());
 
                 if(!db.checkUsername(username)) {
                     JOptionPane.showMessageDialog(null, "Incorrect Username", "Invalid", JOptionPane.ERROR_MESSAGE);
-                } else if (!(password == db.userPassword(username))) {
+                } else if (!(password.equals(db.userPassword(username)))) {
                     JOptionPane.showMessageDialog(null, "Incorrect Password", "Invalid", JOptionPane.ERROR_MESSAGE);
                 } else {
                     setVisible(false);

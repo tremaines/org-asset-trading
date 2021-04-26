@@ -1,7 +1,9 @@
 package Client.gui;
 
 import Client.*;
+import Server.AssetDBSource;
 import Server.DBConnection;
+import Server.TradeDBSource;
 import Server.UnitDBSource;
 
 import javax.swing.*;
@@ -10,8 +12,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -40,22 +40,25 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
     private CardLayout cardLayout = new CardLayout();
 
+    // The unit the logged in user belongs to
     private Units unit;
     private User userLoggedIn;
-    private UnitDBSource db;
+    // Instance sof the database wrappers
+    private UnitDBSource udb;
+    private TradeDBSource tdb;
+    private AssetDBSource adb;
 
 
     public AssetTradingGUI(User user) {
         super("Asset Trading");
 
+        // Create connection to database and instantiate database wrappers
         Connection connection = DBConnection.getConnection("./src/Server/dbserver.props");
-
-        this.db = new UnitDBSource(connection);
-        // Collection of all instances of Organisation objects
-        this.unit = db.getUnit(user.getUnitName());
-        // Current User object of the user account logged in
+        this.udb = new UnitDBSource(connection);
+        this.tdb = new TradeDBSource(connection);
+        this.adb = new AssetDBSource(connection);
+        this.unit = udb.getUnit(user.getUnitName());
         this.userLoggedIn = user;
-        // Collection of all instances of User objects
 
         // Setup of main frame
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -84,19 +87,19 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws UserException, TradesException, AssetsException {
-        Organisation organisation = new Organisation();
-        List<String> assetsList = new ArrayList<>();
-        assetsList.add("Hardware Resources");
-        List<Integer> assetAmountsList = new ArrayList<>();
-        assetAmountsList.add(10);
-        organisation.createOrganisation("Microsoft", 100, assetsList, assetAmountsList);
-        User user = new User(organisation);
-        user.createUser("test", "test123", false, "Microsoft");
-        user.createUser("admin", "admin", true, "");
-        Assets assets = new Assets();
-        Trades trades = new Trades(organisation, user);
-        trades.createListing("test", "Sell", "Hardware Resources", 10, 25);
-        new LoginGUI(user, user, organisation, assets, trades);
+//        Organisation organisation = new Organisation();
+//        List<String> assetsList = new ArrayList<>();
+//        assetsList.add("Hardware Resources");
+//        List<Integer> assetAmountsList = new ArrayList<>();
+//        assetAmountsList.add(10);
+//        organisation.createOrganisation("Microsoft", 100, assetsList, assetAmountsList);
+//        User user = new User(organisation);
+//        user.createUser("test", "test123", false, "Microsoft");
+//        user.createUser("admin", "admin", true, "");
+//        Assets assets = new Assets();
+//        Trades trades = new Trades(organisation, user);
+//        trades.createListing("test", "Sell", "Hardware Resources", 10, 25);
+        new LoginGUI();
     }
 
     public void addTopMenu() {
@@ -116,7 +119,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         topMenuContainer.add(topMenuRight, BorderLayout.EAST);
 
         // Display username in top left corner
-        JLabel userLabel = new JLabel(userLoggedIn.getUsername());
+        JLabel userLabel = new JLabel(userLoggedIn.getFirstName() + " " + userLoggedIn.getLastName());
         userLabel.setPreferredSize(new Dimension(60, 50));
         userLabel.setForeground(Color.WHITE);
         topMenuLeft.add(userLabel);
@@ -150,7 +153,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         }
 
         JLabel creditsLabel =
-                new JLabel("Credits: [" + org.getOrganisation(userLoggedIn.getOrganisationName()).getCredits() + "]");
+                new JLabel("Credits: [" + unit.getCredits() + "]");
         creditsLabel.setPreferredSize(new Dimension(100, 30));
         creditsLabel.setForeground(Color.WHITE);
         topMenuRight.add(creditsLabel);
@@ -222,7 +225,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label1 = new JLabel("Asset Type");
         label1.setBounds(30, 50, 100, 20);
 
-        JComboBox assetTypeList = new JComboBox(allAssets.getAllAssets().toArray(new String[0]));
+        JComboBox assetTypeList = new JComboBox(adb.getAssetNames());
         assetTypeList.setBounds(140 , 50, 150 , 20);
 
         label2 = new JLabel("Amount");
@@ -322,7 +325,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         JComboBox cmbMessageList = new JComboBox(messageStrings);
         cmbMessageList.setBounds(140 , 170 , 100, 20);
 
-        terms = new JCheckBox("Please Accept that the " +
+        terms = new JCheckBox("Please accept that the " +
                 "details you have entered are correct");
         terms.setBounds(30 , 200, 400 , 20);
 
@@ -356,7 +359,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         assetsPanel = new JPanel(new BorderLayout(0, 0));
         assetsPanel.setBorder(BorderFactory.createTitledBorder("Assets"));
         maincontent.add(assetsPanel, "4");
-        AssetsTable table = new AssetsTable(assetsPanel, allAssets, allTrades);
+        AssetsTable table = new AssetsTable(assetsPanel, tdb);
     }
 
     @Override
@@ -373,7 +376,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             cardLayout.show(maincontent, "4");
         } else if (btnSrcTxt.equals("Logout")) {
             setVisible(false);
-            new LoginGUI(allUsers, userLoggedIn, org, allAssets, allTrades);
+            new LoginGUI();
         }
     }
 }
