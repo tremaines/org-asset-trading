@@ -7,8 +7,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,8 +92,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         topMenuContainer.setVisible(false);
         topMenuLeft.setVisible(false);
         addTopMenu();
-        setupAssetsPanel();
         setupSellPanel();
+        setupAssetsPanel();
         setupMyListingsPanel();
     }
 
@@ -165,34 +163,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             btn.setForeground(Color.WHITE);
             btn.setPreferredSize(new Dimension(120, 30));
             btn.addActionListener(this);
-            btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            btn.setFocusPainted(false);
-            btn.addMouseListener(new MouseListener() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    btn.setBackground(Utility.PRIMARYBLUE.darker());
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    btn.setBackground(Utility.PRIMARYBLUE);
-                }
-            });
             topMenuRight.add(btn);
         }
 
@@ -245,34 +215,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             btn.setForeground(Color.WHITE);
             btn.setPreferredSize(new Dimension(125, 40));
             btn.addActionListener(this);
-            btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            btn.setFocusPainted(false);
-            btn.addMouseListener(new MouseListener() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    btn.setBackground(Utility.DARKGREY.darker());
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    btn.setBackground(Utility.DARKGREY);
-                }
-            });
             if(btnName.equals("Logout")) {
                 sideMenuBottom.add(btn, BorderLayout.SOUTH);
             } else  {
@@ -433,6 +375,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                             allTrades.createListing(userLoggedIn.getUsername(), "Sell", type,
                                     Integer.parseInt(amount), Integer.parseInt(price));
                             refreshGUI();
+                            cardLayout.show(mainContent, "2");
                             JOptionPane.showMessageDialog(null, "Sell order was placed!",
                                     "Successful", JOptionPane.INFORMATION_MESSAGE);
                         } catch (TradesException tradesException) {
