@@ -24,6 +24,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel sellPanel;
     private JPanel accountPanel;
     private JPanel assetsPanel;
+    private JPanel listingsPanel;
     private JPanel notificationsPanel;
 
     // Top menu components
@@ -83,6 +84,13 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    public void refreshGUI() {
+        topMenuRight.setVisible(false);
+        topMenuContainer.setVisible(false);
+        topMenuLeft.setVisible(false);
+        addTopMenu();
     }
 
     public static void main(String[] args) throws UserException, TradesException, AssetsException {
@@ -249,6 +257,23 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         msg = new JLabel("");
         msg.setBounds(140 , 230, 100 , 20);
 
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String type = (String) assetTypeList.getSelectedItem();
+                String amount = s2.getValue() + "";
+                String price = s3.getValue() + "";
+
+                try {
+                    allTrades.createListing(userLoggedIn.getUsername(), "Buy", type,
+                            Integer.parseInt(amount), Integer.parseInt(price));
+                    refreshGUI();
+                } catch (TradesException tradesException) {
+                    tradesException.printStackTrace();
+                }
+            }
+        });
+
         // accountPanel.add();
         buyPanel.add(label1);
         buyPanel.add(label2);
@@ -352,6 +377,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         accountPanel.add(msg);
 
         maincontent.add(accountPanel, "3");
+    }
+
+    public void setupMyListingsPanel() {
+
     }
 
     public void setupAssetsPanel() {
