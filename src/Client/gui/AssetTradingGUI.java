@@ -166,6 +166,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             btn.setPreferredSize(new Dimension(120, 30));
             btn.addActionListener(this);
             btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            btn.setFocusPainted(false);
             btn.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -245,6 +246,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             btn.setPreferredSize(new Dimension(125, 40));
             btn.addActionListener(this);
             btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            btn.setFocusPainted(false);
             btn.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
