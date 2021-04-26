@@ -89,4 +89,13 @@ public class UserTest {
         String orgName = user.getUser("Bob").getOrganisationName();
         assertEquals("Microsoft", orgName);
     }
+
+    // Change password
+    @Test
+    public void changePassword() throws UserException {
+        user.createUser("Bob", "123test", true, "Microsoft");
+        String newPwd = "new123";
+        user.getUser("Bob").changePassword(newPwd);
+        assertEquals(newPwd.hashCode() * 2.334 + "", user.getUser("Bob").getHashedPassword());
+    }
 }

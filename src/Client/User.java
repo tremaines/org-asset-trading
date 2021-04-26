@@ -105,6 +105,13 @@ public class User {
     }
 
     /**
+     * Changes user password
+     */
+    public void changePassword(String newPassword) {
+        password = hashPassword(newPassword);
+    }
+
+    /**
      * Gets the type of the account (true if admin, false if non-admin)
      *
      * @return account type

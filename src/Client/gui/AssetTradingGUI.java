@@ -109,6 +109,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         Assets assets = new Assets();
         Trades trades = new Trades(organisation, user);
         trades.createListing("test", "Sell", "Hardware Resources", 10, 25);
+
         new LoginGUI(user, user, organisation, assets, trades);
     }
 
