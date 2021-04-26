@@ -93,6 +93,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         topMenuLeft.setVisible(false);
         addTopMenu();
         setupAssetsPanel();
+        setupSellPanel();
         setupMyListingsPanel();
     }
 
@@ -103,8 +104,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         List<Integer> assetAmountsList = new ArrayList<>();
         assetAmountsList.add(20);
         organisation.createOrganisation("Microsoft", 100, assetsList, assetAmountsList);
+        organisation.createOrganisation("Google", 200, assetsList, assetAmountsList);
         User user = new User(organisation);
         user.createUser("test", "test123", false, "Microsoft");
+        user.createUser("test2", "test123", false, "Google");
         user.createUser("admin", "admin", true, "");
         Assets assets = new Assets();
         Trades trades = new Trades(organisation, user);
@@ -225,7 +228,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         buyPanel = new JPanel(new BorderLayout(0, 0));
         buyPanel.setBorder(BorderFactory.createTitledBorder("Buy"));
 
-        setSize(800,600);
+        setSize(1000, 700);
         JLabel label1 , label2, label3 , label4, label5;
         JSpinner s2, s3;
 
@@ -319,7 +322,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         sellPanel = new JPanel(new BorderLayout(0, 0));
         sellPanel.setBorder(BorderFactory.createTitledBorder("Sell"));
 
-        setSize(800,600);
+        setSize(1000, 700);
         JLabel label1 , label2, label3 , label4, label5;
         JSpinner s2, s3;
 
@@ -371,9 +374,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                         try {
                             allTrades.createListing(userLoggedIn.getUsername(), "Sell", type,
                                     Integer.parseInt(amount), Integer.parseInt(price));
+                            refreshGUI();
                             JOptionPane.showMessageDialog(null, "Sell order was placed!",
                                     "Successful", JOptionPane.INFORMATION_MESSAGE);
-                            refreshGUI();
                         } catch (TradesException tradesException) {
                             JOptionPane.showMessageDialog(null, "You do not have enough assets " +
                                             "to create this listing", "Assets Error",
@@ -412,7 +415,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         accountPanel = new JPanel(new BorderLayout(0, 0));
         accountPanel.setBorder(BorderFactory.createTitledBorder("Account"));
 
-        setSize(800,600);
+        setSize(1000, 700);
         JLabel label1 , label2, label3 , label4, label5, label6;
         JTextField t1, t2, t3,t4;
         JPasswordField newPasswordInput;
