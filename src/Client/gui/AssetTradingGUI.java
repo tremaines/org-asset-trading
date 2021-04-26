@@ -265,23 +265,33 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 String price = s3.getValue() + "";
                 boolean boxSelected = terms.isSelected();
 
-                if(boxSelected) {
-                    try {
-                        allTrades.createListing(userLoggedIn.getUsername(), "Buy", type,
-                                Integer.parseInt(amount), Integer.parseInt(price));
-                        refreshGUI();
-                    } catch (TradesException tradesException) {
-                        JOptionPane.showMessageDialog(null, "You do not have enough credits to " +
-                                        "create this listing.", "Credits Error",
+                // Checks if the amount and price values are positive and non-zero
+                if(Integer.parseInt(amount) > 0 && Integer.parseInt(price) > 0) {
+
+                    // If the checkbox is selected
+                    if(boxSelected) {
+                        try {
+                            allTrades.createListing(userLoggedIn.getUsername(), "Buy", type,
+                                    Integer.parseInt(amount), Integer.parseInt(price));
+                            refreshGUI();
+                        } catch (TradesException tradesException) {
+                            JOptionPane.showMessageDialog(null, "You do not have enough credits to " +
+                                            "create this listing.", "Credits Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                            tradesException.printStackTrace();
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "You have not accepted " +
+                                        "the terms. Please select the checkbox.", "Checkbox Error",
                                 JOptionPane.ERROR_MESSAGE);
-                        tradesException.printStackTrace();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "You have not accepted " +
-                                    "the terms. Please select the checkbox.", "Checkbox Error",
+                    JOptionPane.showMessageDialog(null, "Invalid entry: Please enter a positive " +
+                                    "non-zero number for both Amount and Cost", "Checkbox Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
+
         });
 
         // accountPanel.add();
