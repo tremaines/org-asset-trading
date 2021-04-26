@@ -215,7 +215,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         setSize(800,600);
         JLabel label1 , label2, label3 , label4, label5;
-        JTextField t1, t2, t3,t4;
+        JSpinner s2, s3;
 
         JCheckBox terms;
         JButton submit;
@@ -230,14 +230,14 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label2 = new JLabel("Amount");
         label2.setBounds(30 , 80, 100 , 20);
 
-        t2 = new JTextField();
-        t2.setBounds(140 , 80, 150 , 20);
+        s2 = new JSpinner();
+        s2.setBounds(140 , 80, 150 , 20);
 
         label3 = new JLabel("Cost Per Unit");
         label3.setBounds(30 , 110, 100 , 20);
 
-        t3 = new JTextField();
-        t3.setBounds(140 , 110, 150 , 20);
+        s3 = new JSpinner();
+        s3.setBounds(140 , 110, 150 , 20);
 
         terms = new JCheckBox("Please Accept that the " +
                 "details you have entered are correct");
@@ -252,9 +252,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         // accountPanel.add();
         buyPanel.add(label1);
         buyPanel.add(label2);
-        buyPanel.add(t2);
+        buyPanel.add(s2);
         buyPanel.add(label3);
-        buyPanel.add(t3);
+        buyPanel.add(s3);
         buyPanel.add(assetTypeList);
         buyPanel.add(terms);
         buyPanel.add(submit);
