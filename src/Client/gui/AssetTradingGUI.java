@@ -1,12 +1,15 @@
 package Client.gui;
 
 import Client.*;
+import Server.DBConnection;
+import Server.UnitDBSource;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,27 +40,22 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
     private CardLayout cardLayout = new CardLayout();
 
-    private Organisation org;
+    private Units unit;
     private User userLoggedIn;
-    private User allUsers;
-    private Assets allAssets;
-    private Trades allTrades;
+    private UnitDBSource db;
 
-    public AssetTradingGUI(Organisation organisation, User userAccount,
-                           User allUserAccounts, Assets assets,
-                           Trades trades) {
+
+    public AssetTradingGUI(User user) {
         super("Asset Trading");
 
+        Connection connection = DBConnection.getConnection("./src/Server/dbserver.props");
+
+        this.db = new UnitDBSource(connection);
         // Collection of all instances of Organisation objects
-        this.org = organisation;
+        this.unit = db.getUnit(user.getUnitName());
         // Current User object of the user account logged in
-        this.userLoggedIn = userAccount;
+        this.userLoggedIn = user;
         // Collection of all instances of User objects
-        this.allUsers = allUserAccounts;
-        // Current Asset object
-        this.allAssets = assets;
-        // Current Trades object
-        this.allTrades = trades;
 
         // Setup of main frame
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

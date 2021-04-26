@@ -18,6 +18,8 @@ public class User {
     // Units name the account is registered to
     private String unit;
 
+    public User() { }
+
     /**
      * User constructor that creates an authorised account from an organisation
      *
@@ -91,7 +93,35 @@ public class User {
      */
     public String getUnitName() { return unit; }
 
-//    /**
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    //    /**
 //     * Checks whether a the username and password details entered match those of the actual user
 //     * account
 //     *

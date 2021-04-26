@@ -13,6 +13,8 @@ public class Units {
     // Electronic credits available to the organisation
     private int credits;
 
+    public Units() {
+    }
 
     /**
      * Units constructor that initialises an organisational unit
@@ -57,7 +59,14 @@ public class Units {
         this.credits = amount;
     }
 
-//    /**
+    public void setUnitName(String unitName) {
+        this.unitName = unitName;
+    }
+
+    public void setUnitID(String unitID) {
+        this.unitID = unitID;
+    }
+    //    /**
 //     * Gets all assets currently owned by the organisation
 //     *
 //     * @return The list of assets owned

@@ -4,16 +4,21 @@ import Client.Assets;
 import Client.Organisation;
 import Client.Trades;
 import Client.User;
+import Server.DBConnection;
+import Server.UserDBSource;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 
 public class LoginGUI extends JFrame {
 
     private static JTextField usernameInput;
     private static JPasswordField passwordInput;
+
+    private UserDBSource db;
 
     private Organisation org;
     private User userLoggingIn;
@@ -21,15 +26,11 @@ public class LoginGUI extends JFrame {
     private Trades allTrades;
     private Assets allAssets;
 
-    public LoginGUI(User user, User userToLogin, Organisation organisation, Assets assets,
-                    Trades trades) {
+    public LoginGUI() {
         super("LOGIN");
+        Connection connection = DBConnection.getConnection("./src/Server/dbserver.props");
 
-        this.org = organisation;
-        this.userLoggingIn = userToLogin;
-        this.allUsers = user;
-        this.allAssets = assets;
-        this.allTrades = trades;
+        this.db = new UserDBSource(connection);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(500, 500));
@@ -86,15 +87,16 @@ public class LoginGUI extends JFrame {
                 String username = usernameInput.getText();
                 String password = passwordInput.getText();
 
-                if(!allUsers.userExists(username)) {
+                if(!db.checkUsername(username)) {
                     JOptionPane.showMessageDialog(null, "Incorrect Username", "Invalid", JOptionPane.ERROR_MESSAGE);
-                } else if (!allUsers.loginSuccessful(username, password)) {
+                } else if (!(password == db.userPassword(username))) {
                     JOptionPane.showMessageDialog(null, "Incorrect Password", "Invalid", JOptionPane.ERROR_MESSAGE);
-                } else if (allUsers.loginSuccessful(username, password)) {
+                } else {
                     setVisible(false);
-                    System.out.printf("Login attempt for user '" + username + "' was successful\n");
-                    userLoggingIn = allUsers.getUser(username);
-                    new AssetTradingGUI(org, userLoggingIn, allUsers, allAssets, allTrades);
+                    User user = db.getUser(username);
+                    System.out.printf("Login attempt for user '" + user.getFirstName() + "' was successful\n");
+                    new AssetTradingGUI(user);
+                    db.closeConnection();
                 }
             }
         });
