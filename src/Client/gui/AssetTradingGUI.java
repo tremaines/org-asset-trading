@@ -276,7 +276,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                         try {
                             allTrades.createListing(userLoggedIn.getUsername(), "Buy", type,
                                     Integer.parseInt(amount), Integer.parseInt(price));
-                            JOptionPane.showMessageDialog(null, "Buy oder was placed!", "Successful", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Buy order was placed!",
+                                    "Successful", JOptionPane.INFORMATION_MESSAGE);
                             refreshGUI();
                         } catch (TradesException tradesException) {
                             JOptionPane.showMessageDialog(null, "You do not have enough credits to " +
@@ -370,7 +371,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                         try {
                             allTrades.createListing(userLoggedIn.getUsername(), "Sell", type,
                                     Integer.parseInt(amount), Integer.parseInt(price));
-                            JOptionPane.showMessageDialog(null, "Sell oder was placed!", "Successful", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Sell order was placed!",
+                                    "Successful", JOptionPane.INFORMATION_MESSAGE);
                             refreshGUI();
                         } catch (TradesException tradesException) {
                             JOptionPane.showMessageDialog(null, "You do not have enough assets " +
@@ -392,7 +394,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         });
 
-        // accountPanel.add();
+
         sellPanel.add(label1);
         sellPanel.add(label2);
         sellPanel.add(s2);
@@ -404,8 +406,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         sellPanel.add(msg);
 
         mainContent.add(sellPanel, "2");
-        //AssetsTable table = new AssetsTable(sellPanel, allAssets, allTrades);
-
     }
 
     public void setupAccountPanel() {
