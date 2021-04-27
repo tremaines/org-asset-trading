@@ -630,10 +630,20 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 List<Integer> emptyAmounts = new ArrayList<>();
 
                 if(boxSelected) {
-                    org.createOrganisation(orgName, Integer.parseInt(credits), emptyAssets, emptyAmounts);
-                    JOptionPane.showMessageDialog(null,
-                            orgName + " has been added as a new organisation"  , "Successful",
-                            JOptionPane.INFORMATION_MESSAGE);
+                    if(!org.getOrganisationNames().contains(orgName)) {
+                        org.createOrganisation(orgName, Integer.parseInt(credits), emptyAssets, emptyAmounts);
+                        JOptionPane.showMessageDialog(null,
+                                orgName + " has been added as a new organisation"  , "Successful",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "An organisation with the same name " +
+                                        "has already been created.", "Organisation Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "You have not accepted " +
+                                    "the terms. Please select the checkbox.", "Checkbox Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

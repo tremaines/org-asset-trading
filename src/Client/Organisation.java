@@ -13,6 +13,8 @@ public class Organisation {
 
     // List containing all organisations added
     private List<Organisation> organisationalList = new ArrayList<>();
+    // List containing names of all organisations to prevent duplicates
+    private List<String> namesList = new ArrayList<>();
     // Name of the organisation
     private String organisationName;
     // Electronic credits available to the organisation
@@ -59,8 +61,19 @@ public class Organisation {
                                    List<Integer> amount) {
         Organisation org = new Organisation(organisationName, credits, assetList,
                 amount);
+        // Stores organisation's name to prevent duplicates
+        namesList.add(organisationName);
         // Adds new organisation to the list of all organisations
         organisationalList.add(org);
+    }
+
+    /**
+     * Gets a list of all organisational names
+     *
+     * @return List of all organisational names
+     */
+    public List<String> getOrganisationNames() {
+        return namesList;
     }
 
     /**
