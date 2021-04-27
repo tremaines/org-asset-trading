@@ -140,31 +140,67 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/bell.png"));
 
-        // Buttons in top menu (Will come back and refactor)
-        for (int i = 0; i < 3; i++) {
-            String btnName = "";
-            switch(i) {
-                case 0:
-                    btnName = "Buy";
-                    icon = new ImageIcon(this.getClass().getResource("images/buy.png"));
-                    break;
-                case 1:
-                    btnName = "Sell";
-                    icon = new ImageIcon(this.getClass().getResource("images/sell.png"));
-                    break;
-                case 2:
-                    btnName = "Account";
-                    icon = new ImageIcon(this.getClass().getResource("images/account.png"));
-                    break;
+        if(userLoggedIn.getAdminStatus() == true) {
+            // Buttons in top menu (Will come back and refactor)
+            for (int i = 0; i < 5; i++) {
+                String btnName = "";
+                switch(i) {
+                    case 0:
+                        btnName = "Buy";
+                        icon = new ImageIcon(this.getClass().getResource("images/buy.png"));
+                        break;
+                    case 1:
+                        btnName = "Sell";
+                        icon = new ImageIcon(this.getClass().getResource("images/sell.png"));
+                        break;
+                    case 2:
+                        btnName = "Account";
+                        icon = new ImageIcon(this.getClass().getResource("images/account.png"));
+                        break;
+                    case 3:
+                        btnName = "Create";
+                        icon = new ImageIcon(this.getClass().getResource("images/organisation.png"));
+                        break;
+                    case 4:
+                        btnName = "Modify";
+                        icon = new ImageIcon(this.getClass().getResource("images/modify.png"));
+                        break;
+                }
+                JButton btn = new JButton(btnName, icon);
+                btn.setBorderPainted(false);
+                btn.setBackground(Utility.PRIMARYBLUE);
+                btn.setForeground(Color.WHITE);
+                btn.setPreferredSize(new Dimension(130, 30));
+                btn.addActionListener(this);
+                topMenuRight.add(btn);
             }
-            JButton btn = new JButton(btnName, icon);
-            btn.setBorderPainted(false);
-            btn.setBackground(Utility.PRIMARYBLUE);
-            btn.setForeground(Color.WHITE);
-            btn.setPreferredSize(new Dimension(120, 30));
-            btn.addActionListener(this);
-            topMenuRight.add(btn);
+        } else {
+            for (int i = 0; i < 3; i++) {
+                String btnName = "";
+                switch (i) {
+                    case 0:
+                        btnName = "Buy";
+                        icon = new ImageIcon(this.getClass().getResource("images/buy.png"));
+                        break;
+                    case 1:
+                        btnName = "Sell";
+                        icon = new ImageIcon(this.getClass().getResource("images/sell.png"));
+                        break;
+                    case 2:
+                        btnName = "Account";
+                        icon = new ImageIcon(this.getClass().getResource("images/account.png"));
+                        break;
+                }
+                JButton btn = new JButton(btnName, icon);
+                btn.setBorderPainted(false);
+                btn.setBackground(Utility.PRIMARYBLUE);
+                btn.setForeground(Color.WHITE);
+                btn.setPreferredSize(new Dimension(120, 30));
+                btn.addActionListener(this);
+                topMenuRight.add(btn);
+            }
         }
+
 
         JLabel creditsLabel =
                 new JLabel("Credits: [" + org.getOrganisation(userLoggedIn.getOrganisationName()).getCredits() + "]");
