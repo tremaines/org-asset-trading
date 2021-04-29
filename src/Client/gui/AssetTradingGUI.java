@@ -460,7 +460,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         //JComboBox day, month, year;
         //JRadioButton AccUser, AccAdmin;
         //JTextArea ta1;
-        String[] messageStrings = org.getUnitNames();
+        String[] messageStrings = {"User", "Admin"};
+
+        String[] unitNames = org.getUnitNames();
 
         //JLabel lbltext = new JLabel();
         JCheckBox terms;
@@ -489,8 +491,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label4 = new JLabel("Unit");
         label4.setBounds(30 , 140, 100 , 20);
 
-        t4 = new JTextField();
-        t4.setBounds(140 , 140, 100 , 20);
+        JComboBox units = new JComboBox(unitNames);
+        units.setBounds(140 , 140, 100 , 20);
 
         label5 = new JLabel("Access Level");
         label5.setBounds(30 , 170, 100 , 20);
@@ -530,16 +532,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             }
         });
 
-        //AccUser  = new JRadioButton("User");
-        //AccAdmin = new JRadioButton("Admin");
-        //AccUser.setBounds(140 , 170, 100 , 20);
-        //AccAdmin.setBounds(240 , 170, 100 , 20);
-        //AccUser.setSelected(true);
-
         JComboBox cmbMessageList = new JComboBox(messageStrings);
         cmbMessageList.setBounds(140 , 170 , 100, 20);
 
-        terms = new JCheckBox("Please Accept that the " +
+        terms = new JCheckBox("Please accept that the " +
                 "details you have entered are correct");
         terms.setBounds(30 , 200, 400 , 20);
 
@@ -557,7 +553,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         accountPanel.add(label3);
         accountPanel.add(t3);
         accountPanel.add(label4);
-        accountPanel.add(t4);
+        accountPanel.add(units);
         accountPanel.add(label5);
         accountPanel.add(label6);
         accountPanel.add(label7);
