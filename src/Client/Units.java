@@ -9,7 +9,7 @@ public class Units {
 
     // Name of the organisation
     private String unitName;
-    private String unitID;
+    private int unitID;
     // Electronic credits available to the organisation
     private int credits;
 
@@ -22,7 +22,7 @@ public class Units {
      * @param unitName Name of the organisation
      * @param credits Number of electronic credits
      */
-    public Units(String unitID, String unitName, int credits) {
+    public Units(int unitID, String unitName, int credits) {
         this.unitName = unitName;
         this.credits = credits;
         this.unitID = unitID;
@@ -37,7 +37,7 @@ public class Units {
         return unitName;
     }
 
-    public String getUnitID() {
+    public int getUnitID() {
         return unitID;
     }
 
@@ -63,7 +63,7 @@ public class Units {
         this.unitName = unitName;
     }
 
-    public void setUnitID(String unitID) {
+    public void setUnitID(int unitID) {
         this.unitID = unitID;
     }
     //    /**

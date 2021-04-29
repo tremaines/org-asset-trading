@@ -6,10 +6,10 @@ package Client;
  */
 public class Assets {
 
-    private String assetID;
+    private int assetID;
     private String assetName;
     private int quantity;
-    private String unitID;
+    private int unitID;
 
     /**
      * Constructor of the asset classes that initialises the list of assets and adds the default
@@ -18,14 +18,14 @@ public class Assets {
     public Assets() {
     }
 
-    public Assets(String assetID, String assetName, int quantity, String unitID) {
+    public Assets(int assetID, String assetName, int quantity, int unitID) {
         this.assetID = assetID;
         this.assetName = assetName;
         this.quantity = quantity;
         this.unitID = unitID;
     }
 
-    public String getAssetID() {
+    public int getAssetID() {
         return assetID;
     }
 
@@ -37,11 +37,11 @@ public class Assets {
         return quantity;
     }
 
-    public String getUnitID() {
+    public int getUnitID() {
         return unitID;
     }
 
-    public void setAssetID(String assetID) {
+    public void setAssetID(int assetID) {
         this.assetID = assetID;
     }
 
@@ -53,7 +53,7 @@ public class Assets {
         this.quantity = quantity;
     }
 
-    public void setUnitID(String unitID) {
+    public void setUnitID(int unitID) {
         this.unitID = unitID;
     }
 

@@ -1,5 +1,7 @@
 package Server;
 
+import Client.Trades;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,11 +14,26 @@ import java.util.HashMap;
  */
 public class TradeDBSource {
     // SELECT statements
-    private static final String GET_TRADES = "SELECT asset_name, SUM(trades.quantity), MIN(price) " +
+    private static final String GET_TRADES_BY_ASSET = "SELECT asset_name, SUM(trades.quantity), MIN(price) " +
             "FROM trades INNER JOIN assets_produced WHERE type='sell' GROUP BY asset;";
+    private static final String ADD_TRADE = "INSERT INTO trades (type, user, asset, quantity, price, date) " +
+            "VALUES (?, ?, ?, ?, ?, NOW());";
+    private static final String GET_MATCHING_SELLS = "SELECT MIN(trade_id), MIN(price), quantity " +
+            "from trades WHERE asset=? AND type='sell' AND price <=?;";
+    private static final String GET_MATCHING_BUYS = "SELECT MIN(trade_id), price, quantity " +
+            "from trades WHERE asset=? AND type='sell' AND price >=?;";
+    private static final String GET_TRADE = "SELECT * FROM trades WHERE trade_id=?;";
+    private static final String UPDATE_QTY = "UPDATE trades SET quantity = ? WHERE trade_id = ?;";
+    private static final String DELETE = "DELETE FROM trades WHERE trade_id=?;";
 
     // Prepared statements
-    private PreparedStatement getTrades;
+    private PreparedStatement getTradesByAsset;
+    private PreparedStatement addTrades;
+    private PreparedStatement getMatchingSells;
+    private PreparedStatement getMatchingBuys;
+    private PreparedStatement getTrade;
+    private PreparedStatement updateQty;
+    private PreparedStatement delete;
 
     private Connection connection;
 
@@ -28,7 +45,14 @@ public class TradeDBSource {
         this.connection = connection;
 
         try{
-            getTrades = connection.prepareStatement(GET_TRADES);
+            getTradesByAsset = connection.prepareStatement(GET_TRADES_BY_ASSET);
+            addTrades = connection.prepareStatement(ADD_TRADE);
+            getMatchingSells = connection.prepareStatement(GET_MATCHING_SELLS);
+            getMatchingBuys = connection.prepareStatement(GET_MATCHING_BUYS);
+            getTrade = connection.prepareStatement(GET_TRADE);
+            updateQty = connection.prepareStatement(UPDATE_QTY);
+            delete = connection.prepareStatement(DELETE);
+
         } catch (SQLException sqle) {
             System.err.println(sqle);
         }
@@ -47,7 +71,7 @@ public class TradeDBSource {
         ResultSet rs = null;
 
         try {
-            rs = getTrades.executeQuery();
+            rs = getTradesByAsset.executeQuery();
             while (rs.next()) {
                 qtyAndPrice[0] = rs.getInt("sum(trades.quantity)");
                 qtyAndPrice[1] = rs.getInt("MIN(price)");
@@ -59,5 +83,100 @@ public class TradeDBSource {
         }
 
         return trades;
+    }
+
+    public void addTrade(Trades trade) {
+        try {
+            addTrades.setString(1, trade.getType().name());
+            addTrades.setString(2, trade.getUserName());
+            addTrades.setInt(3, trade.getAssetId());
+            addTrades.setInt(4, trade.getQuantity());
+            addTrades.setInt(5, trade.getPrice());
+            addTrades.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public int matchSell (int id, int price) {
+        ResultSet rs = null;
+
+        try {
+            getMatchingSells.setInt(1, id);
+            getMatchingSells.setInt(2, price);
+
+            rs = getMatchingSells.executeQuery();
+            rs.next();
+            return rs.getInt("MIN(trade_id)");
+
+        } catch (SQLException sqle){
+            System.err.println(sqle);
+            return -1;
+        } catch (Exception e){
+            System.err.println(e);
+            return -1;
+        }
+    }
+
+    public int matchBuy (int id, int price) {
+        ResultSet rs = null;
+
+        try {
+            getMatchingBuys.setInt(1, id);
+            getMatchingBuys.setInt(2, price);
+
+            rs = getMatchingBuys.executeQuery();
+            rs.next();
+            return rs.getInt("MIN(trade_id)");
+
+        } catch (SQLException sqle){
+            System.err.println(sqle);
+            return -1;
+        } catch (Exception e){
+            System.err.println(e);
+            return -1;
+        }
+    }
+
+    public Trades getTrade(int id) {
+        Trades trade = new Trades();
+        ResultSet rs = null;
+
+        try {
+            getTrade.setInt(1, id);
+            rs = getTrade.executeQuery();
+            rs.next();
+
+            trade.setId(rs.getInt("trade_id"));
+            trade.setType(Trades.TradeType.valueOf(rs.getString("type")));
+            trade.setUserName(rs.getString("user"));
+            trade.setAssetId(rs.getInt("asset"));
+            trade.setQuantity(rs.getInt("quantity"));
+            trade.setPrice(rs.getInt("price"));
+            trade.setDate(rs.getDate("date"));
+        } catch(SQLException sqle){
+            System.err.println(sqle);
+        }
+
+        return trade;
+    }
+
+    public void update(Trades trade) {
+        try{
+            updateQty.setInt(1, trade.getQuantity());
+            updateQty.setInt(2, trade.getId());
+            updateQty.execute();
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+    }
+
+    public void delete(int id) {
+        try {
+            delete.setInt(1, id);
+            delete.execute();
+        } catch(SQLException sqle){
+            System.err.println(sqle);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package Client.gui;
 
 import Client.Organisation;
+import Client.Units;
 import Client.User;
 
 import javax.swing.*;
@@ -10,12 +11,12 @@ import java.awt.*;
 public class UserAssetsTable extends JFrame {
 
     JTable table;
-    Organisation org;
+    Units unit;
     User userLoggedIn;
 
     public UserAssetsTable(JPanel panel, Organisation organisation, User userLoggedIn) {
-        this.org = organisation;
         this.userLoggedIn = userLoggedIn;
+        this.unit = userLoggedIn.getUnit();
 
         // Row data in the table
         Object tableData[] = new Object[3];

@@ -102,7 +102,7 @@ public class UserDBSource {
             user.setLastName(rs.getString("last_name"));
             user.setEmail(rs.getString("email"));
             user.setAdmin(rs.getBoolean("admin_status"));
-            user.setUnit(rs.getString("unit"));
+            user.setUnit(rs.getInt("unit"));
             user.setPassword(rs.getString("password"));
         } catch(SQLException sqle){
             System.err.println(sqle);

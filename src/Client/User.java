@@ -16,7 +16,7 @@ public class User {
     // Type of account (admin or non-admin)
     private boolean admin;
     // Units name the account is registered to
-    private String unit;
+    private int unit;
 
     public User() { }
 
@@ -29,7 +29,7 @@ public class User {
      * @param unit Name of the unit the user is associated with
      */
     public User (String firstName, String lastName, String email, String username,
-                 String password, boolean admin, String unit) {
+                 String password, boolean admin, int unit) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -99,7 +99,7 @@ public class User {
      *
      * @return Units name of the user
      */
-    public String getUnitName() { return unit; }
+    public int getUnit() { return unit; }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -125,7 +125,7 @@ public class User {
         this.admin = admin;
     }
 
-    public void setUnit(String unit) {
+    public void setUnit(int unit) {
         this.unit = unit;
     }
 

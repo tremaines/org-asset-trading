@@ -1,12 +1,12 @@
 package Server;
 
-import Client.Units;
-import Client.User;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 /***
@@ -168,29 +168,29 @@ public class DBConnection {
      * @param org The first organisation to be added (IT Admin)
      * @param root The first user (root)
      */
-    private void addRoot(Units org, User root) {
-        try {
-            PreparedStatement addUnit = connection.prepareStatement(ADD_FIRST_UNIT);
-            PreparedStatement addRoot = connection.prepareStatement(ADD_FIRST_ADMIN);
-
-            // Add unit details
-            addUnit.setString(1, org.getUnitID());
-            addUnit.setString(2, org.getUnitName());
-            addUnit.setInt(3, org.getCredits());
-            addUnit.execute();
-            //Add user details
-            addRoot.setString(1, root.getUsername());
-            addRoot.setString(2, root.getFirstName());
-            addRoot.setString(3, root.getLastName());
-            addRoot.setString(4, root.getEmail());
-            addRoot.setBoolean(5, root.getAdminStatus());
-            addRoot.setString(6, org.getUnitID());
-            addRoot.setString(7, root.getHashedPassword());
-            addRoot.execute();
-        } catch (SQLException sqle) {
-            System.err.println(sqle);
-        }
-    }
+//    private void addRoot(Units org, User root) {
+//        try {
+//            PreparedStatement addUnit = connection.prepareStatement(ADD_FIRST_UNIT);
+//            PreparedStatement addRoot = connection.prepareStatement(ADD_FIRST_ADMIN);
+//
+//            // Add unit details
+//            addUnit.setString(1, org.getUnitID());
+//            addUnit.setString(2, org.getUnitName());
+//            addUnit.setInt(3, org.getCredits());
+//            addUnit.execute();
+//            //Add user details
+//            addRoot.setString(1, root.getUsername());
+//            addRoot.setString(2, root.getFirstName());
+//            addRoot.setString(3, root.getLastName());
+//            addRoot.setString(4, root.getEmail());
+//            addRoot.setBoolean(5, root.getAdminStatus());
+//            addRoot.setString(6, org.getUnitID());
+//            addRoot.setString(7, root.getHashedPassword());
+//            addRoot.execute();
+//        } catch (SQLException sqle) {
+//            System.err.println(sqle);
+//        }
+//    }
 
     //TODO: At this stage, I'm not sure how this works as far as differences between client and server go
     //TODO: Clients will have to have their own .prods file so will need to suss that out later

@@ -1,10 +1,7 @@
 package Client.gui;
 
 import Client.*;
-import Server.AssetDBSource;
-import Server.DBConnection;
-import Server.TradeDBSource;
-import Server.UnitDBSource;
+import Server.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -16,6 +13,7 @@ import java.sql.Connection;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +51,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private User userLoggedIn;
     // Instances of the database wrappers
     private UnitDBSource udb;
+    private UserDBSource usdb;
     private TradeDBSource tdb;
     private AssetDBSource adb;
 
@@ -67,7 +66,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         this.udb = new UnitDBSource(connection);
         this.tdb = new TradeDBSource(connection);
         this.adb = new AssetDBSource(connection);
-        this.unit = udb.getUnit(user.getUnitName());
+        this.usdb = new UserDBSource(connection);
+        this.unit = udb.getUnit(user.getUnit());
         this.userLoggedIn = user;
 
         // Setup of main frame
@@ -109,18 +109,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws UserException, TradesException, AssetsException {
-//        Organisation organisation = new Organisation();
-//        List<String> assetsList = new ArrayList<>();
-//        assetsList.add("Hardware Resources");
-//        List<Integer> assetAmountsList = new ArrayList<>();
-//        assetAmountsList.add(10);
-//        organisation.createOrganisation("Microsoft", 100, assetsList, assetAmountsList);
-//        User user = new User(organisation);
-//        user.createUser("test", "test123", false, "Microsoft");
-//        user.createUser("admin", "admin", true, "");
-//        Assets assets = new Assets();
-//        Trades trades = new Trades(organisation, user);
-//        trades.createListing("test", "Sell", "Hardware Resources", 10, 25);
         new LoginGUI();
     }
 
@@ -282,6 +270,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label1 = new JLabel("Asset Type");
         label1.setBounds(30, 50, 100, 20);
 
+        //TODO: Need to change this so a units own assets don't appear
+        //TODO: I.e., a unit doesn't need to buy the assets it makes
         JComboBox assetTypeList = new JComboBox(adb.getAssetNames());
         assetTypeList.setBounds(140 , 50, 150 , 20);
 
@@ -319,16 +309,17 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
                     // If the checkbox is selected
                     if(boxSelected) {
+                        Trades newTrade;
                         try {
-                            allTrades.createListing(userLoggedIn.getUsername(), "Buy", type,
-                                    Integer.parseInt(amount), Integer.parseInt(price));
+                            newTrade = new Trades(Trades.TradeType.buy, userLoggedIn.getUsername(),
+                                    adb.getAsset(type).getAssetID(), Integer.parseInt(amount), Integer.parseInt(price));
+                            TradeLogic.setTrade(newTrade, udb, usdb, tdb, adb);
                             JOptionPane.showMessageDialog(null, "Buy order was placed!",
                                     "Successful", JOptionPane.INFORMATION_MESSAGE);
                             refreshGUI();
                         } catch (TradesException tradesException) {
-                            JOptionPane.showMessageDialog(null, "You do not have enough credits to " +
-                                            "create this listing.", "Credits Error",
-                                    JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, tradesException.getMessage()
+                                    , "Error", JOptionPane.ERROR_MESSAGE);
                             tradesException.printStackTrace();
                         }
                     } else {
@@ -337,8 +328,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Invalid entry: Please enter a positive " +
-                                    "non-zero number for both Amount and Cost", "Checkbox Error",
+                    JOptionPane.showMessageDialog(null, "Invalid entry: Please enter a positive "
+                                    + "non-zero number for both Amount and Cost", "Checkbox Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -382,7 +373,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label1.setBounds(30, 50, 100, 20);
 
         JComboBox assetOwnedList =
-                new JComboBox(org.getOrganisation(userLoggedIn.getOrganisationName()).getAssets().toArray(new String[0]));
+                new JComboBox(adb.getAssetNamesByUnit(unit.getUnitID()));
         assetOwnedList.setBounds(140 , 50, 150 , 20);
 
         label2 = new JLabel("Amount");
@@ -420,9 +411,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                     // If the checkbox is selected
                     if(boxSelected) {
                         try {
-                            allTrades.createListing(userLoggedIn.getUsername(), "Sell", type,
-                                    Integer.parseInt(amount), Integer.parseInt(price));
+                            Trades newTrade;
+                            newTrade = new Trades(Trades.TradeType.buy, userLoggedIn.getUsername(),
+                                    adb.getAsset(type).getAssetID(), Integer.parseInt(amount), Integer.parseInt(price));
                             refreshGUI();
+                            TradeLogic.setTrade(newTrade, udb, usdb, tdb, adb);
                             cardLayout.show(mainContent, "2");
                             JOptionPane.showMessageDialog(null, "Sell order was placed!",
                                     "Successful", JOptionPane.INFORMATION_MESSAGE);
