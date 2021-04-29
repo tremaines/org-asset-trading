@@ -455,9 +455,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         accountPanel.setBorder(BorderFactory.createTitledBorder("Account"));
 
         setSize(1000, 700);
-        JLabel label1 , label2, label3 , label4, label5, label6;
-        JTextField t1, t2, t3,t4;
-        JPasswordField newPasswordInput;
+        JLabel label1 , label2, label3 , label4, label5, label6, label7;
+        JTextField t1, t2, t3, t4, t5;
+        JPasswordField newPasswordInput, confirmPasswordInput;
         //JComboBox day, month, year;
         //JRadioButton AccUser, AccAdmin;
         //JTextArea ta1;
@@ -500,20 +500,33 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label6.setBounds(30 , 340, 100 , 20);
 
         newPasswordInput = new JPasswordField();
-        newPasswordInput.setBounds(140 , 340, 100 , 20);
+        newPasswordInput.setBounds(160 , 340, 100 , 20);
+
+        label7 = new JLabel("Confirm Password");
+        label7.setBounds(30 , 370, 130 , 20);
+
+        confirmPasswordInput = new JPasswordField();
+        confirmPasswordInput.setBounds(160 , 370, 100 , 20);
 
         changePassword = new JButton("Change");
-        changePassword.setBounds(30 , 370, 100 , 20);
+        changePassword.setBounds(30 , 400, 100 , 20);
+
 
         changePassword.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String newPassword = newPasswordInput.getText();
-                if (newPassword.length() != 0) {
-                    JOptionPane.showMessageDialog(null, "Password has been changed", "Successful", JOptionPane.INFORMATION_MESSAGE);
-                    userLoggedIn.changePassword(newPassword);
+                String confirmPassword = confirmPasswordInput.getText();
+                if (newPassword.length() != 0 && confirmPassword.length() != 0) {
+                    if (newPassword.equals(confirmPassword)) {
+                        JOptionPane.showMessageDialog(null, "Password has been changed", "Successful", JOptionPane.INFORMATION_MESSAGE);
+                        userLoggedIn.changePassword(newPassword);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Passwords don't match!", "Invalid", JOptionPane.ERROR_MESSAGE);
+                    }
+
                 } else {
-                    JOptionPane.showMessageDialog(null, "Password field cannot be empty", "Invalid", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Password fields cannot be empty", "Invalid", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -548,7 +561,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         accountPanel.add(t4);
         accountPanel.add(label5);
         accountPanel.add(label6);
+        accountPanel.add(label7);
         accountPanel.add(newPasswordInput);
+        accountPanel.add(confirmPasswordInput);
         accountPanel.add(changePassword);
         //accountPanel.add(AccUser);
         //accountPanel.add(AccAdmin);
