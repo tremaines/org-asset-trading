@@ -85,4 +85,8 @@ public class MyListingsTableSell extends JFrame {
         scrollPane.setBorder(BorderFactory.createTitledBorder("Sell Orders"));
         panel.add(scrollPane);
     }
+
+    public JTable getSellTable() {
+        return sellTable;
+    }
 }

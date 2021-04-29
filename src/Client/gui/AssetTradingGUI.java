@@ -7,6 +7,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private User allUsers;
     private Assets allAssets;
     private Trades allTrades;
+
+    private int tableTradeID;
 
     public AssetTradingGUI(Organisation organisation, User userAccount,
                            User allUserAccounts, Assets assets,
@@ -588,10 +592,46 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         JButton cancelOrderBtn = new JButton("Cancel Order");
         topPanel.add(cancelOrderBtn);
 
+
+
         MyListingsTableBuy buyTable = new MyListingsTableBuy(gridPanel, allAssets,
                 allTrades, userLoggedIn, allUsers, org);
         MyListingsTableSell sellTable = new MyListingsTableSell(gridPanel, allAssets,
                 allTrades, userLoggedIn, allUsers, org);
+
+        JTable buyTableClick = buyTable.getBuyTable();
+        JTable sellTableClick = sellTable.getSellTable();
+
+        buyTableClick.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                JTable table = (JTable)e.getSource();
+                int row = table.rowAtPoint(e.getPoint());
+
+                if(row != -1) {
+                    tableTradeID = Integer.parseInt(table.getModel().getValueAt(row, 0) + "");
+                }
+            }
+        });
+
+        sellTableClick.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                JTable table = (JTable)e.getSource();
+                int row = table.rowAtPoint(e.getPoint());
+
+                if(row != -1) {
+                    tableTradeID = Integer.parseInt(table.getModel().getValueAt(row, 0) + "");
+                }
+            }
+        });
+
+        cancelOrderBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                allTrades.cancelListing(tableTradeID);
+                refreshGUI();
+                cardLayout.show(mainContent, "5");
+            }
+        });
 
         myListingsPanel.add(topPanel, BorderLayout.NORTH);
         myListingsPanel.add(gridPanel);

@@ -79,8 +79,13 @@ public class MyListingsTableBuy extends JFrame {
             }
         }
 
+
         JScrollPane scrollPane = new JScrollPane(buyTable);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Buy Orders"));
         panel.add(scrollPane);
+    }
+
+    public JTable getBuyTable() {
+        return buyTable;
     }
 }
