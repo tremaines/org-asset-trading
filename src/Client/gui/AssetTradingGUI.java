@@ -366,7 +366,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         sellPanel.setBorder(BorderFactory.createTitledBorder("Sell"));
 
         setSize(1000, 700);
-        JLabel label1 , label2, label3 , label4, label5;
+        JLabel label1 , label2, label3;
         JSpinner s2, s3;
 
         JCheckBox terms;
@@ -391,10 +391,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         s3 = new JSpinner();
         s3.setBounds(140 , 110, 150 , 20);
-
-        label4 =
-                new JLabel("Quantity owned: " + org.getOrganisation(userLoggedIn.getOrganisationName()).getAssetsAmounts(assetOwnedList.getSelectedItem() + ""));
-        label4.setBounds(300, 50, 130, 20);
 
         terms = new JCheckBox("Please confirm that the details you have entered are correct");
         terms.setBounds(27 , 143, 400 , 20);
@@ -451,7 +447,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         sellPanel.add(s2);
         sellPanel.add(label3);
         sellPanel.add(s3);
-        sellPanel.add(label4);
         sellPanel.add(assetOwnedList);
         sellPanel.add(terms);
         sellPanel.add(submit);
