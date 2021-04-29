@@ -473,7 +473,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setSize(1000, 700);
         JLabel label1 , label2, label3 , label4, label5, label6, label7;
         JTextField t1, t2, t3, t4, t5;
-        JPasswordField newPasswordInput, confirmPasswordInput;
+        JPasswordField userPassword, newPasswordInput, confirmPasswordInput;
         //JComboBox day, month, year;
         //JRadioButton AccUser, AccAdmin;
         //JTextArea ta1;
@@ -496,8 +496,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label2 = new JLabel("Password");
         label2.setBounds(30 , 80, 100 , 20);
 
-        t2 = new JTextField();
-        t2.setBounds(140 , 80, 100 , 20);
+        userPassword = new JPasswordField();
+        userPassword.setBounds(140 , 80, 100 , 20);
 
         label4 = new JLabel("Unit");
         label4.setBounds(30 , 110, 100 , 20);
@@ -538,9 +538,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = t1.getText();
-                String password = t2.getText();
-                String hashedPassword = (password.hashCode() * 2.334) + "";
-                String orgName = units.getSelectedItem() + "";
+                String password = userPassword.getText();
+                String orgName = units.getSelectedItem().toString();
                 String userType = cmbMessageList.getSelectedItem() + "";
                 boolean boxSelected = terms.isSelected();
                 boolean admin;
@@ -553,10 +552,17 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
                 if(boxSelected) {
                     try {
-                        allUsers.createUser(username, hashedPassword, admin, orgName);
+                        allUsers.createUser(username, password, admin, orgName);
+                        JOptionPane.showMessageDialog(null, "The user was successfully added",
+                                "Success",
+                                JOptionPane.INFORMATION_MESSAGE);
                     } catch (UserException userException) {
                         userException.printStackTrace();
+                        JOptionPane.showMessageDialog(null, "This username is already taken!", "User Taken", JOptionPane.ERROR_MESSAGE);
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "The terms box was not selected",
+                            "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -591,7 +597,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         accountPanel.add(label1);
         accountPanel.add(t1);
         accountPanel.add(label2);
-        accountPanel.add(t2);
+        accountPanel.add(userPassword);
         accountPanel.add(label4);
         accountPanel.add(units);
         accountPanel.add(label5);
