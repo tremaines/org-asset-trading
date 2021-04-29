@@ -6,10 +6,11 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.HashMap;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class AssetsTable extends JFrame {
-
 
     public AssetsTable(JPanel panel, TradeDBSource db) {
 
@@ -43,6 +44,16 @@ public class AssetsTable extends JFrame {
         assetsTable.setDefaultEditor(Object.class, null);
 
         JButton itemHistoryBtn = new JButton("Item History");
+        itemHistoryBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String btnSrcTxt = e.getActionCommand();
+                if (btnSrcTxt.equals("Item History")) {
+
+                }
+            }
+        });
+
         JPanel topTableBar = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,15));
         panel.add(topTableBar, BorderLayout.NORTH);
         topTableBar.add(itemHistoryBtn);

@@ -11,7 +11,13 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.sql.Connection;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -22,11 +28,13 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JTextField loginField;
     private JPasswordField passwordField;
 
-    private JPanel maincontent;
+    private JPanel mainContent;
     private JPanel buyPanel;
     private JPanel sellPanel;
+    private JPanel createPanel;
     private JPanel accountPanel;
     private JPanel assetsPanel;
+    private JPanel myListingsPanel;
     private JPanel notificationsPanel;
 
     // Top menu components
@@ -49,7 +57,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private AssetDBSource adb;
 
 
+
     public AssetTradingGUI(User user) {
+
         super("Asset Trading");
 
         // Create connection to database and instantiate database wrappers
@@ -66,9 +76,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setLayout(new BorderLayout(0, 0));
 
         // Main content in center
-        maincontent = new JPanel();
-        maincontent.setLayout(cardLayout);
-        add(maincontent, BorderLayout.CENTER);
+        mainContent = new JPanel();
+        mainContent.setLayout(cardLayout);
+        add(mainContent, BorderLayout.CENTER);
 
         // Setup Panels
         addTopMenu();
@@ -77,13 +87,25 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupSellPanel();
         setupAccountPanel();
         setupAssetsPanel();
+        setupMyListingsPanel();
+        setupCreatePanel();
 
         // Display assets panel on startup
-        cardLayout.show(maincontent, "4");
+        cardLayout.show(mainContent, "4");
 
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    public void refreshGUI() {
+        topMenuRight.setVisible(false);
+        topMenuContainer.setVisible(false);
+        topMenuLeft.setVisible(false);
+        addTopMenu();
+        setupSellPanel();
+        setupAssetsPanel();
+        setupMyListingsPanel();
     }
 
     public static void main(String[] args) throws UserException, TradesException, AssetsException {
@@ -126,30 +148,65 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/bell.png"));
 
-        // Buttons in top menu (Will come back and refactor)
-        for (int i = 0; i < 3; i++) {
-            String btnName = "";
-            switch(i) {
-                case 0:
-                    btnName = "Buy";
-                    icon = new ImageIcon(this.getClass().getResource("images/buy.png"));
-                    break;
-                case 1:
-                    btnName = "Sell";
-                    icon = new ImageIcon(this.getClass().getResource("images/sell.png"));
-                    break;
-                case 2:
-                    btnName = "Account";
-                    icon = new ImageIcon(this.getClass().getResource("images/account.png"));
-                    break;
+        if(userLoggedIn.getAdminStatus() == true) {
+            // Buttons in top menu (Will come back and refactor)
+            for (int i = 0; i < 5; i++) {
+                String btnName = "";
+                switch(i) {
+                    case 0:
+                        btnName = "Buy";
+                        icon = new ImageIcon(this.getClass().getResource("images/buy.png"));
+                        break;
+                    case 1:
+                        btnName = "Sell";
+                        icon = new ImageIcon(this.getClass().getResource("images/sell.png"));
+                        break;
+                    case 2:
+                        btnName = "Account";
+                        icon = new ImageIcon(this.getClass().getResource("images/account.png"));
+                        break;
+                    case 3:
+                        btnName = "Create";
+                        icon = new ImageIcon(this.getClass().getResource("images/plus.png"));
+                        break;
+                    case 4:
+                        btnName = "Modify";
+                        icon = new ImageIcon(this.getClass().getResource("images/modify.png"));
+                        break;
+                }
+                JButton btn = new JButton(btnName, icon);
+                btn.setBorderPainted(false);
+                btn.setBackground(Utility.PRIMARYBLUE);
+                btn.setForeground(Color.WHITE);
+                btn.setPreferredSize(new Dimension(130, 30));
+                btn.addActionListener(this);
+                topMenuRight.add(btn);
             }
-            JButton btn = new JButton(btnName, icon);
-            btn.setBorderPainted(false);
-            btn.setBackground(Utility.PRIMARYBLUE);
-            btn.setForeground(Color.WHITE);
-            btn.setPreferredSize(new Dimension(120, 30));
-            btn.addActionListener(this);
-            topMenuRight.add(btn);
+        } else {
+            for (int i = 0; i < 3; i++) {
+                String btnName = "";
+                switch (i) {
+                    case 0:
+                        btnName = "Buy";
+                        icon = new ImageIcon(this.getClass().getResource("images/buy.png"));
+                        break;
+                    case 1:
+                        btnName = "Sell";
+                        icon = new ImageIcon(this.getClass().getResource("images/sell.png"));
+                        break;
+                    case 2:
+                        btnName = "Account";
+                        icon = new ImageIcon(this.getClass().getResource("images/account.png"));
+                        break;
+                }
+                JButton btn = new JButton(btnName, icon);
+                btn.setBorderPainted(false);
+                btn.setBackground(Utility.PRIMARYBLUE);
+                btn.setForeground(Color.WHITE);
+                btn.setPreferredSize(new Dimension(120, 30));
+                btn.addActionListener(this);
+                topMenuRight.add(btn);
+            }
         }
 
         JLabel creditsLabel =
@@ -214,7 +271,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         buyPanel = new JPanel(new BorderLayout(0, 0));
         buyPanel.setBorder(BorderFactory.createTitledBorder("Buy"));
 
-        setSize(800,600);
+        setSize(1000, 700);
         JLabel label1 , label2, label3 , label4, label5;
         JSpinner s2, s3;
 
@@ -240,8 +297,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         s3 = new JSpinner();
         s3.setBounds(140 , 110, 150 , 20);
 
-        terms = new JCheckBox("Please Accept that the " +
-                "details you have entered are correct");
+        terms = new JCheckBox("Please accept that the details you have entered are correct");
         terms.setBounds(27 , 143, 400 , 20);
 
         submit = new JButton("Submit");
@@ -249,6 +305,45 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         msg = new JLabel("");
         msg.setBounds(140 , 230, 100 , 20);
+
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String type = (String) assetTypeList.getSelectedItem();
+                String amount = s2.getValue() + "";
+                String price = s3.getValue() + "";
+                boolean boxSelected = terms.isSelected();
+
+                // Checks if the amount and price values are positive and non-zero
+                if(Integer.parseInt(amount) > 0 && Integer.parseInt(price) > 0) {
+
+                    // If the checkbox is selected
+                    if(boxSelected) {
+                        try {
+                            allTrades.createListing(userLoggedIn.getUsername(), "Buy", type,
+                                    Integer.parseInt(amount), Integer.parseInt(price));
+                            JOptionPane.showMessageDialog(null, "Buy order was placed!",
+                                    "Successful", JOptionPane.INFORMATION_MESSAGE);
+                            refreshGUI();
+                        } catch (TradesException tradesException) {
+                            JOptionPane.showMessageDialog(null, "You do not have enough credits to " +
+                                            "create this listing.", "Credits Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                            tradesException.printStackTrace();
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "You have not accepted " +
+                                        "the terms. Please select the checkbox.", "Checkbox Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid entry: Please enter a positive " +
+                                    "non-zero number for both Amount and Cost", "Checkbox Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+        });
 
         // accountPanel.add();
         buyPanel.add(label1);
@@ -261,76 +356,233 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         buyPanel.add(submit);
         buyPanel.add(msg);
 
-        maincontent.add(buyPanel, "1");
+        mainContent.add(buyPanel, "1");
 
     }
 
     public void setupSellPanel() {
-        sellPanel = new JPanel();
-        sellPanel.setBorder(BorderFactory.createTitledBorder("Sell"));
-        maincontent.add(sellPanel, "2");
+
+        JPanel sellPanelContainer = new JPanel(new GridLayout(1, 2));
+        JPanel leftPanel = new JPanel(new BorderLayout(0, 0));
+        JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
+        rightPanel.setBorder(new EmptyBorder(0,0,30,30));
+
+        sellPanelContainer.add(leftPanel);
+        sellPanelContainer.add(rightPanel);
+        sellPanelContainer.setBorder(BorderFactory.createTitledBorder("Sell"));
+
+        JLabel label1 , label2, label3 , label4, label5;
+        JSpinner s2, s3;
+
+        JCheckBox terms;
+        JButton submit;
+        JLabel msg;
+
+        label1 = new JLabel("Asset Type");
+        label1.setBounds(30, 50, 100, 20);
+
+        JComboBox assetOwnedList =
+                new JComboBox(org.getOrganisation(userLoggedIn.getOrganisationName()).getAssets().toArray(new String[0]));
+        assetOwnedList.setBounds(140 , 50, 150 , 20);
+
+        label2 = new JLabel("Amount");
+        label2.setBounds(30 , 80, 100 , 20);
+
+        s2 = new JSpinner();
+        s2.setBounds(140 , 80, 150 , 20);
+
+        label3 = new JLabel("Cost Per Unit");
+        label3.setBounds(30 , 110, 100 , 20);
+
+        s3 = new JSpinner();
+        s3.setBounds(140 , 110, 150 , 20);
+
+        terms = new JCheckBox("Please confirm that the details you have entered are correct");
+        terms.setBounds(27 , 143, 400 , 20);
+
+        submit = new JButton("Submit");
+        submit.setBounds(30 , 180, 100 , 20);
+
+        msg = new JLabel("");
+        msg.setBounds(140 , 230, 100 , 20);
+
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String type = (String) assetOwnedList.getSelectedItem();
+                String amount = s2.getValue() + "";
+                String price = s3.getValue() + "";
+                boolean boxSelected = terms.isSelected();
+
+                // Checks if the amount and price values are positive and non-zero
+                if(Integer.parseInt(amount) > 0 && Integer.parseInt(price) > 0) {
+
+                    // If the checkbox is selected
+                    if(boxSelected) {
+                        try {
+                            allTrades.createListing(userLoggedIn.getUsername(), "Sell", type,
+                                    Integer.parseInt(amount), Integer.parseInt(price));
+                            refreshGUI();
+                            cardLayout.show(mainContent, "2");
+                            JOptionPane.showMessageDialog(null, "Sell order was placed!",
+                                    "Successful", JOptionPane.INFORMATION_MESSAGE);
+                        } catch (TradesException tradesException) {
+                            JOptionPane.showMessageDialog(null, "You do not have enough assets " +
+                                            "to create this listing", "Assets Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                            tradesException.printStackTrace();
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "You have not accepted " +
+                                        "the terms. Please select the checkbox.", "Checkbox Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid entry: Please enter a positive " +
+                                    "non-zero number for both Amount and Cost", "Checkbox Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+        });
+
+        // Row data in the table
+        Object tableData[] = new Object[2];
+
+        UserAssetsTable userAssetsTable = new UserAssetsTable(rightPanel, org, userLoggedIn);
+
+
+
+        leftPanel.add(label1);
+        leftPanel.add(label2);
+        leftPanel.add(s2);
+        leftPanel.add(label3);
+        leftPanel.add(s3);
+        leftPanel.add(assetOwnedList);
+        leftPanel.add(terms);
+        leftPanel.add(submit);
+        leftPanel.add(msg);
+
+        mainContent.add(sellPanelContainer, "2");
     }
 
     public void setupAccountPanel() {
         accountPanel = new JPanel(new BorderLayout(0, 0));
         accountPanel.setBorder(BorderFactory.createTitledBorder("Account"));
 
-        setSize(800,600);
-        JLabel label1 , label2, label3 , label4, label5;
-        JTextField t1, t2, t3,t4;
+        setSize(1000, 700);
+        JLabel label1 , label2, label3 , label4, label5, label6, label7;
+        JTextField t1, t2, t3, t4, t5;
+        JPasswordField newPasswordInput, confirmPasswordInput;
         //JComboBox day, month, year;
         //JRadioButton AccUser, AccAdmin;
         //JTextArea ta1;
-        String[] messageStrings = {"Admin" , "User"};
+        String[] messageStrings = {"User", "Admin"};
+
+        String[] unitNames = org.getUnitNames();
 
         //JLabel lbltext = new JLabel();
         JCheckBox terms;
-        JButton submit;
+        JButton submit, changePassword;
         JLabel msg;
 
 
-        label1 = new JLabel("First Name");
+        label1 = new JLabel("Username");
         label1.setBounds(30, 50, 100, 20);
 
         t1 = new JTextField();
         t1.setBounds(140 , 50, 100 , 20);
 
-        label2 = new JLabel("Last Name");
+        label2 = new JLabel("Password");
         label2.setBounds(30 , 80, 100 , 20);
 
         t2 = new JTextField();
         t2.setBounds(140 , 80, 100 , 20);
 
-        label3 = new JLabel("Email");
-        label3.setBounds(30 , 110, 100 , 20);
-
-        t3 = new JTextField();
-        t3.setBounds(140 , 110, 100 , 20);
-
         label4 = new JLabel("Unit");
-        label4.setBounds(30 , 140, 100 , 20);
+        label4.setBounds(30 , 110, 100 , 20);
 
-        t4 = new JTextField();
-        t4.setBounds(140 , 140, 100 , 20);
+        JComboBox units = new JComboBox(unitNames);
+        units.setBounds(140 , 110, 100 , 20);
 
         label5 = new JLabel("Access Level");
-        label5.setBounds(30 , 170, 100 , 20);
+        label5.setBounds(30 , 140, 100 , 20);
 
-        //AccUser  = new JRadioButton("User");
-        //AccAdmin = new JRadioButton("Admin");
-        //AccUser.setBounds(140 , 170, 100 , 20);
-        //AccAdmin.setBounds(240 , 170, 100 , 20);
-        //AccUser.setSelected(true);
+        label6 = new JLabel("New Password");
+        label6.setBounds(30 , 340, 100 , 20);
+
+        newPasswordInput = new JPasswordField();
+        newPasswordInput.setBounds(160 , 340, 100 , 20);
+
+        label7 = new JLabel("Confirm Password");
+        label7.setBounds(30 , 370, 130 , 20);
+
+        confirmPasswordInput = new JPasswordField();
+        confirmPasswordInput.setBounds(160 , 370, 100 , 20);
+
+        changePassword = new JButton("Change");
+        changePassword.setBounds(30 , 400, 100 , 20);
+
+        submit = new JButton("Submit");
+        submit.setBounds(30 , 200, 100 , 20);
 
         JComboBox cmbMessageList = new JComboBox(messageStrings);
-        cmbMessageList.setBounds(140 , 170 , 100, 20);
+        cmbMessageList.setBounds(140 , 140 , 100, 20);
 
         terms = new JCheckBox("Please accept that the " +
                 "details you have entered are correct");
-        terms.setBounds(30 , 200, 400 , 20);
+        terms.setBounds(30 , 170, 400 , 20);
 
-        submit = new JButton("Submit");
-        submit.setBounds(30 , 230, 100 , 20);
+
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = t1.getText();
+                String password = t2.getText();
+                String hashedPassword = (password.hashCode() * 2.334) + "";
+                String orgName = units.getSelectedItem() + "";
+                String userType = cmbMessageList.getSelectedItem() + "";
+                boolean boxSelected = terms.isSelected();
+                boolean admin;
+
+                if(userType == "Admin") {
+                    admin = true;
+                } else {
+                    admin = false;
+                }
+
+                if(boxSelected) {
+                    try {
+                        allUsers.createUser(username, hashedPassword, admin, orgName);
+                    } catch (UserException userException) {
+                        userException.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        changePassword.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String newPassword = newPasswordInput.getText();
+                String confirmPassword = confirmPasswordInput.getText();
+                if (newPassword.length() != 0 && confirmPassword.length() != 0) {
+                    if (newPassword.equals(confirmPassword)) {
+                        JOptionPane.showMessageDialog(null, "Password has been changed", "Successful", JOptionPane.INFORMATION_MESSAGE);
+                        userLoggedIn.changePassword(newPassword);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Passwords don't match!", "Invalid", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Password fields cannot be empty", "Invalid", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+
+
+
 
         msg = new JLabel("");
         msg.setBounds(140 , 230, 100 , 20);
@@ -340,11 +592,14 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         accountPanel.add(t1);
         accountPanel.add(label2);
         accountPanel.add(t2);
-        accountPanel.add(label3);
-        accountPanel.add(t3);
         accountPanel.add(label4);
-        accountPanel.add(t4);
+        accountPanel.add(units);
         accountPanel.add(label5);
+        accountPanel.add(label6);
+        accountPanel.add(label7);
+        accountPanel.add(newPasswordInput);
+        accountPanel.add(confirmPasswordInput);
+        accountPanel.add(changePassword);
         //accountPanel.add(AccUser);
         //accountPanel.add(AccAdmin);
         accountPanel.add(cmbMessageList);
@@ -352,14 +607,148 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         accountPanel.add(submit);
         accountPanel.add(msg);
 
-        maincontent.add(accountPanel, "3");
+
+        // Change Password
+
+        mainContent.add(accountPanel, "3");
     }
 
     public void setupAssetsPanel() {
         assetsPanel = new JPanel(new BorderLayout(0, 0));
         assetsPanel.setBorder(BorderFactory.createTitledBorder("Assets"));
-        maincontent.add(assetsPanel, "4");
+        mainContent.add(assetsPanel, "4");
         AssetsTable table = new AssetsTable(assetsPanel, tdb);
+    }
+
+    public void setupMyListingsPanel() {
+        myListingsPanel = new JPanel(new BorderLayout());
+        myListingsPanel.setBorder(BorderFactory.createTitledBorder("My Listings"));
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,15));
+        JPanel gridPanel = new JPanel(new GridLayout(1, 2, 10, 20));
+        JButton cancelOrderBtn = new JButton("Cancel Order");
+        topPanel.add(cancelOrderBtn);
+
+        MyListingsTableBuy buyTable = new MyListingsTableBuy(gridPanel, allAssets,
+                allTrades, userLoggedIn, allUsers, org);
+        MyListingsTableSell sellTable = new MyListingsTableSell(gridPanel, allAssets,
+                allTrades, userLoggedIn, allUsers, org);
+
+        JTable buyTableClick = buyTable.getBuyTable();
+        JTable sellTableClick = sellTable.getSellTable();
+
+        buyTableClick.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                JTable table = (JTable)e.getSource();
+                int row = table.rowAtPoint(e.getPoint());
+
+                if(row != -1) {
+                    tableTradeID = Integer.parseInt(table.getModel().getValueAt(row, 0) + "");
+                }
+            }
+        });
+
+        sellTableClick.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                JTable table = (JTable)e.getSource();
+                int row = table.rowAtPoint(e.getPoint());
+
+                if(row != -1) {
+                    tableTradeID = Integer.parseInt(table.getModel().getValueAt(row, 0) + "");
+                }
+            }
+        });
+
+        cancelOrderBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                allTrades.cancelListing(tableTradeID);
+                refreshGUI();
+                cardLayout.show(mainContent, "5");
+                JOptionPane.showMessageDialog(null, "Order was successfully cancelled",
+                        "Order Cancelled", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        myListingsPanel.add(topPanel, BorderLayout.NORTH);
+        myListingsPanel.add(gridPanel);
+
+        mainContent.add(myListingsPanel, "5");
+    }
+
+    public void setupCreatePanel() {
+        createPanel = new JPanel(new BorderLayout(0, 0));
+        createPanel.setBorder(BorderFactory.createTitledBorder("Create"));
+
+        setSize(1000, 700);
+        JLabel label1 , label2;
+        JSpinner s1;
+        JTextField t1;
+        JCheckBox terms;
+        JButton submit;
+        JLabel msg;
+
+        label1 = new JLabel("Organisational Unit Name");
+        label1.setBounds(30, 50, 150, 20);
+
+        t1 = new JTextField();
+        t1.setBounds(220 , 50, 150 , 20);
+
+        label2 = new JLabel("Credits");
+        label2.setBounds(30 , 80, 100 , 20);
+
+        s1 = new JSpinner();
+        s1.setBounds(220 , 80, 150 , 20);
+
+
+        terms = new JCheckBox("Please confirm that the " +
+                "details you have entered are correct");
+        terms.setBounds(30 , 200, 400 , 20);
+
+
+        submit = new JButton("Submit");
+        submit.setBounds(30 , 230, 100 , 20);
+
+        msg = new JLabel("");
+        msg.setBounds(140 , 180, 100 , 20);
+
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String orgName = t1.getText();
+                String credits = s1.getValue() + "";
+                boolean boxSelected = terms.isSelected();
+
+                List<String> emptyAssets = new ArrayList<>();
+                List<Integer> emptyAmounts = new ArrayList<>();
+
+                if(boxSelected) {
+                    if(!org.getOrganisationNames().contains(orgName)) {
+                        org.createOrganisation(orgName, Integer.parseInt(credits), emptyAssets, emptyAmounts);
+                        JOptionPane.showMessageDialog(null,
+                                orgName + " has been added as a new organisation"  , "Successful",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "An organisation with the same name " +
+                                        "has already been created.", "Organisation Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "You have not accepted " +
+                                    "the terms. Please select the checkbox.", "Checkbox Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        createPanel.add(label1);
+        createPanel.add(label2);
+        createPanel.add(t1);
+        createPanel.add(s1);
+        createPanel.add(terms);
+        createPanel.add(submit);
+        createPanel.add(msg);
+
+        mainContent.add(createPanel, "6");
     }
 
     @Override
@@ -367,17 +756,19 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         String btnSrcTxt = e.getActionCommand();
 
         if (btnSrcTxt.equals("Buy")) {
-            cardLayout.show(maincontent, "1");
+            cardLayout.show(mainContent, "1");
         } else if (btnSrcTxt.equals("Sell")) {
-            cardLayout.show(maincontent, "2");
+            cardLayout.show(mainContent, "2");
         } else if (btnSrcTxt.equals("Account")) {
-            cardLayout.show(maincontent, "3");
+            cardLayout.show(mainContent, "3");
         } else if (btnSrcTxt.equals("View Assets")) {
-            cardLayout.show(maincontent, "4");
+            refreshGUI();
+            cardLayout.show(mainContent, "4");
         } else if (btnSrcTxt.equals("Logout")) {
             setVisible(false);
             new LoginGUI();
         }
+
     }
 }
 
