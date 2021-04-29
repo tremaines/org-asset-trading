@@ -203,7 +203,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             }
         }
 
-
         JLabel creditsLabel =
                 new JLabel("Credits: [" + org.getOrganisation(userLoggedIn.getOrganisationName()).getCredits() + "]");
         creditsLabel.setPreferredSize(new Dimension(100, 30));
@@ -586,13 +585,20 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public void setupMyListingsPanel() {
-        myListingsPanel = new JPanel(new GridLayout(0, 2, 10, 20));
+        myListingsPanel = new JPanel(new BorderLayout());
         myListingsPanel.setBorder(BorderFactory.createTitledBorder("My Listings"));
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,15));
+        JPanel gridPanel = new JPanel(new GridLayout(1, 2, 10, 20));
+        JButton cancelOrderBtn = new JButton("Cancel Order");
+        topPanel.add(cancelOrderBtn);
 
-        MyListingsTableBuy buyTable = new MyListingsTableBuy(myListingsPanel, allAssets,
+        MyListingsTableBuy buyTable = new MyListingsTableBuy(gridPanel, allAssets,
                 allTrades, userLoggedIn, allUsers, org);
-        MyListingsTableSell sellTable = new MyListingsTableSell(myListingsPanel, allAssets,
+        MyListingsTableSell sellTable = new MyListingsTableSell(gridPanel, allAssets,
                 allTrades, userLoggedIn, allUsers, org);
+
+        myListingsPanel.add(topPanel, BorderLayout.NORTH);
+        myListingsPanel.add(gridPanel);
 
         mainContent.add(myListingsPanel, "5");
     }
@@ -608,7 +614,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         JCheckBox terms;
         JButton submit;
         JLabel msg;
-
 
         label1 = new JLabel("Organisational Unit Name");
         label1.setBounds(30, 50, 150, 20);
