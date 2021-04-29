@@ -540,7 +540,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 String username = t1.getText();
                 String password = userPassword.getText();
                 String orgName = units.getSelectedItem().toString();
-                String userType = cmbMessageList.getSelectedItem() + "";
+                String userType = cmbMessageList.getSelectedItem().toString();
                 boolean boxSelected = terms.isSelected();
                 boolean admin;
 
@@ -550,21 +550,32 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                     admin = false;
                 }
 
-                if(boxSelected) {
-                    try {
-                        allUsers.createUser(username, password, admin, orgName);
-                        JOptionPane.showMessageDialog(null, "The user was successfully added",
-                                "Success",
-                                JOptionPane.INFORMATION_MESSAGE);
-                    } catch (UserException userException) {
-                        userException.printStackTrace();
-                        JOptionPane.showMessageDialog(null, "This username is already taken!", "User Taken", JOptionPane.ERROR_MESSAGE);
-                    }
+                if(!admin && orgName == "None (Admin)") {
+                    JOptionPane.showMessageDialog(null, "Invalid unit for user",
+                            "Invalid User Unit", JOptionPane.ERROR_MESSAGE);
+                } else if (admin && orgName != "None (Admin)") {
+                    JOptionPane.showMessageDialog(null, "Invalid unit for Admin, please select " +
+                                    "None (Admin)",
+                            "Invalid Admin Unit", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "The terms box was not selected",
-                            "Error", JOptionPane.ERROR_MESSAGE);
+                    if(boxSelected) {
+                        try {
+                            allUsers.createUser(username, password, admin, orgName);
+                            JOptionPane.showMessageDialog(null, "The user was successfully added",
+                                    "Success",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } catch (UserException userException) {
+                            userException.printStackTrace();
+                            JOptionPane.showMessageDialog(null, "This username is already taken!", "User Taken", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "The terms box was not selected",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
+
+
         });
 
         changePassword.addActionListener(new ActionListener() {
