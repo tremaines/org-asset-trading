@@ -100,6 +100,7 @@ public class LoginGUI extends JFrame {
         });
 
         loginPanel.add(loginBtn);
+        getRootPane().setDefaultButton(loginBtn);
 
         add(loginPanel);
         pack();
