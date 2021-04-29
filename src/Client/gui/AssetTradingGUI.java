@@ -43,7 +43,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     // The unit the logged in user belongs to
     private Units unit;
     private User userLoggedIn;
-    // Instance sof the database wrappers
+    // Instances of the database wrappers
     private UnitDBSource udb;
     private TradeDBSource tdb;
     private AssetDBSource adb;

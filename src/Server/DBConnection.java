@@ -25,7 +25,7 @@ public class DBConnection {
     // CREATE statement for tables
     private static final String CREATE_UNITS =
             "CREATE TABLE IF NOT EXISTS units (" +
-                    "unit_id VARCHAR(10) NOT NULL UNIQUE," +
+                    "unit_id INT NOT NULL AUTO_INCREMENT UNIQUE," +
                     "unit_name VARCHAR(70) NOT NULL," +
                     "credits INT NOT NULL," +
                     "PRIMARY KEY (unit_id)" +
@@ -37,17 +37,17 @@ public class DBConnection {
                     "last_name VARCHAR(30) NOT NULL," +
                     "email VARCHAR(60) NOT NULL," +
                     "admin_status BOOLEAN NOT NULL," +
-                    "unit VARCHAR(10) NOT NULL," +
+                    "unit INT NOT NULL," +
                     "password VARCHAR(260) NOT NULL," +
                     "PRIMARY KEY (user_name)," +
                     "FOREIGN KEY (unit) REFERENCES units(unit_id)" +
                     ");";
     private static final String CREATE_ASSETS_PRO =
             "CREATE TABLE IF NOT EXISTS assets_produced (" +
-                    "asset_id VARCHAR(10) NOT NULL UNIQUE," +
+                    "asset_id INT NOT NULL AUTO_INCREMENT UNIQUE," +
                     "asset_name VARCHAR(100) NOT NULL," +
                     "quantity INT NOT NULL," +
-                    "unit VARCHAR(10) NOT NULL," +
+                    "unit INT NOT NULL," +
                     "PRIMARY KEY (asset_id)," +
                     "FOREIGN KEY (unit) REFERENCES units(unit_id)" +
                     ");";
@@ -56,7 +56,7 @@ public class DBConnection {
                     "trade_id INT NOT NULL AUTO_INCREMENT," +
                     "type ENUM('buy', 'sell') NOT NULL," +
                     "user VARCHAR(30) NOT NULL," +
-                    "asset VARCHAR(10) NOT NULL," +
+                    "asset INT NOT NULL," +
                     "quantity INT NOT NULL," +
                     "price INT NOT NULL," +
                     "date DATETIME NOT NULL," +
@@ -68,7 +68,7 @@ public class DBConnection {
             "CREATE TABLE IF NOT EXISTS trade_history (" +
                     "trade_id INT NOT NULL AUTO_INCREMENT," +
                     "status ENUM('complete', 'cancelled') NOT NULL," +
-                    "asset VARCHAR(10) NOT NULL," +
+                    "asset INT NOT NULL," +
                     "qty INT NOT NULL," +
                     "date DATETIME," +
                     "seller VARCHAR(30) NOT NULL," +
@@ -79,8 +79,8 @@ public class DBConnection {
                     ");";
     private static final String CREATE_ASSETS_PUR =
             "CREATE TABLE IF NOT EXISTS assets_purchased (" +
-                    "asset_id VARCHAR(10) NOT NULL," +
-                    "unit VARCHAR(10) NOT NULL," +
+                    "asset_id INT NOT NULL," +
+                    "unit INT NOT NULL," +
                     "quantity INT NOT NULL," +
                     "credits INT NOT NULL," +
                     "PRIMARY KEY (asset_id, unit)," +
@@ -115,7 +115,6 @@ public class DBConnection {
             details.close();
 
             String url = props.getProperty("jdbc.url");
-            String schema = props.getProperty("jdbc.schema");
             String user = props.getProperty("jdbc.username");
             String password = props.getProperty("jdbc.password");
 
@@ -128,10 +127,6 @@ public class DBConnection {
             // Create tables if needed
             createTables();
 
-            Units it = new Units("itadmn","IT Admin Team", 12000);
-            User root = new User("Homer", "Simpson", "chunkylover53@aol.com",
-                    user, password, true, "itadmn");
-            addRoot(it, root);
 
         } catch (SQLException sqle) {
             System.err.println(sqle);
