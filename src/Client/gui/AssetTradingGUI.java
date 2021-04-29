@@ -604,8 +604,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         JButton cancelOrderBtn = new JButton("Cancel Order");
         topPanel.add(cancelOrderBtn);
 
-
-
         MyListingsTableBuy buyTable = new MyListingsTableBuy(gridPanel, allAssets,
                 allTrades, userLoggedIn, allUsers, org);
         MyListingsTableSell sellTable = new MyListingsTableSell(gridPanel, allAssets,

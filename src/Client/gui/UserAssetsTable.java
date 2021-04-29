@@ -24,6 +24,7 @@ public class UserAssetsTable extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(assetsTable);
         assetsTable.setAutoCreateRowSorter(true);
+        assetsTable.setFillsViewportHeight(true);
 
         // Make cells uneditable
         assetsTable.setDefaultEditor(Object.class, null);
