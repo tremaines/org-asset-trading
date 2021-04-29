@@ -97,9 +97,6 @@ public class DBConnection {
     private static final String ADD_FIRST_ADMIN = "INSERT INTO users(user_name, first_name, last_name, email, " +
             "admin_status, unit, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-    // TODO: Need to have the addRoot method run only if it needs to
-    // TODO: Note to self - instead of having a try-catch in the create database method, have it throw an exception
-    // TODO: that stops the createTable method and addRoot methods from running
     /***
      * Constructor initialises connection, creates database and tables if necessary
      * @param path

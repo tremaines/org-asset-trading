@@ -15,8 +15,6 @@ public class Trades {
         sell
     }
 
-    ;
-
     private int id;
     private TradeType type;
     private String userName;
@@ -26,36 +24,10 @@ public class Trades {
     private int price;
     private Date date;
 
-//    // Trade type (Buy/Sell)
-//    private static final int tradeType = 0;
-//    // Type of asset
-//    private static final int assetType = 1;
-//    // Quantity of the asset
-//    private static final int assetAmount = 2;
-//    // Cost per asset unit
-//    private static final int price = 3;
-//    // Original asset amount
-//    private static final int originalAmount = 4;
-//    // Username
-//    private static final int userName = 5;
-//    // Name of the organisation
-//    private static final int orgName = 6;
-//    // Trade fulfilled status (Yes/No/Partial/Cancelled)
-//    private static final int tradeFulfilled = 7;
-//    // Time of the listing
-//    private static final int time = 8;
-//    // Unique ID number of the trade
-//    private int tradeID;
-//
-//    // Multi valued map of a key (tradeID) and its values
-//    Map<Integer, ArrayList<String>> multiValueMap = new HashMap<>();
-//
-//    // Multi valued map containing summary data of a completed or partially completed sell listing
-//    Map<Integer, ArrayList<String>> tradeHistory = new HashMap<>();
-
-
-    public Trades() {
-    }
+    /**
+     * A basic constructor
+     */
+    public Trades() { }
 
     /***
      * Trade constructor that takes instances of the organisational and user classes

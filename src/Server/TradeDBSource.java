@@ -85,6 +85,11 @@ public class TradeDBSource {
         return trades;
     }
 
+    /**
+     * Add a new trade to the database. Trade ID and Date should be added automatically by MySQL
+     *
+     * @param trade The new trade to be added
+     */
     public void addTrade(Trades trade) {
         try {
             addTrades.setString(1, trade.getType().name());
@@ -98,6 +103,14 @@ public class TradeDBSource {
         }
     }
 
+    /**
+     * Match a sell order based on the asset (id) and price. It looks for any buy price equal to or greater than the
+     * sell price and matches with the trade with the smallest trade_id (the first trade in the queue in theory)
+     *
+     * @param id The id of the asset being sold
+     * @param price The asking price
+     * @return The id of the trade that matches
+     */
     public int matchSell (int id, int price) {
         ResultSet rs = null;
 
@@ -118,6 +131,14 @@ public class TradeDBSource {
         }
     }
 
+    /**
+     * Match a buy order based on the asset (id) and price. It looks for any sell price equal to or less than buy price.
+     * It matches with the lowest price first then the smallest trade_id (the first trade in the queue in theory)
+     *
+     * @param id The id of the asset being sold
+     * @param price The asking price
+     * @return The id of the trade that matches
+     */
     public int matchBuy (int id, int price) {
         ResultSet rs = null;
 
@@ -138,6 +159,12 @@ public class TradeDBSource {
         }
     }
 
+    /**
+     * Retrieves the details of a trade based on a given trade id
+     *
+     * @param id The trade id
+     * @return And instance of the Trade class
+     */
     public Trades getTrade(int id) {
         Trades trade = new Trades();
         ResultSet rs = null;
@@ -161,6 +188,11 @@ public class TradeDBSource {
         return trade;
     }
 
+    /**
+     * Updates a relation in the trades table based on a given instance of the Trades class
+     *
+     * @param trade The trade to be updated
+     */
     public void update(Trades trade) {
         try{
             updateQty.setInt(1, trade.getQuantity());
@@ -171,6 +203,11 @@ public class TradeDBSource {
         }
     }
 
+    /**
+     * Deletes a trade based on a given trade id
+     *
+     * @param id The id of the trade to be deleted
+     */
     public void delete(int id) {
         try {
             delete.setInt(1, id);

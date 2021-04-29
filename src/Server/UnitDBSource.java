@@ -63,6 +63,11 @@ public class UnitDBSource {
         return unit;
     }
 
+    /**
+     * Update some (or all) of the details of a unit (except the unit_id)
+     *
+     * @param unit The unit to be updated
+     */
     public void update(Units unit) {
         try{
             update.setString(1, unit.getUnitName());

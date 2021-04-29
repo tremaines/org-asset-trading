@@ -74,6 +74,14 @@ public class AssetDBSource {
         return asset;
     }
 
+    //TODO: Not a huge fan of this as asset name is not guaranteed to be unique... But for the purposes of this
+    //TODO: assignment, yolo
+    /**
+     * Get an asset based on its name
+     *
+     * @param name The name of the asset
+     * @return An instance of the Assets class
+     */
     public Assets getAsset(String name) {
         Assets asset = new Assets();
         ResultSet rs = null;
@@ -126,6 +134,12 @@ public class AssetDBSource {
         }
     }
 
+    /**
+     * Return an array of all assets produced by a unit
+     *
+     * @param id The id of the unit
+     * @return An array of strings (the name of the assets)
+     */
     public String[] getAssetNamesByUnit(int id) {
         ArrayList<String> names = new ArrayList<String>();
         ResultSet rs = null;
