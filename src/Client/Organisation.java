@@ -77,6 +77,20 @@ public class Organisation {
     }
 
     /**
+     * Gets an array of all organisational unit names
+     *
+     * @return Array of all organisational unit names
+     */
+    public String[] getUnitNames() {
+        String[] units = {};
+
+        var tempList = namesList;
+        tempList.add("None");
+        units = tempList.toArray(new String[0]);
+        return units;
+    }
+
+    /**
      * Gets a list of all organisation objects currently added onto the platform
      *
      * @return List of all organisation objects

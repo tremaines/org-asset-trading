@@ -460,7 +460,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         //JComboBox day, month, year;
         //JRadioButton AccUser, AccAdmin;
         //JTextArea ta1;
-        String[] messageStrings = {"Admin" , "User"};
+        String[] messageStrings = org.getUnitNames();
 
         //JLabel lbltext = new JLabel();
         JCheckBox terms;
