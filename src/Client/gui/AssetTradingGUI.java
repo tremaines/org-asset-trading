@@ -641,6 +641,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 allTrades.cancelListing(tableTradeID);
                 refreshGUI();
                 cardLayout.show(mainContent, "5");
+                JOptionPane.showMessageDialog(null, "Order was successfully cancel",
+                        "Order Cancelled", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
