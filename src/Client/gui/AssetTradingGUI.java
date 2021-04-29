@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -101,6 +102,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupSellPanel();
         setupAssetsPanel();
         setupMyListingsPanel();
+        setupAccountPanel();
     }
 
     public static void main(String[] args) throws UserException, TradesException, AssetsException {
@@ -451,8 +453,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         UserAssetsTable userAssetsTable = new UserAssetsTable(rightPanel, org, userLoggedIn);
 
-
-
         leftPanel.add(label1);
         leftPanel.add(label2);
         leftPanel.add(s2);
@@ -480,6 +480,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         String[] messageStrings = {"User", "Admin"};
 
         String[] unitNames = org.getUnitNames();
+        List<String> sortedNames = Arrays.asList(unitNames);
+        java.util.Collections.sort(sortedNames);
+        unitNames = sortedNames.toArray(new String[0]);
 
         //JLabel lbltext = new JLabel();
         JCheckBox terms;
@@ -704,15 +707,21 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public void setupCreatePanel() {
-        createPanel = new JPanel(new BorderLayout(0, 0));
-        createPanel.setBorder(BorderFactory.createTitledBorder("Create"));
+        JPanel createPanelContainer = new JPanel(new GridLayout(1, 2));
+        JPanel leftPanel = new JPanel(new BorderLayout(0, 0));
+        JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
+        rightPanel.setBorder(new EmptyBorder(0,0,30,30));
+
+        createPanelContainer.add(leftPanel);
+        createPanelContainer.add(rightPanel);
+        createPanelContainer.setBorder(BorderFactory.createTitledBorder("Create"));
 
         setSize(1000, 700);
         JLabel label1 , label2;
         JSpinner s1;
         JTextField t1;
         JCheckBox terms;
-        JButton submit;
+        JButton submit, confirm;
         JLabel msg;
 
         label1 = new JLabel("Organisational Unit Name");
@@ -739,6 +748,15 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         msg = new JLabel("");
         msg.setBounds(140 , 180, 100 , 20);
 
+        OrganisationAssetsTable organisationAssetsTable = new OrganisationAssetsTable(rightPanel, allAssets);
+        organisationAssetsTable.getAssetsTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+
+
+
+        //organisationAssetsTable.getAssetsTable()
+
+
+
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -748,6 +766,20 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
                 List<String> emptyAssets = new ArrayList<>();
                 List<Integer> emptyAmounts = new ArrayList<>();
+
+                //var val1 = organisationAssetsTable.getAssetsTable().getValueAt(0, 0);
+                //var val2 = organisationAssetsTable.getAssetsTable().getValueAt(0, 1);
+
+
+                for(int i = 0; i < allAssets.getAllAssets().size(); i++) {
+                    if(Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i, 1).toString()) > 0) {
+                        emptyAssets.add(organisationAssetsTable.getAssetsTable().getValueAt(i, 0).toString());
+                        emptyAmounts.add(Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i,
+                                1).toString()));
+                    }
+                }
+
+
 
                 if(boxSelected) {
                     if(!org.getOrganisationNames().contains(orgName)) {
@@ -768,15 +800,17 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             }
         });
 
-        createPanel.add(label1);
-        createPanel.add(label2);
-        createPanel.add(t1);
-        createPanel.add(s1);
-        createPanel.add(terms);
-        createPanel.add(submit);
-        createPanel.add(msg);
 
-        mainContent.add(createPanel, "6");
+
+        leftPanel.add(label1);
+        leftPanel.add(label2);
+        leftPanel.add(t1);
+        leftPanel.add(s1);
+        leftPanel.add(terms);
+        leftPanel.add(submit);
+        leftPanel.add(msg);
+
+        mainContent.add(createPanelContainer, "6");
     }
 
     @Override
@@ -788,6 +822,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         } else if (btnSrcTxt.equals("Sell")) {
             cardLayout.show(mainContent, "2");
         } else if (btnSrcTxt.equals("Account")) {
+            refreshGUI();
             cardLayout.show(mainContent, "3");
         } else if (btnSrcTxt.equals("View Assets")) {
             refreshGUI();
