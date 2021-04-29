@@ -362,20 +362,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
     public void setupSellPanel() {
 
-        JPanel sellPanelContainer = new JPanel(new GridLayout(1, 2));
-        JPanel leftPanel = new JPanel(new BorderLayout(0, 0));
-        JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
-        rightPanel.setBorder(new EmptyBorder(0,0,30,30));
+        sellPanel = new JPanel(new BorderLayout(0, 0));
+        sellPanel.setBorder(BorderFactory.createTitledBorder("Sell"));
 
-        sellPanelContainer.add(leftPanel);
-        sellPanelContainer.add(rightPanel);
-
-<<<<<<< Updated upstream
         setSize(1000, 700);
         JLabel label1 , label2, label3;
-=======
-        JLabel label1 , label2, label3 , label4, label5;
->>>>>>> Stashed changes
         JSpinner s2, s3;
 
         JCheckBox terms;
@@ -450,9 +441,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         });
 
-        UserAssetsTable userAssetsTable = new UserAssetsTable(rightPanel);
 
-<<<<<<< Updated upstream
         sellPanel.add(label1);
         sellPanel.add(label2);
         sellPanel.add(s2);
@@ -462,20 +451,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         sellPanel.add(terms);
         sellPanel.add(submit);
         sellPanel.add(msg);
-=======
-        leftPanel.add(label1);
-        leftPanel.add(label2);
-        leftPanel.add(s2);
-        leftPanel.add(label3);
-        leftPanel.add(s3);
-        leftPanel.add(label4);
-        leftPanel.add(assetOwnedList);
-        leftPanel.add(terms);
-        leftPanel.add(submit);
-        leftPanel.add(msg);
->>>>>>> Stashed changes
 
-        mainContent.add(sellPanelContainer, "2");
+        mainContent.add(sellPanel, "2");
     }
 
     public void setupAccountPanel() {
