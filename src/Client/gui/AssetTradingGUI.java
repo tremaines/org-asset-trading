@@ -107,7 +107,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         Organisation organisation = new Organisation();
         List<String> assetsList = new ArrayList<>();
         assetsList.add("Hardware Resources");
+        assetsList.add("Software Licenses");
         List<Integer> assetAmountsList = new ArrayList<>();
+        assetAmountsList.add(20);
         assetAmountsList.add(20);
         organisation.createOrganisation("Microsoft", 100, assetsList, assetAmountsList);
         organisation.createOrganisation("Google", 200, assetsList, assetAmountsList);
@@ -390,6 +392,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         s3 = new JSpinner();
         s3.setBounds(140 , 110, 150 , 20);
 
+        label4 =
+                new JLabel("Quantity owned: " + org.getOrganisation(userLoggedIn.getOrganisationName()).getAssetsAmounts(assetOwnedList.getSelectedItem() + ""));
+        label4.setBounds(300, 50, 130, 20);
+
         terms = new JCheckBox("Please confirm that the details you have entered are correct");
         terms.setBounds(27 , 143, 400 , 20);
 
@@ -445,6 +451,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         sellPanel.add(s2);
         sellPanel.add(label3);
         sellPanel.add(s3);
+        sellPanel.add(label4);
         sellPanel.add(assetOwnedList);
         sellPanel.add(terms);
         sellPanel.add(submit);

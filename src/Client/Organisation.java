@@ -190,6 +190,24 @@ public class Organisation {
     }
 
     /**
+     * Gets the amount of an asset owned
+     *
+     * @return Amount of an asset owned
+     */
+    public int getAssetsAmounts(String assetName) {
+        boolean assetOwned = assetList.contains(assetName);
+        int assetAmount = 0;
+
+        if(assetOwned) {
+            int indexOfAsset = assetList.indexOf(assetName);
+             assetAmount = amount.get(indexOfAsset);
+            return assetAmount;
+        }
+
+        return assetAmount;
+    }
+
+    /**
      * Adds an asset to the list of the organisation's assets
      *
      * @param assetName Name of the asset to be added
