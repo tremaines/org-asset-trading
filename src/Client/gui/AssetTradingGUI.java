@@ -362,11 +362,15 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
     public void setupSellPanel() {
 
-        sellPanel = new JPanel(new BorderLayout(0, 0));
-        sellPanel.setBorder(BorderFactory.createTitledBorder("Sell"));
+        JPanel sellPanelContainer = new JPanel(new GridLayout(1, 2));
+        JPanel leftPanel = new JPanel(new BorderLayout(0, 0));
+        JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
+        rightPanel.setBorder(new EmptyBorder(0,0,30,30));
 
-        setSize(1000, 700);
-        JLabel label1 , label2, label3;
+        sellPanelContainer.add(leftPanel);
+        sellPanelContainer.add(rightPanel);
+
+        JLabel label1 , label2, label3 , label4, label5;
         JSpinner s2, s3;
 
         JCheckBox terms;
@@ -391,6 +395,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         s3 = new JSpinner();
         s3.setBounds(140 , 110, 150 , 20);
+
+        label4 =
+                new JLabel("Quantity owned: " + org.getOrganisation(userLoggedIn.getOrganisationName()).getAssetsAmounts(assetOwnedList.getSelectedItem() + ""));
+        label4.setBounds(300, 50, 130, 20);
 
         terms = new JCheckBox("Please confirm that the details you have entered are correct");
         terms.setBounds(27 , 143, 400 , 20);
@@ -441,18 +449,20 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         });
 
+        UserAssetsTable userAssetsTable = new UserAssetsTable(rightPanel);
 
-        sellPanel.add(label1);
-        sellPanel.add(label2);
-        sellPanel.add(s2);
-        sellPanel.add(label3);
-        sellPanel.add(s3);
-        sellPanel.add(assetOwnedList);
-        sellPanel.add(terms);
-        sellPanel.add(submit);
-        sellPanel.add(msg);
+        leftPanel.add(label1);
+        leftPanel.add(label2);
+        leftPanel.add(s2);
+        leftPanel.add(label3);
+        leftPanel.add(s3);
+        leftPanel.add(label4);
+        leftPanel.add(assetOwnedList);
+        leftPanel.add(terms);
+        leftPanel.add(submit);
+        leftPanel.add(msg);
 
-        mainContent.add(sellPanel, "2");
+        mainContent.add(sellPanelContainer, "2");
     }
 
     public void setupAccountPanel() {
