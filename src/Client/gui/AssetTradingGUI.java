@@ -369,6 +369,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         sellPanelContainer.add(leftPanel);
         sellPanelContainer.add(rightPanel);
+        sellPanelContainer.setBorder(BorderFactory.createTitledBorder("Sell"));
 
         JLabel label1 , label2, label3 , label4, label5;
         JSpinner s2, s3;
