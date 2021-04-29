@@ -161,7 +161,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                         break;
                     case 3:
                         btnName = "Create";
-                        icon = new ImageIcon(this.getClass().getResource("images/organisation.png"));
+                        icon = new ImageIcon(this.getClass().getResource("images/plus.png"));
                         break;
                     case 4:
                         btnName = "Modify";
