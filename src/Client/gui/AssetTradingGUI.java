@@ -487,32 +487,26 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         JLabel msg;
 
 
-        label1 = new JLabel("First Name");
+        label1 = new JLabel("Username");
         label1.setBounds(30, 50, 100, 20);
 
         t1 = new JTextField();
         t1.setBounds(140 , 50, 100 , 20);
 
-        label2 = new JLabel("Last Name");
+        label2 = new JLabel("Password");
         label2.setBounds(30 , 80, 100 , 20);
 
         t2 = new JTextField();
         t2.setBounds(140 , 80, 100 , 20);
 
-        label3 = new JLabel("Email");
-        label3.setBounds(30 , 110, 100 , 20);
-
-        t3 = new JTextField();
-        t3.setBounds(140 , 110, 100 , 20);
-
         label4 = new JLabel("Unit");
-        label4.setBounds(30 , 140, 100 , 20);
+        label4.setBounds(30 , 110, 100 , 20);
 
         JComboBox units = new JComboBox(unitNames);
-        units.setBounds(140 , 140, 100 , 20);
+        units.setBounds(140 , 110, 100 , 20);
 
         label5 = new JLabel("Access Level");
-        label5.setBounds(30 , 170, 100 , 20);
+        label5.setBounds(30 , 140, 100 , 20);
 
         label6 = new JLabel("New Password");
         label6.setBounds(30 , 340, 100 , 20);
@@ -529,6 +523,43 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         changePassword = new JButton("Change");
         changePassword.setBounds(30 , 400, 100 , 20);
 
+        submit = new JButton("Submit");
+        submit.setBounds(30 , 200, 100 , 20);
+
+        JComboBox cmbMessageList = new JComboBox(messageStrings);
+        cmbMessageList.setBounds(140 , 140 , 100, 20);
+
+        terms = new JCheckBox("Please accept that the " +
+                "details you have entered are correct");
+        terms.setBounds(30 , 170, 400 , 20);
+
+
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = t1.getText();
+                String password = t2.getText();
+                String hashedPassword = (password.hashCode() * 2.334) + "";
+                String orgName = units.getSelectedItem() + "";
+                String userType = cmbMessageList.getSelectedItem() + "";
+                boolean boxSelected = terms.isSelected();
+                boolean admin;
+
+                if(userType == "Admin") {
+                    admin = true;
+                } else {
+                    admin = false;
+                }
+
+                if(boxSelected) {
+                    try {
+                        allUsers.createUser(username, hashedPassword, admin, orgName);
+                    } catch (UserException userException) {
+                        userException.printStackTrace();
+                    }
+                }
+            }
+        });
 
         changePassword.addActionListener(new ActionListener() {
             @Override
@@ -549,15 +580,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             }
         });
 
-        JComboBox cmbMessageList = new JComboBox(messageStrings);
-        cmbMessageList.setBounds(140 , 170 , 100, 20);
 
-        terms = new JCheckBox("Please accept that the " +
-                "details you have entered are correct");
-        terms.setBounds(30 , 200, 400 , 20);
 
-        submit = new JButton("Submit");
-        submit.setBounds(30 , 230, 100 , 20);
+
 
         msg = new JLabel("");
         msg.setBounds(140 , 230, 100 , 20);
@@ -567,8 +592,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         accountPanel.add(t1);
         accountPanel.add(label2);
         accountPanel.add(t2);
-        accountPanel.add(label3);
-        accountPanel.add(t3);
         accountPanel.add(label4);
         accountPanel.add(units);
         accountPanel.add(label5);

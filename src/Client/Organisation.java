@@ -87,8 +87,8 @@ public class Organisation {
         var tempList = namesList;
 
         // Admin option when creating user (Admins don't have a company)
-        if(!tempList.contains("None")) {
-            tempList.add("None");
+        if(!tempList.contains("None (Admin)")) {
+            tempList.add("None (Admin)");
         }
 
         units = tempList.toArray(new String[0]);
