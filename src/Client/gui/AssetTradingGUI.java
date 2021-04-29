@@ -586,32 +586,43 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             }
         });
 
-
-
-
-
         msg = new JLabel("");
         msg.setBounds(140 , 230, 100 , 20);
 
-        // accountPanel.add();
-        accountPanel.add(label1);
-        accountPanel.add(t1);
-        accountPanel.add(label2);
-        accountPanel.add(userPassword);
-        accountPanel.add(label4);
-        accountPanel.add(units);
-        accountPanel.add(label5);
-        accountPanel.add(label6);
-        accountPanel.add(label7);
-        accountPanel.add(newPasswordInput);
-        accountPanel.add(confirmPasswordInput);
-        accountPanel.add(changePassword);
-        //accountPanel.add(AccUser);
-        //accountPanel.add(AccAdmin);
-        accountPanel.add(cmbMessageList);
-        accountPanel.add(terms);
-        accountPanel.add(submit);
-        accountPanel.add(msg);
+
+        if(userLoggedIn.getAdminStatus() == false) {
+            label6.setBounds(30, 50, 130, 20);
+            accountPanel.add(label6);
+            label7.setBounds(30, 80, 130, 20);
+            accountPanel.add(label7);
+            newPasswordInput.setBounds(160 , 50, 100 , 20);
+            accountPanel.add(newPasswordInput);
+            accountPanel.add(confirmPasswordInput);
+            confirmPasswordInput.setBounds(160, 80, 100, 20);
+            accountPanel.add(changePassword);
+            changePassword.setBounds(30 , 110, 100 , 20);
+            accountPanel.add(msg);
+        } else {
+            // accountPanel.add();
+            accountPanel.add(label1);
+            accountPanel.add(t1);
+            accountPanel.add(label2);
+            accountPanel.add(userPassword);
+            accountPanel.add(label4);
+            accountPanel.add(units);
+            accountPanel.add(label5);
+            accountPanel.add(label6);
+            accountPanel.add(label7);
+            accountPanel.add(newPasswordInput);
+            accountPanel.add(confirmPasswordInput);
+            accountPanel.add(changePassword);
+            //accountPanel.add(AccUser);
+            //accountPanel.add(AccAdmin);
+            accountPanel.add(cmbMessageList);
+            accountPanel.add(terms);
+            accountPanel.add(submit);
+            accountPanel.add(msg);
+        }
 
 
         // Change Password
