@@ -764,8 +764,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 String credits = s1.getValue() + "";
                 boolean boxSelected = terms.isSelected();
 
-                List<String> emptyAssets = new ArrayList<>();
-                List<Integer> emptyAmounts = new ArrayList<>();
+                List<String> orgAssets = new ArrayList<>();
+                List<Integer> orgAmounts = new ArrayList<>();
 
                 //var val1 = organisationAssetsTable.getAssetsTable().getValueAt(0, 0);
                 //var val2 = organisationAssetsTable.getAssetsTable().getValueAt(0, 1);
@@ -773,8 +773,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
                 for(int i = 0; i < allAssets.getAllAssets().size(); i++) {
                     if(Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i, 1).toString()) > 0) {
-                        emptyAssets.add(organisationAssetsTable.getAssetsTable().getValueAt(i, 0).toString());
-                        emptyAmounts.add(Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i,
+                        orgAssets.add(organisationAssetsTable.getAssetsTable().getValueAt(i, 0).toString());
+                        orgAmounts.add(Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i,
                                 1).toString()));
                     }
                 }
@@ -783,7 +783,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
                 if(boxSelected) {
                     if(!org.getOrganisationNames().contains(orgName)) {
-                        org.createOrganisation(orgName, Integer.parseInt(credits), emptyAssets, emptyAmounts);
+                        org.createOrganisation(orgName, Integer.parseInt(credits), orgAssets,
+                                orgAmounts);
                         JOptionPane.showMessageDialog(null,
                                 orgName + " has been added as a new organisation"  , "Successful",
                                 JOptionPane.INFORMATION_MESSAGE);
