@@ -68,7 +68,7 @@ public class MyListingsTableSell extends JFrame {
         // Adds a row for each Asset type
         for(int i = 0; i < trades.getListing().size() ; i++) {
             ArrayList<String> currentListing = trades.getListing().get(i + 1);
-            if ((currentListing.get(userName) == userLoggedIn.getUsername()) && (currentListing.get(tradeType) == "Sell")) {
+            if ((currentListing.get(orgName) == userLoggedIn.getOrganisationName()) && (currentListing.get(tradeType) == "Sell")) {
                 if (currentListing.get(tradeFulfilled) == "No" || currentListing.get(tradeFulfilled) == "Partial") {
                     model.addRow(new Object[]{i+1, currentListing.get(assetType),
                             currentListing.get(assetAmount), currentListing.get(price)});
