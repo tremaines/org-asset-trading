@@ -446,7 +446,12 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         });
 
-        UserAssetsTable userAssetsTable = new UserAssetsTable(rightPanel);
+        // Row data in the table
+        Object tableData[] = new Object[2];
+
+        UserAssetsTable userAssetsTable = new UserAssetsTable(rightPanel, org, userLoggedIn);
+
+
 
         leftPanel.add(label1);
         leftPanel.add(label2);

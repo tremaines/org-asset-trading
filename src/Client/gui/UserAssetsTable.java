@@ -1,5 +1,8 @@
 package Client.gui;
 
+import Client.Organisation;
+import Client.User;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -7,8 +10,12 @@ import java.awt.*;
 public class UserAssetsTable extends JFrame {
 
     JTable table;
+    Organisation org;
+    User userLoggedIn;
 
-    public UserAssetsTable(JPanel panel) {
+    public UserAssetsTable(JPanel panel, Organisation organisation, User userLoggedIn) {
+        this.org = organisation;
+        this.userLoggedIn = userLoggedIn;
 
         // Row data in the table
         Object tableData[] = new Object[3];
@@ -21,6 +28,16 @@ public class UserAssetsTable extends JFrame {
         // Column names
         model.addColumn("Asset");
         model.addColumn("Amount");
+
+        Organisation userOrganisation = org.getOrganisation(userLoggedIn.getOrganisationName());
+        int numberOfAssetsOwned = userOrganisation.getAssets().size();
+
+        // Adds a row for each Asset type
+        for(int i = 0; i < numberOfAssetsOwned; i++) {
+            model.addRow(new Object[]{
+                    userOrganisation.getAssets().get(i),
+                    userOrganisation.getAmounts().get(i).toString()});
+        }
 
         JScrollPane scrollPane = new JScrollPane(assetsTable);
         assetsTable.setAutoCreateRowSorter(true);
