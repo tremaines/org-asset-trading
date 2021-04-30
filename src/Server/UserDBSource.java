@@ -15,11 +15,14 @@ public class UserDBSource {
     private static final String GET_PASSWORD = "SELECT password FROM users WHERE user_name=?";
     private static final String CHECK_USERNAME = "SELECT * FROM users WHERE user_name=?";
     private static final String GET_USER = "SELECT * FROM users WHERE user_name=?";
+    private static final String ADD = "INSERT INTO users (user_name, first_name, last_name, email, admin_status, " +
+            "unit, password) VALUES(?, ?, ?, ?, ?, ?, ?);";
 
     // Prepared statements
     private PreparedStatement getPassword;
     private PreparedStatement checkUserName;
     private PreparedStatement getUser;
+    private PreparedStatement addUser;
 
     private Connection connection;
 
@@ -34,6 +37,7 @@ public class UserDBSource {
             getPassword = connection.prepareStatement(GET_PASSWORD);
             checkUserName = connection.prepareStatement(CHECK_USERNAME);
             getUser = connection.prepareStatement(GET_USER);
+            addUser = connection.prepareStatement(ADD);
         } catch (SQLException sqle) {
             System.err.println(sqle);
         }
@@ -109,6 +113,20 @@ public class UserDBSource {
         }
 
         return user;
+    }
+
+    public void addUser(User user) {
+        try {
+            addUser.setString(1, user.getUsername());
+            addUser.setString(2, user.getFirstName());
+            addUser.setString(3, user.getLastName());
+            addUser.setString(4, user.getEmail());
+            addUser.setBoolean(5, user.getAdminStatus());
+            addUser.setInt(6, user.getUnit());
+            addUser.setString(7, user.getHashedPassword());
+        } catch(SQLException sqle) {
+            System.err.println(sqle);
+        }
     }
 
     /***

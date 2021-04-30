@@ -33,9 +33,9 @@ public class DBConnection {
     private static final String CREATE_USERS =
             "CREATE TABLE IF NOT EXISTS users (" +
                     "user_name VARCHAR(30) NOT NULL UNIQUE," +
-                    "first_name VARCHAR(30) NOT NULL," +
-                    "last_name VARCHAR(30) NOT NULL," +
-                    "email VARCHAR(60) NOT NULL," +
+                    "first_name VARCHAR(30)," +
+                    "last_name VARCHAR(30)," +
+                    "email VARCHAR(60)," +
                     "admin_status BOOLEAN NOT NULL," +
                     "unit INT NOT NULL," +
                     "password VARCHAR(260) NOT NULL," +

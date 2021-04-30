@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 //TODO: Need to deal with the assets_purchased table
 /***
@@ -155,5 +156,25 @@ public class AssetDBSource {
         }
 
         return names.toArray(new String[0]);
+    }
+
+    public HashMap<String, Integer> getAssetsAndAmounts(int id) {
+        HashMap<String, Integer> assets = new HashMap<>();
+        ResultSet rs = null;
+
+        try {
+            getAssetsByUnit.setInt(1, id);
+            rs = getAssetsByUnit.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("asset_name");
+                int qty = rs.getInt("quantity");
+                assets.put(name, qty);
+            }
+
+            return assets;
+        } catch(SQLException sqle) {
+            System.err.println(sqle);
+            return null;
+        }
     }
 }

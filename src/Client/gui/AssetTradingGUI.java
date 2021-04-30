@@ -446,7 +446,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         // Row data in the table
         Object tableData[] = new Object[2];
 
-        UserAssetsTable userAssetsTable = new UserAssetsTable(rightPanel, org, userLoggedIn);
+        UserAssetsTable userAssetsTable = new UserAssetsTable(rightPanel, unit, userLoggedIn, adb);
 
 
 
@@ -476,7 +476,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         //JTextArea ta1;
         String[] messageStrings = {"User", "Admin"};
 
-        String[] unitNames = org.getUnitNames();
+        String[] unitNames = udb.getUnitNames();
 
         //JLabel lbltext = new JLabel();
         JCheckBox terms;
@@ -536,8 +536,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 String username = t1.getText();
                 String password = t2.getText();
-                String hashedPassword = (password.hashCode() * 2.334) + "";
-                String orgName = units.getSelectedItem() + "";
+                String hashedPassword = User.hashPassword(password);
+                String unit = units.getSelectedItem() + "";
                 String userType = cmbMessageList.getSelectedItem() + "";
                 boolean boxSelected = terms.isSelected();
                 boolean admin;
@@ -550,7 +550,14 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
                 if(boxSelected) {
                     try {
-                        allUsers.createUser(username, hashedPassword, admin, orgName);
+                        User newUser = new User(null, null, null, username, hashedPassword,
+                                admin, udb.getUnit(unit).getUnitID());
+
+                        if (usdb.checkUsername(newUser.getUsername())) {
+                            throw new UserException("Username already exists!");
+                        } else {
+                            usdb.addUser(newUser);
+                        }
                     } catch (UserException userException) {
                         userException.printStackTrace();
                     }
@@ -565,14 +572,17 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 String confirmPassword = confirmPasswordInput.getText();
                 if (newPassword.length() != 0 && confirmPassword.length() != 0) {
                     if (newPassword.equals(confirmPassword)) {
-                        JOptionPane.showMessageDialog(null, "Password has been changed", "Successful", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Password has been changed",
+                                "Successful", JOptionPane.INFORMATION_MESSAGE);
                         userLoggedIn.changePassword(newPassword);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Passwords don't match!", "Invalid", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Passwords don't match!",
+                                "Invalid", JOptionPane.ERROR_MESSAGE);
                     }
 
                 } else {
-                    JOptionPane.showMessageDialog(null, "Password fields cannot be empty", "Invalid", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Password fields cannot be empty",
+                            "Invalid", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

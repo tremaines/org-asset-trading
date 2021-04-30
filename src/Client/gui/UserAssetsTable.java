@@ -1,22 +1,25 @@
 package Client.gui;
 
-import Client.Organisation;
 import Client.Units;
 import Client.User;
+import Server.AssetDBSource;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.HashMap;
 
 public class UserAssetsTable extends JFrame {
 
     JTable table;
     Units unit;
     User userLoggedIn;
+    AssetDBSource adb;
 
-    public UserAssetsTable(JPanel panel, Organisation organisation, User userLoggedIn) {
+    public UserAssetsTable(JPanel panel, Units unit, User userLoggedIn, AssetDBSource adb) {
         this.userLoggedIn = userLoggedIn;
-        this.unit = userLoggedIn.getUnit();
+        this.unit = unit;
+        this.adb = adb;
 
         // Row data in the table
         Object tableData[] = new Object[3];
@@ -30,17 +33,15 @@ public class UserAssetsTable extends JFrame {
         model.addColumn("Asset");
         model.addColumn("Amount");
 
-        Organisation userOrganisation = org.getOrganisation(userLoggedIn.getOrganisationName());
-        int numberOfAssetsOwned = userOrganisation.getAssets().size();
+        HashMap<String, Integer> assets = adb.getAssetsAndAmounts(unit.getUnitID());
+        int numberOfAssetsOwned = assets.size();
 
         // Adds a row for each Asset type
-        for(int i = 0; i < numberOfAssetsOwned; i++) {
-            model.addRow(new Object[]{
-                    userOrganisation.getAssets().get(i),
-                    userOrganisation.getAmounts().get(i).toString()});
+        for(String asset : assets.keySet()) {
+            model.addRow(new Object[]{asset, assets.get(asset)});
         }
 
-        JScrollPane scrollPane = new JScrollPane(assetsTable);
+            JScrollPane scrollPane = new JScrollPane(assetsTable);
         assetsTable.setAutoCreateRowSorter(true);
         assetsTable.setFillsViewportHeight(true);
 
