@@ -767,39 +767,42 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 List<String> orgAssets = new ArrayList<>();
                 List<Integer> orgAmounts = new ArrayList<>();
 
-                //var val1 = organisationAssetsTable.getAssetsTable().getValueAt(0, 0);
-                //var val2 = organisationAssetsTable.getAssetsTable().getValueAt(0, 1);
-
-
-                for(int i = 0; i < allAssets.getAllAssets().size(); i++) {
-                    if(Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i, 1).toString()) > 0) {
-                        orgAssets.add(organisationAssetsTable.getAssetsTable().getValueAt(i, 0).toString());
-                        orgAmounts.add(Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i,
-                                1).toString()));
+                try {
+                    for (int i = 0; i < allAssets.getAllAssets().size(); i++) {
+                        if (Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i, 1).toString()) > 0) {
+                            orgAssets.add(organisationAssetsTable.getAssetsTable().getValueAt(i, 0).toString());
+                            orgAmounts.add(Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i,
+                                    1).toString()));
+                        }
                     }
-                }
 
-
-
-                if(boxSelected) {
-                    if(!org.getOrganisationNames().contains(orgName)) {
-                        org.createOrganisation(orgName, Integer.parseInt(credits), orgAssets,
-                                orgAmounts);
-                        JOptionPane.showMessageDialog(null,
-                                orgName + " has been added as a new organisation"  , "Successful",
-                                JOptionPane.INFORMATION_MESSAGE);
+                    if (boxSelected) {
+                        if (!org.getOrganisationNames().contains(orgName)) {
+                            org.createOrganisation(orgName, Integer.parseInt(credits), orgAssets,
+                                    orgAmounts);
+                            JOptionPane.showMessageDialog(null,
+                                    orgName + " has been added as a new organisation", "Successful",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "An organisation with the same name " +
+                                            "has already been created.", "Organisation Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(null, "An organisation with the same name " +
-                                        "has already been created.", "Organisation Error",
+                        JOptionPane.showMessageDialog(null, "You have not accepted " +
+                                        "the terms. Please select the checkbox.", "Checkbox Error",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                } else {
-                    JOptionPane.showMessageDialog(null, "You have not accepted " +
-                                    "the terms. Please select the checkbox.", "Checkbox Error",
+                } catch (NumberFormatException n) {
+                    refreshGUI();
+                    JOptionPane.showMessageDialog(null, "Invalid entry for an asset quantity, " +
+                                    "please only enter integer values.",
+                            "Invalid Entry",
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
+
 
 
 
