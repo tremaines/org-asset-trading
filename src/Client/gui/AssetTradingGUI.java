@@ -721,7 +721,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         JSpinner s1;
         JTextField t1;
         JCheckBox terms;
-        JButton submit, confirm;
+        JButton submit;
         JLabel msg;
 
         label1 = new JLabel("Organisational Unit Name");
@@ -753,10 +753,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
 
 
-        //organisationAssetsTable.getAssetsTable()
-
-
-
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -767,40 +763,49 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 List<String> orgAssets = new ArrayList<>();
                 List<Integer> orgAmounts = new ArrayList<>();
 
-                try {
-                    for (int i = 0; i < allAssets.getAllAssets().size(); i++) {
-                        if (Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i, 1).toString()) > 0) {
-                            orgAssets.add(organisationAssetsTable.getAssetsTable().getValueAt(i, 0).toString());
-                            orgAmounts.add(Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i,
-                                    1).toString()));
+                if(Integer.parseInt(credits ) >= 0) {
+                    try {
+                        for (int i = 0; i < allAssets.getAllAssets().size(); i++) {
+                            if (Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i, 1).toString()) > 0) {
+                                orgAssets.add(organisationAssetsTable.getAssetsTable().getValueAt(i, 0).toString());
+                                orgAmounts.add(Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i,
+                                        1).toString()));
+                            }
+                            else if (Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i, 1).toString()) < 0) {
+                                JOptionPane.showMessageDialog(null, "Negative numbers are " +
+                                                "discarded for asset quantities.",
+                                        "Asset Quantity",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                            }
                         }
-                    }
 
-                    if (boxSelected) {
-                        if (!org.getOrganisationNames().contains(orgName)) {
-                            org.createOrganisation(orgName, Integer.parseInt(credits), orgAssets,
-                                    orgAmounts);
-                            JOptionPane.showMessageDialog(null,
-                                    orgName + " has been added as a new organisation", "Successful",
-                                    JOptionPane.INFORMATION_MESSAGE);
+                        if (boxSelected) {
+                            if (!org.getOrganisationNames().contains(orgName)) {
+                                org.createOrganisation(orgName, Integer.parseInt(credits), orgAssets,
+                                        orgAmounts);
+                                JOptionPane.showMessageDialog(null,
+                                        orgName + " has been added as a new organisation", "Successful",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "An organisation with the same name " +
+                                                "has already been created.", "Organisation Error",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
                         } else {
-                            JOptionPane.showMessageDialog(null, "An organisation with the same name " +
-                                            "has already been created.", "Organisation Error",
+                            JOptionPane.showMessageDialog(null, "You have not accepted " +
+                                            "the terms. Please select the checkbox.", "Checkbox Error",
                                     JOptionPane.ERROR_MESSAGE);
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "You have not accepted " +
-                                        "the terms. Please select the checkbox.", "Checkbox Error",
+                    } catch (NumberFormatException n) {
+                        refreshGUI();
+                        JOptionPane.showMessageDialog(null, "Invalid entry for an asset quantity, " +
+                                        "please only enter integer values.",
+                                "Invalid Entry",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (NumberFormatException n) {
-                    refreshGUI();
-                    JOptionPane.showMessageDialog(null, "Invalid entry for an asset quantity, " +
-                                    "please only enter integer values.",
-                            "Invalid Entry",
-                            JOptionPane.ERROR_MESSAGE);
                 }
-            }
+                }
+
         });
 
 
