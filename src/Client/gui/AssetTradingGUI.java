@@ -54,6 +54,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private UserDBSource usdb;
     private TradeDBSource tdb;
     private AssetDBSource adb;
+    private PurchasesDBSource pdb;
+    private  HistoryDBSource hdb;
 
 
 
@@ -67,6 +69,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         this.tdb = new TradeDBSource(connection);
         this.adb = new AssetDBSource(connection);
         this.usdb = new UserDBSource(connection);
+        this.pdb = new PurchasesDBSource(connection);
+        this.hdb = new HistoryDBSource(connection);
         this.unit = udb.getUnit(user.getUnit());
         this.userLoggedIn = user;
 
@@ -313,7 +317,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                         try {
                             newTrade = new Trades(Trades.TradeType.buy, userLoggedIn.getUsername(),
                                     adb.getAsset(type).getAssetID(), Integer.parseInt(amount), Integer.parseInt(price));
-                            TradeLogic.setTrade(newTrade, udb, usdb, tdb, adb);
+                            TradeLogic.setTrade(newTrade, udb, usdb, tdb, adb, pdb, hdb);
                             JOptionPane.showMessageDialog(null, "Buy order was placed!",
                                     "Successful", JOptionPane.INFORMATION_MESSAGE);
                             refreshGUI();
@@ -415,7 +419,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                             newTrade = new Trades(Trades.TradeType.buy, userLoggedIn.getUsername(),
                                     adb.getAsset(type).getAssetID(), Integer.parseInt(amount), Integer.parseInt(price));
                             refreshGUI();
-                            TradeLogic.setTrade(newTrade, udb, usdb, tdb, adb);
+                            TradeLogic.setTrade(newTrade, udb, usdb, tdb, adb, pdb, hdb);
                             cardLayout.show(mainContent, "2");
                             JOptionPane.showMessageDialog(null, "Sell order was placed!",
                                     "Successful", JOptionPane.INFORMATION_MESSAGE);

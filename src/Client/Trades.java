@@ -12,7 +12,9 @@ import java.sql.Date;
 public class Trades {
     public enum TradeType {
         buy,
-        sell
+        sell,
+        complete,
+        cancelled
     }
 
     private int id;

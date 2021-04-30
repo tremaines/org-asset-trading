@@ -70,9 +70,10 @@ public class DBConnection {
                     "status ENUM('complete', 'cancelled') NOT NULL," +
                     "asset INT NOT NULL," +
                     "qty INT NOT NULL," +
+                    "credits INT NOT NULL," +
                     "date DATETIME," +
-                    "seller VARCHAR(30) NOT NULL," +
-                    "buyer VARCHAR(30) NOT NULL," +
+                    "seller VARCHAR(30)," +
+                    "buyer VARCHAR(30)," +
                     "PRIMARY KEY (trade_id)," +
                     "FOREIGN KEY (seller) REFERENCES users(user_name)," +
                     "FOREIGN KEY (buyer) REFERENCES users(user_name)" +
@@ -82,7 +83,6 @@ public class DBConnection {
                     "asset_id INT NOT NULL," +
                     "unit INT NOT NULL," +
                     "quantity INT NOT NULL," +
-                    "credits INT NOT NULL," +
                     "PRIMARY KEY (asset_id, unit)," +
                     "FOREIGN KEY (asset_id) REFERENCES assets_produced(asset_id)," +
                     "FOREIGN KEY (unit) REFERENCES units(unit_id)" +

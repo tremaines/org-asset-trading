@@ -1,9 +1,7 @@
 package Client;
 
-import Server.AssetDBSource;
-import Server.TradeDBSource;
-import Server.UnitDBSource;
-import Server.UserDBSource;
+import Server.*;
+import Client.Trades.TradeType;
 
 /**
  * This class deals with listing, matching and settling trades
@@ -14,6 +12,8 @@ public class TradeLogic {
     private static UserDBSource usdb;
     private static TradeDBSource tdb;
     private static AssetDBSource adb;
+    private static PurchasesDBSource pdb;
+    private static HistoryDBSource hdb;
 
     private static Trades trade;
     private static User user;
@@ -33,7 +33,8 @@ public class TradeLogic {
      * @throws TradesException
      */
     public static void setTrade(Trades newTrade, UnitDBSource unitDBSource, UserDBSource userDBSource,
-                                TradeDBSource tradeDBSource, AssetDBSource assetDBSource) throws TradesException {
+                                TradeDBSource tradeDBSource, AssetDBSource assetDBSource, PurchasesDBSource pdb,
+                                HistoryDBSource hdb) throws TradesException {
         trade = newTrade;
         user = usdb.getUser(trade.getUserName());
         unit = udb.getUnit(user.getUnit());
@@ -136,6 +137,8 @@ public class TradeLogic {
      */
     private static void settleTrade(Trades buy, Trades sell) {
 
+        TradeHistory newTrade = null;
+
         // Get the organisational unit each trade belongs to (based on user)
         Units buyerUnit = udb.getUnit(usdb.getUser(buy.getUserName()).getUnit());
         Units sellerUnit = udb.getUnit(usdb.getUser(sell.getUserName()).getUnit());
@@ -165,8 +168,11 @@ public class TradeLogic {
             // Can delete both trades as they have cancelled each other out
             tdb.delete(buy.getId());
             tdb.delete(sell.getId());
-            //TODO: ADD qty to assets_purchased
-            //TODO: ADD to trade HX
+            // Add to asset_purchases table
+            pdb.addToPurchases(buy.getAssetId(), buyerUnit.getUnitID(), buy.getQuantity());
+            // Add to trade history
+            newTrade = new TradeHistory(TradeType.complete, buy.getAssetId(), buy.getQuantity(), sellingPrice,
+                    buy.getUserName(), sell.getUserName());
         }
         // If buy qty is less than sell qty
         else if (qtyDiff < 0) {
@@ -185,6 +191,11 @@ public class TradeLogic {
             tdb.update(sell);
             // Delete buy trade from database as its qty is now 0
             tdb.delete(buy.getId());
+            // Add to asset_purchases table
+            pdb.addToPurchases(buy.getAssetId(), buyerUnit.getUnitID(), buy.getQuantity());
+            // Add to trade history
+            newTrade = new TradeHistory(TradeType.complete, buy.getAssetId(), buy.getQuantity(), sellingPrice,
+                    buy.getUserName(), sell.getUserName());
         }
         // If buy qty is greater than sell qty
         else if (qtyDiff > 0) {
@@ -203,6 +214,12 @@ public class TradeLogic {
             tdb.update(buy);
             // Can delete sell trade as its qty is now 0
             tdb.delete(sell.getId());
+            // Add to asset_purchases table
+            pdb.addToPurchases(buy.getAssetId(), buyerUnit.getUnitID(), sell.getQuantity());
+            // Add to trade history
+            newTrade = new TradeHistory(TradeType.complete, buy.getAssetId(), sell.getQuantity(), sellingPrice,
+                    buy.getUserName(), sell.getUserName());
         }
+        hdb.addToHistory(newTrade);
     }
 }

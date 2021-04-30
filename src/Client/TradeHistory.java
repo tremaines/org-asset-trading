@@ -1,31 +1,104 @@
-//package Client;
-//
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.Map;
-//
-///**
-// * Trade History gives the information about the asset and its trade
-// * value along with the users that have traded it for users to know if they should
-// * buy that asset.
-// */
-//public class TradeHistory {
-//
-//    // Collection of all instances of the Trades class
-//    private Trades trades;
-//    // Multi valued map of the entire trade history
-//    Map<Integer, ArrayList<String>> extendedTradeHistory = new HashMap<>();
-//
-//    // Trade fulfilled status (Yes/No/Partially/Cancelled)
-//    private static final int tradeFulfilled = 7;
-//
-//    // Constructor for the TradeHistory class that takes a collection of all trades
-//    public TradeHistory(Trades trades)
-//    {
-//        this.trades = trades;
-//    }
-//
-//    /**
+package Client;
+
+import Client.Trades.TradeType;
+
+/**
+ * Trade History gives the information about the asset and its trade
+ * value along with the users that have traded it for users to know if they should
+ * buy that asset.
+ */
+public class TradeHistory {
+
+    int id;
+    TradeType status;
+    int asset;
+    int qty;
+    int credits;
+    String buyer;
+    String seller;
+
+    public TradeHistory() {
+    }
+
+    public TradeHistory(Trades trade) {
+        status = TradeType.cancelled;
+        this.asset = trade.getAssetId();
+        this.qty = trade.getQuantity();
+        this.credits = trade.getPrice();
+        if (trade.getType() == TradeType.buy) {
+            this.buyer = trade.getUserName();
+        } else {
+            this.seller = trade.getUserName();
+        }
+
+    }
+
+    public TradeHistory(TradeType status, int asset, int qty, int credits, String buyer, String seller) {
+        this.status = status;
+        this.asset = asset;
+        this.qty = qty;
+        this.credits = credits;
+        this.buyer = buyer;
+        this.seller = seller;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public TradeType getStatus() {
+        return status;
+    }
+
+    public void setStatus(TradeType status) {
+        this.status = status;
+    }
+
+    public int getAsset() {
+        return asset;
+    }
+
+    public void setAsset(int asset) {
+        this.asset = asset;
+    }
+
+    public int getQty() {
+        return qty;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
+    }
+
+    public String getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(String buyer) {
+        this.buyer = buyer;
+    }
+
+    public String getSeller() {
+        return seller;
+    }
+
+    public void setSeller(String seller) {
+        this.seller = seller;
+    }
+
+    //    /**
 //     * Gets the summary trade history data that can be used to form a graph for recent sell prices
 //     *
 //     * @return Summary data of sell listings
@@ -77,4 +150,4 @@
 //    public Map<Integer, ArrayList<String>> getSummaryTradeHistory() {
 //        return trades.getTradeHistory();
 //    }
-//}
+}
