@@ -10,8 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import java.sql.Connection;
 import java.util.Arrays;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 
 /**
@@ -110,6 +116,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupSellPanel();
         setupAssetsPanel();
         setupMyListingsPanel();
+        setupAccountPanel();
     }
 
     public static void main(String[] args) throws UserException, TradesException, AssetsException {
@@ -448,8 +455,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         UserAssetsTable userAssetsTable = new UserAssetsTable(rightPanel, unit, userLoggedIn, adb);
 
-
-
         leftPanel.add(label1);
         leftPanel.add(label2);
         leftPanel.add(s2);
@@ -470,7 +475,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setSize(1000, 700);
         JLabel label1 , label2, label3 , label4, label5, label6, label7;
         JTextField t1, t2, t3, t4, t5;
-        JPasswordField newPasswordInput, confirmPasswordInput;
+        JPasswordField userPassword, newPasswordInput, confirmPasswordInput;
         //JComboBox day, month, year;
         //JRadioButton AccUser, AccAdmin;
         //JTextArea ta1;
@@ -493,8 +498,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label2 = new JLabel("Password");
         label2.setBounds(30 , 80, 100 , 20);
 
-        t2 = new JTextField();
-        t2.setBounds(140 , 80, 100 , 20);
+        userPassword = new JPasswordField();
+        userPassword.setBounds(140 , 80, 100 , 20);
 
         label4 = new JLabel("Unit");
         label4.setBounds(30 , 110, 100 , 20);
@@ -535,7 +540,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = t1.getText();
-                String password = t2.getText();
+                String password = userPassword.getText();
                 String hashedPassword = User.hashPassword(password);
                 String unit = units.getSelectedItem() + "";
                 String userType = cmbMessageList.getSelectedItem() + "";
@@ -548,18 +553,26 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                     admin = false;
                 }
 
-                if(boxSelected) {
-                    try {
-                        User newUser = new User(null, null, null, username, hashedPassword,
-                                admin, udb.getUnit(unit).getUnitID());
+                if (admin && unit != "IT Administration") {
+                    JOptionPane.showMessageDialog(null, "Only IT Admin staff can be admins!",
+                            "Invalid Unit For Admin", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    if (boxSelected) {
+                        try {
+                            User newUser = new User(null, null, null, username, hashedPassword,
+                                    admin, udb.getUnit(unit).getUnitID());
 
-                        if (usdb.checkUsername(newUser.getUsername())) {
-                            throw new UserException("Username already exists!");
-                        } else {
-                            usdb.addUser(newUser);
+                            if (usdb.checkUsername(newUser.getUsername())) {
+                                throw new UserException("Username already exists!");
+                            } else {
+                                usdb.addUser(newUser);
+                            }
+                        } catch (UserException userException) {
+                            userException.printStackTrace();
                         }
-                    } catch (UserException userException) {
-                        userException.printStackTrace();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "The terms box was not selected",
+                                "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -587,32 +600,43 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             }
         });
 
-
-
-
-
         msg = new JLabel("");
         msg.setBounds(140 , 230, 100 , 20);
 
-        // accountPanel.add();
-        accountPanel.add(label1);
-        accountPanel.add(t1);
-        accountPanel.add(label2);
-        accountPanel.add(t2);
-        accountPanel.add(label4);
-        accountPanel.add(units);
-        accountPanel.add(label5);
-        accountPanel.add(label6);
-        accountPanel.add(label7);
-        accountPanel.add(newPasswordInput);
-        accountPanel.add(confirmPasswordInput);
-        accountPanel.add(changePassword);
-        //accountPanel.add(AccUser);
-        //accountPanel.add(AccAdmin);
-        accountPanel.add(cmbMessageList);
-        accountPanel.add(terms);
-        accountPanel.add(submit);
-        accountPanel.add(msg);
+
+        if(userLoggedIn.getAdminStatus() == false) {
+            label6.setBounds(30, 50, 130, 20);
+            accountPanel.add(label6);
+            label7.setBounds(30, 80, 130, 20);
+            accountPanel.add(label7);
+            newPasswordInput.setBounds(160 , 50, 100 , 20);
+            accountPanel.add(newPasswordInput);
+            accountPanel.add(confirmPasswordInput);
+            confirmPasswordInput.setBounds(160, 80, 100, 20);
+            accountPanel.add(changePassword);
+            changePassword.setBounds(30 , 110, 100 , 20);
+            accountPanel.add(msg);
+        } else {
+            // accountPanel.add();
+            accountPanel.add(label1);
+            accountPanel.add(t1);
+            accountPanel.add(label2);
+            accountPanel.add(userPassword);
+            accountPanel.add(label4);
+            accountPanel.add(units);
+            accountPanel.add(label5);
+            accountPanel.add(label6);
+            accountPanel.add(label7);
+            accountPanel.add(newPasswordInput);
+            accountPanel.add(confirmPasswordInput);
+            accountPanel.add(changePassword);
+            //accountPanel.add(AccUser);
+            //accountPanel.add(AccAdmin);
+            accountPanel.add(cmbMessageList);
+            accountPanel.add(terms);
+            accountPanel.add(submit);
+            accountPanel.add(msg);
+        }
 
 
         // Change Password
@@ -681,8 +705,14 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public void setupCreatePanel() {
-        createPanel = new JPanel(new BorderLayout(0, 0));
-        createPanel.setBorder(BorderFactory.createTitledBorder("Create"));
+        JPanel createPanelContainer = new JPanel(new GridLayout(1, 2));
+        JPanel leftPanel = new JPanel(new BorderLayout(0, 0));
+        JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
+        rightPanel.setBorder(new EmptyBorder(0,0,30,30));
+
+        createPanelContainer.add(leftPanel);
+        createPanelContainer.add(rightPanel);
+        createPanelContainer.setBorder(BorderFactory.createTitledBorder("Create"));
 
         setSize(1000, 700);
         JLabel label1 , label2;
@@ -716,6 +746,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         msg = new JLabel("");
         msg.setBounds(140 , 180, 100 , 20);
 
+        OrganisationAssetsTable organisationAssetsTable = new OrganisationAssetsTable(rightPanel, 30);
+        organisationAssetsTable.getAssetsTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+
+
+
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -738,23 +773,66 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                                         "has already been created.", "Organisation Error",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                } else {
+                    } else {
                     JOptionPane.showMessageDialog(null, "You have not accepted " +
                                     "the terms. Please select the checkbox.", "Checkbox Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
+
+//                if(Integer.parseInt(credits ) >= 0) {
+//                    try {
+//                        for (int i = 0; i < allAssets.getAllAssets().size(); i++) {
+//                            if (Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i, 1).toString()) > 0) {
+//                                orgAssets.add(organisationAssetsTable.getAssetsTable().getValueAt(i, 0).toString());
+//                                orgAmounts.add(Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i,
+//                                        1).toString()));
+//                            }
+//                            else if (Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i, 1).toString()) < 0) {
+//                                JOptionPane.showMessageDialog(null, "Negative numbers are " +
+//                                                "discarded for asset quantities.",
+//                                        "Asset Quantity",
+//                                        JOptionPane.INFORMATION_MESSAGE);
+//                            }
+//                        }
+//
+//                        if (boxSelected) {
+//                            if (!org.getOrganisationNames().contains(orgName)) {
+//                                org.createOrganisation(orgName, Integer.parseInt(credits), orgAssets,
+//                                        orgAmounts);
+//                                JOptionPane.showMessageDialog(null,
+//                                        orgName + " has been added as a new organisation", "Successful",
+//                                        JOptionPane.INFORMATION_MESSAGE);
+//                            } else {
+//                                JOptionPane.showMessageDialog(null, "An organisation with the same name " +
+//                                                "has already been created.", "Organisation Error",
+//                                        JOptionPane.ERROR_MESSAGE);
+//                            }
+//
+//                        }
+//                    } catch (NumberFormatException n) {
+//                        refreshGUI();
+//                        JOptionPane.showMessageDialog(null, "Invalid entry for an asset quantity, " +
+//                                        "please only enter integer values.",
+//                                "Invalid Entry",
+//                                JOptionPane.ERROR_MESSAGE);
+//                    }
+//                }
             }
+
         });
 
-        createPanel.add(label1);
-        createPanel.add(label2);
-        createPanel.add(t1);
-        createPanel.add(s1);
-        createPanel.add(terms);
-        createPanel.add(submit);
-        createPanel.add(msg);
 
-        mainContent.add(createPanel, "6");
+
+
+        leftPanel.add(label1);
+        leftPanel.add(label2);
+        leftPanel.add(t1);
+        leftPanel.add(s1);
+        leftPanel.add(terms);
+        leftPanel.add(submit);
+        leftPanel.add(msg);
+
+        mainContent.add(createPanelContainer, "6");
     }
 
     @Override
@@ -766,6 +844,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         } else if (btnSrcTxt.equals("Sell")) {
             cardLayout.show(mainContent, "2");
         } else if (btnSrcTxt.equals("Account")) {
+            refreshGUI();
             cardLayout.show(mainContent, "3");
         } else if (btnSrcTxt.equals("View Assets")) {
             refreshGUI();
@@ -773,6 +852,12 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         } else if (btnSrcTxt.equals("Logout")) {
             setVisible(false);
             new LoginGUI();
+        } else if (btnSrcTxt.equals("My Listings")) {
+            refreshGUI();
+            cardLayout.show(mainContent, "5");
+        } else if (btnSrcTxt.equals("Create")) {
+            refreshGUI();
+            cardLayout.show(mainContent, "6");
         }
 
     }
