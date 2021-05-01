@@ -64,89 +64,19 @@ public class Units {
         this.credits = amount;
     }
 
+    /**
+     * Setter for the unit's name
+     * @param unitName
+     */
     public void setUnitName(String unitName) {
         this.unitName = unitName;
     }
 
+    /**
+     * Setter for the unit ID
+     * @param unitID
+     */
     public void setUnitID(int unitID) {
         this.unitID = unitID;
     }
-    //    /**
-//     * Gets all assets currently owned by the organisation
-//     *
-//     * @return The list of assets owned
-//     */
-//    public List<String> getAssets() {
-//        return assetList;
-//    }
-//
-//    /**
-//     * Gets quantity of assets owned matched by index value of asset list
-//     *
-//     * @return List containing quantities of assets
-//     */
-//    public List<Integer> getAmounts() {
-//        return amount;
-//    }
-//
-//    /**
-//     * Maps both the lists of assets owned and the amount of each asset owned into a treemap
-//     * sorted by key
-//     *
-//     * @return Assets owned and quantity of each asset
-//     */
-//    public TreeMap<String, Integer> getAssetsAndAmounts() {
-//        for(int i = 0; i < assetList.size(); i++) {
-//            assetMap.put(assetList.get(i), amount.get(i));
-//        }
-//        return assetMap;
-//    }
-//
-//    /**
-//     * Adds an asset to the list of the organisation's assets
-//     *
-//     * @param assetName Name of the asset to be added
-//     * @param assetQuantity Quantity of the asset to be added
-//     */
-//    public void addAssets(String assetName, int assetQuantity) {
-//        boolean ownsAsset = assetList.contains(assetName);
-//        int index;
-//
-//        // If the organisation already owns at least 1 unit of this asset
-//        if(ownsAsset) {
-//            index = assetList.indexOf(assetName);
-//            int currentQuantity = amount.get(index);
-//            amount.set(index, currentQuantity + assetQuantity);
-//        } else {
-//            assetList.add(assetName);
-//            amount.add(assetQuantity);
-//        }
-//    }
-//
-//    /**
-//     * Decreases the asset quantity of an organisation's asset as specified. If the new asset
-//     * quantity is zero, the asset is removed from the organisation's list of assets.
-//     *
-//     * @param assetName Name of the asset to be removed/decreased
-//     * @param assetQuantity Quantity to be decreased by
-//     */
-//    public void removeAssets(String assetName, int assetQuantity) {
-//        // Index of the asset in the list, the index of the amount list will be the same
-//        int index = assetList.indexOf(assetName);
-//
-//        // Gets current quantity of asset
-//        int quantity = amount.get(index);
-//
-//        // Decreases the asset amount by the value to be removed
-//        quantity = quantity - assetQuantity;
-//
-//        // Remove the asset if it's quantity is 0, otherwise decrease the asset amount by the
-//        // value to be removed
-//        if(quantity == 0) {
-//            assetList.remove(index);
-//            amount.remove(index);
-//        } else {
-//            amount.set(index, quantity);
-//        }
-//    }
 }

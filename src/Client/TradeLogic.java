@@ -21,6 +21,16 @@ public class TradeLogic {
     private Assets asset;
     private int totalCost;
 
+    /**
+     * Constructor
+     *
+     * @param udb
+     * @param usdb
+     * @param tdb
+     * @param adb
+     * @param pdb
+     * @param hdb
+     */
     public TradeLogic(UnitDBSource udb, UserDBSource usdb, TradeDBSource tdb, AssetDBSource adb,
                       PurchasesDBSource pdb, HistoryDBSource hdb) {
         this.udb = udb;
@@ -52,6 +62,11 @@ public class TradeLogic {
         matchTrades(trade.getType());
     }
 
+    /**
+     * Cancels a trade and updates the credit balance and asset quantity accordingly
+     *
+     * @param cancelledTrade The trade to be cancelled
+     */
     public void cancelTrade(Trades cancelledTrade) {
         trade = cancelledTrade;
         user = usdb.getUser(trade.getUserName());

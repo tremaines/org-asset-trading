@@ -119,6 +119,10 @@ public class UserDBSource {
         return user;
     }
 
+    /**
+     * Add a new user to the database
+     * @param user The user object to be added
+     */
     public void addUser(User user) {
         try {
             addUser.setString(1, user.getUsername());
@@ -134,6 +138,10 @@ public class UserDBSource {
         }
     }
 
+    /**
+     * Update the details of a user stored in the database
+     * @param user The user to be updated
+     */
     public void update(User user) {
         try{
             update.setString(1, user.getFirstName());

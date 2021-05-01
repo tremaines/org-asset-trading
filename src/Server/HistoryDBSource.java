@@ -6,15 +6,24 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * A wrapper for interacting with the trade_history table in the database
+ */
 public class HistoryDBSource {
 
+    // SQL Statements
     private static final String ADD = "INSERT INTO trade_history (status, asset, qty, date, seller, buyer, credits) " +
             "VALUES(?, ?, ?, NOW(), ?, ?, ?);";
 
+    // Prepared Statements
     private PreparedStatement add;
 
     Connection connection;
 
+    /**
+     * Constructor for the database table wrapper
+     * @param connection A connection to the MariaDB database
+     */
     public HistoryDBSource(Connection connection) {
         this.connection = connection;
 
@@ -25,6 +34,10 @@ public class HistoryDBSource {
         }
     }
 
+    /**
+     * Adds a new trade to the trade history table
+     * @param trade The trade history object to be added
+     */
     public void addToHistory(TradeHistory trade) {
         try {
             add.setString(1, trade.getStatus().name());

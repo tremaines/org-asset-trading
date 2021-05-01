@@ -101,30 +101,58 @@ public class User {
      */
     public int getUnit() { return unit; }
 
+    /**
+     * Setter for user's first name
+     * @param firstName
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    /**
+     * Setter for user's last name
+     * @param lastName
+     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    /**
+     * Setter for user's email
+     * @param email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Setter for username (login id)
+     * @param username
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Setter for password
+     * @param password
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Setter for user's admin status
+     * @param admin
+     */
     public void setAdmin(boolean admin) {
         this.admin = admin;
     }
 
+    /**
+     * Setter for the user's unit
+     * @param unit
+     */
     public void setUnit(int unit) {
         this.unit = unit;
     }

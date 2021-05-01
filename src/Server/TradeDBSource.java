@@ -13,6 +13,7 @@ import java.util.HashMap;
  * A wrapper class for accessing the Trades table in the database
  */
 public class TradeDBSource {
+
     // SELECT statements
     private static final String GET_TRADES_BY_ASSET = "SELECT asset_name, SUM(trades.quantity), MIN(price) " +
             "FROM trades " +
@@ -96,6 +97,13 @@ public class TradeDBSource {
         return trades;
     }
 
+    /**
+     * Gets the trades made by users of a unit based on the trade type
+     * @param id The id of the unit
+     * @param type The type of trade (buy or sell) to look for
+     * @return A hashmap where the trade id is the key and an array of Strings containing the asset name, quantity and
+     * price is the value
+     */
     public HashMap<Integer, String[]> getTradesByUnit(int id, String type) {
         HashMap<Integer, String[]> trades = new HashMap<>();
         ResultSet rs = null;

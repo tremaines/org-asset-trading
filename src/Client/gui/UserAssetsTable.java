@@ -34,7 +34,6 @@ public class UserAssetsTable extends JFrame {
         model.addColumn("Amount");
 
         HashMap<String, Integer> assets = adb.getAssetsAndAmounts(unit.getUnitID());
-        int numberOfAssetsOwned = assets.size();
 
         // Adds a row for each Asset type
         for(String asset : assets.keySet()) {

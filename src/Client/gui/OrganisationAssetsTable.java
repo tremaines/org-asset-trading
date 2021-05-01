@@ -34,6 +34,7 @@ public class OrganisationAssetsTable extends JFrame {
         model.addColumn("Amount");
 
         // Adds a row for each Asset type
+        // Make the "Asset" fields blank (to be filled by admin) and the quantity default to 0
         for(int i = 0; i < rows; i++) {
             model.addRow(new Object[]{
                     "",

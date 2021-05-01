@@ -14,7 +14,7 @@ import java.util.HashMap;
  * A wrapper class for accessing the assets_produced table
  */
 public class AssetDBSource {
-    // SELECT statements
+    // SQL statements
     private static final String GET_ASSET = "SELECT * FROM assets_produced WHERE asset_id=?";
     private static final String GET_ASSET_BY_NAME = "SELECT * FROM assets_produced WHERE asset_name=?;";
     private static final String GET_ASSETS_BY_UNIT = "SELECT * FROM assets_produced WHERE unit=?;";
@@ -53,6 +53,10 @@ public class AssetDBSource {
         }
     }
 
+    /**
+     * Add a new asset to the table
+     * @param asset The asset object to be added
+     */
     public void add(Assets asset) {
         try {
             add.setString(1, asset.getAssetName());
@@ -91,7 +95,7 @@ public class AssetDBSource {
     }
 
     //TODO: Not a huge fan of this as asset name is not guaranteed to be unique... But for the purposes of this
-    //TODO: assignment, yolo
+    //TODO: assignment it doesn't matter
     /**
      * Get an asset based on its name
      *
@@ -138,6 +142,10 @@ public class AssetDBSource {
         return names.toArray(new String[0]);
     }
 
+    /**
+     * Updates the details of an asset
+     * @param asset The asset to be updated
+     */
     public void update(Assets asset) {
         try{
             update.setString(1, asset.getAssetName());
@@ -173,6 +181,11 @@ public class AssetDBSource {
         return names.toArray(new String[0]);
     }
 
+    /**
+     * Takes an asset id and returns each assets and the quantity available
+     * @param id The id of the asset
+     * @return A hashmap in which the asset name is the key and the quantity of the asset is the value
+     */
     public HashMap<String, Integer> getAssetsAndAmounts(int id) {
         HashMap<String, Integer> assets = new HashMap<>();
         ResultSet rs = null;

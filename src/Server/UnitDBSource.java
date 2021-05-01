@@ -86,6 +86,10 @@ public class UnitDBSource {
         }
     }
 
+    /**
+     * Add a new unit to the database
+     * @param unit The unit to be added
+     */
     public void add(Units unit) {
         try{
             add.setString(1, unit.getUnitName());
@@ -96,6 +100,10 @@ public class UnitDBSource {
         }
     }
 
+    /**
+     * Get all unit names
+     * @return An array of strings containing the unit names
+     */
     public String[] getUnitNames(){
         ArrayList<String> names = new ArrayList<String>();
         ResultSet rs = null;

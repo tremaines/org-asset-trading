@@ -17,9 +17,17 @@ public class TradeHistory {
     String buyer;
     String seller;
 
+    /**
+     * Constructor
+     */
     public TradeHistory() {
     }
 
+    /**
+     * Constructor generates trade history object from trade passed in (useful for cancelled trades
+     *
+     * @param trade The trade to be added to the history
+     */
     public TradeHistory(Trades trade) {
         status = TradeType.cancelled;
         this.asset = trade.getAssetId();
@@ -33,6 +41,16 @@ public class TradeHistory {
 
     }
 
+    /**
+     * Used for instantiating a trade object
+     *
+     * @param status Cancelled or complete
+     * @param asset The asset id
+     * @param qty The quantity of the asset traded
+     * @param credits Price per unit of asset
+     * @param buyer The buyer username
+     * @param seller The seller username
+     */
     public TradeHistory(TradeType status, int asset, int qty, int credits, String buyer, String seller) {
         this.status = status;
         this.asset = asset;
@@ -42,112 +60,115 @@ public class TradeHistory {
         this.seller = seller;
     }
 
+    /**
+     * Getter for trade history ID
+     * @return The trade history ID
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Setter for trade history ID
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Getter for the trade status
+     * @return The final status of the trade
+     */
     public TradeType getStatus() {
         return status;
     }
 
+    /**
+     * Setter for trade status
+     * @param status
+     */
     public void setStatus(TradeType status) {
         this.status = status;
     }
 
+    /**
+     * Getter for the asset traded
+     * @return The ID of the asset traded
+     */
     public int getAsset() {
         return asset;
     }
 
+    /**
+     * Setter for the asset traded
+     * @param asset
+     */
     public void setAsset(int asset) {
         this.asset = asset;
     }
 
+    /**
+     * Getter for the quantity of the asset traded
+     * @return The quantity
+     */
     public int getQty() {
         return qty;
     }
 
+    /**
+     * Setter for the quantity traded
+     * @param qty
+     */
     public void setQty(int qty) {
         this.qty = qty;
     }
 
+    /**
+     * Getter for the cost per unit of asset
+     * @return The price
+     */
     public int getCredits() {
         return credits;
     }
 
+    /**
+     * Setter for the cost per unit
+     * @param credits
+     */
     public void setCredits(int credits) {
         this.credits = credits;
     }
 
+    /**
+     * The username of the buyer (if applicable)
+     * @return The buyer if it was a completed trade. Might be null the trade was a cancelled sale.
+     */
     public String getBuyer() {
         return buyer;
     }
 
+    /**
+     * The setter for the buyer's username
+     * @param buyer
+     */
     public void setBuyer(String buyer) {
         this.buyer = buyer;
     }
 
+    /**
+     * The username of the seller (if applicable)
+     * @return The seller if it was a completed trade. Might be null the trade was a cancelled buy.
+     */
     public String getSeller() {
         return seller;
     }
 
+    /**
+     * The setter for the seller
+     * @param seller
+     */
     public void setSeller(String seller) {
         this.seller = seller;
     }
-
-    //    /**
-//     * Gets the summary trade history data that can be used to form a graph for recent sell prices
-//     *
-//     * @return Summary data of sell listings
-//     */
-//    public void addExtendedTradeHistory() {
-//        // Map of all trade listings
-//        Map<Integer, ArrayList<String>> multiValueMap = trades.getListing();
-//
-//        // Iterates through multi value map to get all partially completed or completed trades
-//        for (Map.Entry<Integer, ArrayList<String>> mvMap : multiValueMap.entrySet()) {
-//            if(mvMap.getKey() <= multiValueMap.size()) {
-//
-//                // The key of the map is the trade ID
-//                Integer tradeID = mvMap.getKey();
-//
-//                // String representation of trade status
-//                String tradeStatus = multiValueMap.get(tradeID).get(tradeFulfilled);
-//
-//                // Checks whether trade has been completed or partially completed
-//                boolean tradeCompleted = tradeStatus == "Yes" || tradeStatus == "Partial";
-//
-//                // TradeIDs for the extended trade history
-//                int index = extendedTradeHistory.size() + 1;
-//
-//                // If a trade is completed or partially completed, adds it to the map
-//                if(tradeCompleted) {
-//                    extendedTradeHistory.put(index, multiValueMap.get(tradeID));
-//
-//                }
-//            }
-//        }
-//    }
-//
-//    /**
-//     * Gets the summary trade history data that can be used to form a graph for recent sell prices
-//     *
-//     * @return Summary data of sell listings
-//     */
-//    public Map<Integer, ArrayList<String>> getExtendedTradeHistory() {
-//        addExtendedTradeHistory();
-//        return extendedTradeHistory;
-//    }
-//
-//    /**
-//     * Gets the summary trade history data that can be used to form a graph for recent sell prices
-//     *
-//     * @return Summary data of sell listings
-//     */
-//    public Map<Integer, ArrayList<String>> getSummaryTradeHistory() {
-//        return trades.getTradeHistory();
-//    }
 }
