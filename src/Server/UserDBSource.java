@@ -17,12 +17,15 @@ public class UserDBSource {
     private static final String GET_USER = "SELECT * FROM users WHERE user_name=?";
     private static final String ADD = "INSERT INTO users (user_name, first_name, last_name, email, admin_status, " +
             "unit, password) VALUES(?, ?, ?, ?, ?, ?, ?);";
+    private static final String UPDATE = "UPDATE users SET first_name = ?, last_name = ?, email = ?, admin_status = ?, " +
+            "unit = ?, password = ? WHERE user_name = ?;";
 
     // Prepared statements
     private PreparedStatement getPassword;
     private PreparedStatement checkUserName;
     private PreparedStatement getUser;
     private PreparedStatement addUser;
+    private PreparedStatement update;
 
     private Connection connection;
 
@@ -38,6 +41,7 @@ public class UserDBSource {
             checkUserName = connection.prepareStatement(CHECK_USERNAME);
             getUser = connection.prepareStatement(GET_USER);
             addUser = connection.prepareStatement(ADD);
+            update = connection.prepareStatement(UPDATE);
         } catch (SQLException sqle) {
             System.err.println(sqle);
         }
@@ -124,7 +128,23 @@ public class UserDBSource {
             addUser.setBoolean(5, user.getAdminStatus());
             addUser.setInt(6, user.getUnit());
             addUser.setString(7, user.getHashedPassword());
+            addUser.execute();
         } catch(SQLException sqle) {
+            System.err.println(sqle);
+        }
+    }
+
+    public void update(User user) {
+        try{
+            update.setString(1, user.getFirstName());
+            update.setString(2, user.getLastName());
+            update.setString(3, user.getEmail());
+            update.setBoolean(4, user.getAdminStatus());
+            update.setInt(5, user.getUnit());
+            update.setString(6, user.getHashedPassword());
+            update.setString(7, user.getUsername());
+            update.execute();
+        } catch (SQLException sqle) {
             System.err.println(sqle);
         }
     }

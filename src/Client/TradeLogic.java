@@ -52,6 +52,30 @@ public class TradeLogic {
         matchTrades(trade.getType());
     }
 
+    public void cancelTrade(Trades cancelledTrade) {
+        trade = cancelledTrade;
+        user = usdb.getUser(trade.getUserName());
+        unit = udb.getUnit(user.getUnit());
+        asset = adb.getAsset(trade.getAssetId());
+        totalCost = trade.getQuantity() * trade.getPrice();
+
+        TradeHistory tradeToCancel = new TradeHistory(cancelledTrade);
+        hdb.addToHistory(tradeToCancel);
+
+        if (cancelledTrade.getType() == TradeType.buy) {
+            int credits = unit.getCredits();
+            unit.setCredits((credits + totalCost));
+            udb.update(unit);
+        } else {
+            int qty = trade.getQuantity();
+            int oldQty = asset.getQuantity();
+            asset.setQuantity((qty + oldQty));
+            adb.update(asset);
+        }
+
+        tdb.delete(trade.getId());
+    }
+
     /**
      * Lists a buy order. Does some validity checks and removes credits from the lister's allowance
      *

@@ -21,6 +21,7 @@ public class AssetDBSource {
     private static final String GET_NAMES = "SELECT asset_name FROM assets_produced;";
     private static final String UPDATE = "UPDATE assets_produced SET asset_name = ?, quantity = ?, unit = ? " +
             "WHERE asset_id= ?;";
+    private static final String ADD = "INSERT INTO assets_produced (asset_name, quantity, unit) VALUES(?, ?, ?);";
 
     // Prepared Statements
     private PreparedStatement getAsset;
@@ -28,6 +29,7 @@ public class AssetDBSource {
     private PreparedStatement getAssetsByUnit;
     private PreparedStatement getNames;
     private PreparedStatement update;
+    private PreparedStatement add;
 
     private Connection connection;
 
@@ -44,9 +46,21 @@ public class AssetDBSource {
             getAssetsByUnit = connection.prepareStatement(GET_ASSETS_BY_UNIT);
             getNames = connection.prepareStatement(GET_NAMES);
             update = connection.prepareStatement(UPDATE);
+            add = connection.prepareStatement(ADD);
         } catch (SQLException sqle) {
             System.err.println(sqle);
 
+        }
+    }
+
+    public void add(Assets asset) {
+        try {
+            add.setString(1, asset.getAssetName());
+            add.setInt(2, asset.getQuantity());
+            add.setInt(3, asset.getUnitID());
+            add.execute();
+        } catch(SQLException sqle) {
+            System.err.println(sqle);
         }
     }
 

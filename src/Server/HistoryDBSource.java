@@ -8,8 +8,8 @@ import java.sql.SQLException;
 
 public class HistoryDBSource {
 
-    private static final String ADD = "INSERT INTO trade_history (status, asset, qty, date, seller, buyer) " +
-            "VALUES(?, ?, ?, NOW(), ?, ?);";
+    private static final String ADD = "INSERT INTO trade_history (status, asset, qty, date, seller, buyer, credits) " +
+            "VALUES(?, ?, ?, NOW(), ?, ?, ?);";
 
     private PreparedStatement add;
 
@@ -32,6 +32,7 @@ public class HistoryDBSource {
             add.setInt(3, trade.getQty());
             add.setString(4, trade.getSeller());
             add.setString(5, trade.getBuyer());
+            add.setInt(6, trade.getCredits());
             add.execute();
         } catch(SQLException sqle) {
             System.err.println(sqle);

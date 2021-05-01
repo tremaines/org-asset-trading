@@ -128,9 +128,9 @@ public class UnitDBSource {
             rs = getUnitByName.executeQuery();
             rs.next();
 
-            unit.setUnitID(rs.getInt("asset_id"));
-            unit.setUnitName(rs.getString("asset_name"));
-            unit.setCredits(rs.getInt("quantity"));
+            unit.setUnitID(rs.getInt("unit_id"));
+            unit.setUnitName(rs.getString("unit_name"));
+            unit.setCredits(rs.getInt("credits"));
         } catch(SQLException sqle){
             System.err.println(sqle);
         }

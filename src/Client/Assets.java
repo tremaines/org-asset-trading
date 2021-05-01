@@ -18,6 +18,12 @@ public class Assets {
     public Assets() {
     }
 
+    public Assets(String assetName, int quantity, int unitID) {
+        this.assetName = assetName;
+        this.quantity = quantity;
+        this.unitID = unitID;
+    }
+
     public Assets(int assetID, String assetName, int quantity, int unitID) {
         this.assetID = assetID;
         this.assetName = assetName;

@@ -107,6 +107,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         topMenuRight.setVisible(false);
         topMenuContainer.setVisible(false);
         topMenuLeft.setVisible(false);
+        unit = udb.getUnit(userLoggedIn.getUnit());
         addTopMenu();
         setupSellPanel();
         setupAssetsPanel();
@@ -135,7 +136,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         topMenuContainer.add(topMenuRight, BorderLayout.EAST);
 
         // Display username in top left corner
-        JLabel userLabel = new JLabel(userLoggedIn.getFirstName() + " " + userLoggedIn.getLastName());
+        JLabel userLabel = new JLabel(userLoggedIn.getUsername());
         userLabel.setPreferredSize(new Dimension(60, 50));
         userLabel.setForeground(Color.WHITE);
         topMenuLeft.add(userLabel);
@@ -420,8 +421,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                             Trades newTrade;
                             newTrade = new Trades(Trades.TradeType.sell, userLoggedIn.getUsername(),
                                     adb.getAsset(type).getAssetID(), Integer.parseInt(amount), Integer.parseInt(price));
-                            refreshGUI();
                             implementTrade.setTrade(newTrade);
+                            refreshGUI();
                             cardLayout.show(mainContent, "2");
                             JOptionPane.showMessageDialog(null, "Sell order was placed!",
                                     "Successful", JOptionPane.INFORMATION_MESSAGE);
@@ -536,31 +537,27 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 String username = t1.getText();
                 String password = userPassword.getText();
-                String hashedPassword = User.hashPassword(password);
-                String unit = units.getSelectedItem() + "";
-                String userType = cmbMessageList.getSelectedItem() + "";
+                String unit = units.getSelectedItem().toString().trim();
+                String userType = cmbMessageList.getSelectedItem().toString();
                 boolean boxSelected = terms.isSelected();
-                boolean admin;
+                boolean admin = userType.trim() == messageStrings[1];
 
-                if(userType == "Admin") {
-                    admin = true;
-                } else {
-                    admin = false;
-                }
-
-                if (admin && unit != "IT Administration") {
+                if (admin && !unit.equals("IT Administration")) {
                     JOptionPane.showMessageDialog(null, "Only IT Admin staff can be admins!",
                             "Invalid Unit For Admin", JOptionPane.ERROR_MESSAGE);
                 } else {
                     if (boxSelected) {
                         try {
-                            User newUser = new User(null, null, null, username, hashedPassword,
+                            User newUser = new User(null, null, null, username, password,
                                     admin, udb.getUnit(unit).getUnitID());
 
                             if (usdb.checkUsername(newUser.getUsername())) {
                                 throw new UserException("Username already exists!");
                             } else {
                                 usdb.addUser(newUser);
+                                JOptionPane.showMessageDialog(null, username +
+                                        " was added to the " + unit + " organisational unit!",
+                                        "User added", JOptionPane.INFORMATION_MESSAGE);
                             }
                         } catch (UserException userException) {
                             userException.printStackTrace();
@@ -582,7 +579,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                     if (newPassword.equals(confirmPassword)) {
                         JOptionPane.showMessageDialog(null, "Password has been changed",
                                 "Successful", JOptionPane.INFORMATION_MESSAGE);
-                        userLoggedIn.changePassword(newPassword);
+                        userLoggedIn.setPassword(User.hashPassword(newPassword));
+                        usdb.update(userLoggedIn);
                     } else {
                         JOptionPane.showMessageDialog(null, "Passwords don't match!",
                                 "Invalid", JOptionPane.ERROR_MESSAGE);
@@ -610,7 +608,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             confirmPasswordInput.setBounds(160, 80, 100, 20);
             accountPanel.add(changePassword);
             changePassword.setBounds(30 , 110, 100 , 20);
-            accountPanel.add(msg);
         } else {
             // accountPanel.add();
             accountPanel.add(label1);
@@ -630,8 +627,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             accountPanel.add(cmbMessageList);
             accountPanel.add(terms);
             accountPanel.add(submit);
-            accountPanel.add(msg);
         }
+        accountPanel.add(msg);
 
 
         // Change Password
@@ -685,7 +682,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         cancelOrderBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tdb.delete(tableTradeID);
+                // Get trades object
+                Trades tradeToCancel = tdb.getTrade(tableTradeID);
+                // Pass to cancel trade method
+                implementTrade.cancelTrade(tradeToCancel);
                 refreshGUI();
                 cardLayout.show(mainContent, "5");
                 JOptionPane.showMessageDialog(null, "Order was successfully cancelled",
@@ -741,7 +741,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         msg = new JLabel("");
         msg.setBounds(140 , 180, 100 , 20);
 
-        OrganisationAssetsTable organisationAssetsTable = new OrganisationAssetsTable(rightPanel, 30);
+        int numRows = 30;
+        OrganisationAssetsTable organisationAssetsTable = new OrganisationAssetsTable(rightPanel, numRows);
         organisationAssetsTable.getAssetsTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
 
@@ -754,12 +755,43 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 String credits = s1.getValue() + "";
                 boolean boxSelected = terms.isSelected();
 
-                newUnit = new Units(unitName, Integer.parseInt(credits));
+
                 String[] unitNames = udb.getUnitNames();
 
                 if(boxSelected) {
+                    // Check credits are >= 0, if not set to 0 by default
+                    int intCredits = Math.max(Integer.parseInt(credits), 0);
+
+                    newUnit = new Units(unitName, intCredits);
+
                     if(!Arrays.asList(unitNames).contains(unitName)) {
                         udb.add(newUnit);
+                        // Get the unit ID generated by the database
+                        int newUnitId = udb.getUnit(newUnit.getUnitName()).getUnitID();
+
+                        // Add unit assets
+                        // Loops through table until it comes to a blank asset name cell
+                        int row = 0;
+                        int col = 0;
+                        String assetName = organisationAssetsTable.getAssetsTable().getValueAt(row, col).toString();
+                        int assetQty;
+                        while (assetName.trim().length() != 0) {
+                            // If the user has entered a non-numerical value, default to 0
+                            try{
+                                assetQty = Integer.parseInt(organisationAssetsTable.getAssetsTable()
+                                        .getValueAt(row, (col + 1)).toString());
+                            } catch (NumberFormatException err) {
+                                assetQty = 0;
+                            }
+
+                            // Check if asset qty >= 0, if not set to 0 as default
+                            assetQty = Math.max(assetQty, 0);
+
+                            Assets newAsset = new Assets(assetName, assetQty, newUnitId);
+                            adb.add(newAsset);
+                            row++;
+                            assetName = organisationAssetsTable.getAssetsTable().getValueAt(row, col).toString();
+                        }
                         JOptionPane.showMessageDialog(null,
                                 unitName + " has been added as a new organisation"  , "Successful",
                                 JOptionPane.INFORMATION_MESSAGE);
@@ -773,51 +805,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                                     "the terms. Please select the checkbox.", "Checkbox Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
-
-//                if(Integer.parseInt(credits ) >= 0) {
-//                    try {
-//                        for (int i = 0; i < allAssets.getAllAssets().size(); i++) {
-//                            if (Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i, 1).toString()) > 0) {
-//                                orgAssets.add(organisationAssetsTable.getAssetsTable().getValueAt(i, 0).toString());
-//                                orgAmounts.add(Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i,
-//                                        1).toString()));
-//                            }
-//                            else if (Integer.parseInt(organisationAssetsTable.getAssetsTable().getValueAt(i, 1).toString()) < 0) {
-//                                JOptionPane.showMessageDialog(null, "Negative numbers are " +
-//                                                "discarded for asset quantities.",
-//                                        "Asset Quantity",
-//                                        JOptionPane.INFORMATION_MESSAGE);
-//                            }
-//                        }
-//
-//                        if (boxSelected) {
-//                            if (!org.getOrganisationNames().contains(orgName)) {
-//                                org.createOrganisation(orgName, Integer.parseInt(credits), orgAssets,
-//                                        orgAmounts);
-//                                JOptionPane.showMessageDialog(null,
-//                                        orgName + " has been added as a new organisation", "Successful",
-//                                        JOptionPane.INFORMATION_MESSAGE);
-//                            } else {
-//                                JOptionPane.showMessageDialog(null, "An organisation with the same name " +
-//                                                "has already been created.", "Organisation Error",
-//                                        JOptionPane.ERROR_MESSAGE);
-//                            }
-//
-//                        }
-//                    } catch (NumberFormatException n) {
-//                        refreshGUI();
-//                        JOptionPane.showMessageDialog(null, "Invalid entry for an asset quantity, " +
-//                                        "please only enter integer values.",
-//                                "Invalid Entry",
-//                                JOptionPane.ERROR_MESSAGE);
-//                    }
-//                }
             }
 
         });
-
-
-
 
         leftPanel.add(label1);
         leftPanel.add(label2);
