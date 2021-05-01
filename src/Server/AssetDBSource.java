@@ -20,7 +20,7 @@ public class AssetDBSource {
     private static final String GET_ASSETS_BY_UNIT = "SELECT * FROM assets_produced WHERE unit=?;";
     private static final String GET_NAMES = "SELECT asset_name FROM assets_produced;";
     private static final String UPDATE = "UPDATE assets_produced SET asset_name = ?, quantity = ?, unit = ? " +
-            "WHERE unit_id = ?;";
+            "WHERE asset_id= ?;";
 
     // Prepared Statements
     private PreparedStatement getAsset;

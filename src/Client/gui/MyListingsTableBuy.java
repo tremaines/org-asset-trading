@@ -17,24 +17,6 @@ public class MyListingsTableBuy extends JFrame {
     private Units unit;
     private TradeDBSource tdb;
 
-//    // Trade type (Buy/Sell)
-//    private static final int tradeType = 0;
-//    // Type of asset
-//    private static final int assetType = 1;
-//    // Quantity of the asset
-//    private static final int assetAmount = 2;
-//    // Cost per asset unit
-//    private static final int price = 3;
-//    // Original asset amount
-//    private static final int originalAmount = 4;
-//    // Username
-//    private static final int userName = 5;
-//    // Name of the organisation
-//    private static final int orgName = 6;
-//    // Trade fulfilled status (Yes/No/Partial/Cancelled)
-//    private static final int tradeFulfilled = 7;
-//    // Time of the listing
-//    private static final int time = 8;
 
     public MyListingsTableBuy(JPanel panel, Units unit, User userLoggedIn, TradeDBSource tdb) {
         setLayout(new FlowLayout());

@@ -15,7 +15,9 @@ import java.util.HashMap;
 public class TradeDBSource {
     // SELECT statements
     private static final String GET_TRADES_BY_ASSET = "SELECT asset_name, SUM(trades.quantity), MIN(price) " +
-            "FROM trades INNER JOIN assets_produced WHERE type='sell' GROUP BY asset;";
+            "FROM trades " +
+            "JOIN assets_produced ON trades.asset = assets_produced.asset_id " +
+            "WHERE type='sell' GROUP BY asset;";
     private static final String GET_TRADES_BY_UNIT = "" +
             "SELECT trade_id, assets_produced.asset_name, trades.quantity, trades.price " +
             "FROM trades " +
@@ -28,7 +30,7 @@ public class TradeDBSource {
     private static final String GET_MATCHING_SELLS = "SELECT MIN(trade_id), MIN(price), quantity " +
             "from trades WHERE asset=? AND type='sell' AND price <=?;";
     private static final String GET_MATCHING_BUYS = "SELECT MIN(trade_id), price, quantity " +
-            "from trades WHERE asset=? AND type='sell' AND price >=?;";
+            "from trades WHERE asset=? AND type='buy' AND price >=?;";
     private static final String GET_TRADE = "SELECT * FROM trades WHERE trade_id=?;";
     private static final String UPDATE_QTY = "UPDATE trades SET quantity = ? WHERE trade_id = ?;";
     private static final String DELETE = "DELETE FROM trades WHERE trade_id=?;";
@@ -75,13 +77,13 @@ public class TradeDBSource {
      * for sale as well as the lowest listed price
      */
     public HashMap<String, int[]> getTrades() {
-        int[] qtyAndPrice = new int[2];
         HashMap<String, int[]> trades = new HashMap<>();
         ResultSet rs = null;
 
         try {
             rs = getTradesByAsset.executeQuery();
             while (rs.next()) {
+                int[] qtyAndPrice = new int[2];
                 qtyAndPrice[0] = rs.getInt("sum(trades.quantity)");
                 qtyAndPrice[1] = rs.getInt("MIN(price)");
 
@@ -95,7 +97,6 @@ public class TradeDBSource {
     }
 
     public HashMap<Integer, String[]> getTradesByUnit(int id, String type) {
-        String[] columns = new String[3];
         HashMap<Integer, String[]> trades = new HashMap<>();
         ResultSet rs = null;
 
@@ -105,6 +106,7 @@ public class TradeDBSource {
 
             rs = getTradesByUnit.executeQuery();
             while (rs.next()) {
+                String[] columns = new String[3];
                 columns[0] = rs.getString("asset_name");
                 // This is so ugly, have to cast it an int to class Integer in order to
                 // use .toString()... Must be a better way, will do for now.

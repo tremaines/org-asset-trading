@@ -161,13 +161,9 @@ public class TradeLogic {
             buyerUnit.setCredits(buyerUnit.getCredits() + (costDiff * askingQty));
             // Transfer credits to seller
             sellerUnit.setCredits(sellerUnit.getCredits() + sellingPrice * sellingQty);
-            // Remove count from asset table
-            /** This is set up based on the assumption units only sell assets they produce **/
-            asset.setQuantity(asset.getQuantity() - sellingQty);
             // Update database
             udb.update(buyerUnit);
             udb.update(sellerUnit);
-            adb.update(asset);
             // Can delete both trades as they have cancelled each other out
             tdb.delete(buy.getId());
             tdb.delete(sell.getId());
@@ -183,14 +179,11 @@ public class TradeLogic {
             buyerUnit.setCredits(buyerUnit.getCredits() + (costDiff * askingQty));
             // Transfer credits to seller
             sellerUnit.setCredits(sellerUnit.getCredits() + sellingPrice * askingQty);
-            // Remove count from asset table
-            asset.setQuantity(asset.getQuantity() - askingQty);
             // Update otherTrade qty available
             sell.setQuantity(sellingQty - askingQty);
             // Update database
             udb.update(buyerUnit);
             udb.update(sellerUnit);
-            adb.update(asset);
             tdb.update(sell);
             // Delete buy trade from database as its qty is now 0
             tdb.delete(buy.getId());
@@ -206,14 +199,11 @@ public class TradeLogic {
             buyerUnit.setCredits(buyerUnit.getCredits() + (costDiff * sellingQty));
             // Transfer credits to seller
             sellerUnit.setCredits(sellerUnit.getCredits() + sellingPrice * sellingQty);
-            // Remove count from asset table
-            asset.setQuantity(asset.getQuantity() - sellingQty);
             // Update trade qty available
             buy.setQuantity(askingQty - sellingQty);
             // Update database
             udb.update(buyerUnit);
             udb.update(sellerUnit);
-            adb.update(asset);
             tdb.update(buy);
             // Can delete sell trade as its qty is now 0
             tdb.delete(sell.getId());

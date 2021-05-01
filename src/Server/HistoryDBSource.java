@@ -32,6 +32,7 @@ public class HistoryDBSource {
             add.setInt(3, trade.getQty());
             add.setString(4, trade.getSeller());
             add.setString(5, trade.getBuyer());
+            add.execute();
         } catch(SQLException sqle) {
             System.err.println(sqle);
         }
