@@ -16,6 +16,13 @@ public class TradeDBSource {
     // SELECT statements
     private static final String GET_TRADES_BY_ASSET = "SELECT asset_name, SUM(trades.quantity), MIN(price) " +
             "FROM trades INNER JOIN assets_produced WHERE type='sell' GROUP BY asset;";
+    private static final String GET_TRADES_BY_UNIT = "" +
+            "SELECT trade_id, assets_produced.asset_name, trades.quantity, trades.price " +
+            "FROM trades " +
+            "JOIN users ON trades.user = users.user_name " +
+            "JOIN  units ON users.unit = units.unit_id " +
+            "JOIN assets_produced on trades.asset = assets_produced.asset_id" +
+            "WHERE units.unit_id=? and trades.type=?;";
     private static final String ADD_TRADE = "INSERT INTO trades (type, user, asset, quantity, price, date) " +
             "VALUES (?, ?, ?, ?, ?, NOW());";
     private static final String GET_MATCHING_SELLS = "SELECT MIN(trade_id), MIN(price), quantity " +
@@ -28,6 +35,7 @@ public class TradeDBSource {
 
     // Prepared statements
     private PreparedStatement getTradesByAsset;
+    private PreparedStatement getTradesByUnit;
     private PreparedStatement addTrades;
     private PreparedStatement getMatchingSells;
     private PreparedStatement getMatchingBuys;
@@ -46,6 +54,7 @@ public class TradeDBSource {
 
         try{
             getTradesByAsset = connection.prepareStatement(GET_TRADES_BY_ASSET);
+            getTradesByUnit = connection.prepareStatement(GET_TRADES_BY_UNIT);
             addTrades = connection.prepareStatement(ADD_TRADE);
             getMatchingSells = connection.prepareStatement(GET_MATCHING_SELLS);
             getMatchingBuys = connection.prepareStatement(GET_MATCHING_BUYS);
@@ -82,6 +91,31 @@ public class TradeDBSource {
             System.err.println(sqle);
         }
 
+        return trades;
+    }
+
+    public HashMap<Integer, String[]> getTradesByUnit(int id, String type) {
+        String[] columns = new String[3];
+        HashMap<Integer, String[]> trades = new HashMap<>();
+        ResultSet rs = null;
+
+        try {
+            getTradesByUnit.setInt(1, id);
+            getTradesByUnit.setString(2, type);
+
+            rs = getTradesByUnit.executeQuery();
+            while (rs.next()) {
+                columns[0] = rs.getString("asset_name");
+                // This is so ugly, have to cast it an int to class Integer in order to
+                // use .toString()... Must be a better way, will do for now.
+                columns[1] = ((Integer)rs.getInt("quantity")).toString();
+                columns[2] = ((Integer)rs.getInt("price")).toString();
+
+                trades.put(rs.getInt("trade_id"), columns);
+            }
+        } catch(SQLException sqle) {
+            System.err.println(sqle);
+        }
         return trades;
     }
 

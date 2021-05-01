@@ -17,12 +17,14 @@ public class UnitDBSource {
     private static final String GET_UNIT = "SELECT * FROM units WHERE unit_id=?";
     private static final String GET_UNIT_BY_NAME = "SELECT * FROM units WHERE unit_name=?;";
     private static final String UPDATE = "UPDATE units SET unit_name = ?, credits = ? WHERE unit_id = ?;";
+    private static final String ADD = "INSERT INTO units (unit_name, credits) VALUES(?, ?);";
 
     // Prepared statements
     private PreparedStatement select;
     private PreparedStatement getUnit;
     private PreparedStatement update;
     private PreparedStatement getUnitByName;
+    private PreparedStatement add;
 
     private Connection connection;
 
@@ -38,6 +40,7 @@ public class UnitDBSource {
             getUnit = connection.prepareStatement(GET_UNIT);
             getUnitByName = connection.prepareStatement(GET_UNIT_BY_NAME);
             update = connection.prepareStatement(UPDATE);
+            add = connection.prepareStatement(ADD);
         } catch (SQLException sqle) {
             System.err.println(sqle);
         }
@@ -78,6 +81,16 @@ public class UnitDBSource {
             update.setInt(2, unit.getCredits());
             update.setInt(3, unit.getUnitID());
             update.execute();
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+    }
+
+    public void add(Units unit) {
+        try{
+            add.setString(1, unit.getUnitName());
+            add.setInt(2, unit.getCredits());
+            add.execute();
         } catch (SQLException sqle) {
             System.err.println(sqle);
         }

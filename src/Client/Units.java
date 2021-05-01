@@ -16,6 +16,11 @@ public class Units {
     public Units() {
     }
 
+    public Units(String unitName, int credits) {
+        this.unitName = unitName;
+        this.credits = credits;
+    }
+
     /**
      * Units constructor that initialises an organisational unit
      *

@@ -8,14 +8,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import java.sql.Connection;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.util.Arrays;
 
 
 /**
@@ -45,6 +41,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel sideMenuBottom;
 
     private CardLayout cardLayout = new CardLayout();
+
+    private int tableTradeID;
 
     // The unit the logged in user belongs to
     private Units unit;
@@ -635,10 +633,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         JButton cancelOrderBtn = new JButton("Cancel Order");
         topPanel.add(cancelOrderBtn);
 
-        MyListingsTableBuy buyTable = new MyListingsTableBuy(gridPanel, allAssets,
-                allTrades, userLoggedIn, allUsers, org);
-        MyListingsTableSell sellTable = new MyListingsTableSell(gridPanel, allAssets,
-                allTrades, userLoggedIn, allUsers, org);
+        MyListingsTableBuy buyTable = new MyListingsTableBuy(gridPanel, unit, userLoggedIn, tdb);
+        MyListingsTableSell sellTable = new MyListingsTableSell(gridPanel, unit, userLoggedIn, tdb);
 
         JTable buyTableClick = buyTable.getBuyTable();
         JTable sellTableClick = sellTable.getSellTable();
@@ -668,7 +664,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         cancelOrderBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                allTrades.cancelListing(tableTradeID);
+                tdb.delete(tableTradeID);
                 refreshGUI();
                 cardLayout.show(mainContent, "5");
                 JOptionPane.showMessageDialog(null, "Order was successfully cancelled",
@@ -721,18 +717,19 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String orgName = t1.getText();
+                Units newUnit;
+                String unitName = t1.getText();
                 String credits = s1.getValue() + "";
                 boolean boxSelected = terms.isSelected();
 
-                List<String> emptyAssets = new ArrayList<>();
-                List<Integer> emptyAmounts = new ArrayList<>();
+                newUnit = new Units(unitName, Integer.parseInt(credits));
+                String[] unitNames = udb.getUnitNames();
 
                 if(boxSelected) {
-                    if(!org.getOrganisationNames().contains(orgName)) {
-                        org.createOrganisation(orgName, Integer.parseInt(credits), emptyAssets, emptyAmounts);
+                    if(!Arrays.asList(unitNames).contains(unitName)) {
+                        udb.add(newUnit);
                         JOptionPane.showMessageDialog(null,
-                                orgName + " has been added as a new organisation"  , "Successful",
+                                unitName + " has been added as a new organisation"  , "Successful",
                                 JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(null, "An organisation with the same name " +

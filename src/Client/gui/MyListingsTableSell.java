@@ -1,24 +1,20 @@
 package Client.gui;
 
-import Client.Assets;
-import Client.Organisation;
-import Client.Trades;
-import Client.User;
+import Client.*;
+import Server.TradeDBSource;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class MyListingsTableSell extends JFrame {
     JTable sellTable;
 
-    private Assets assets;
-    private Trades trades;
-    private User user;
     private User userLoggedIn;
-    private Organisation organisation;
+    private Units unit;
+    private TradeDBSource tdb;
 
     // Trade type (Buy/Sell)
     private static final int tradeType = 0;
@@ -40,15 +36,12 @@ public class MyListingsTableSell extends JFrame {
     private static final int time = 8;
 
 
-    public MyListingsTableSell(JPanel panel, Assets assets, Trades trades,
-                               User userLoggedIn, User user, Organisation organisation) {
+    public MyListingsTableSell(JPanel panel, Units unit, User userLoggedIn, TradeDBSource tdb) {
         setLayout(new FlowLayout());
 
-        this.assets = assets;
-        this.trades = trades;
         this.userLoggedIn = userLoggedIn;
-        this.user = user;
-        this.organisation = organisation;
+        this.unit = unit;
+        this.tdb = tdb;
 
         // Row data in the table
         Object tableData[] = new Object[3];
@@ -66,16 +59,17 @@ public class MyListingsTableSell extends JFrame {
 
         // Row data in the table
         // Adds a row for each Asset type
-        for(int i = 0; i < trades.getListing().size() ; i++) {
-            ArrayList<String> currentListing = trades.getListing().get(i + 1);
-            if ((currentListing.get(userName) == userLoggedIn.getUsername()) && (currentListing.get(tradeType) == "Sell")) {
-                if (currentListing.get(tradeFulfilled) == "No" || currentListing.get(tradeFulfilled) == "Partial") {
-                    model.addRow(new Object[]{i+1, currentListing.get(assetType),
-                            currentListing.get(assetAmount), currentListing.get(price)});
-                }
-            }
-        }
+        // Trades as hashmap
+        HashMap<Integer, String[]> trades = tdb.getTradesByUnit(unit.getUnitID(), "buy");
 
+        // Row data in the table
+        // Adds a row for each Asset type
+        for(Integer trade : trades.keySet()) {
+            model.addRow(new Object[]{trade.toString(),
+                    trades.get(trade)[0],
+                    trades.get(trade)[1],
+                    trades.get(trade)[2]});
+        }
 
         sellTable = new JTable(model);
         sellTable.setDefaultEditor(Object.class, null);
