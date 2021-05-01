@@ -8,33 +8,36 @@ import Client.Trades.TradeType;
  */
 public class TradeLogic {
 
-    private static UnitDBSource udb;
-    private static UserDBSource usdb;
-    private static TradeDBSource tdb;
-    private static AssetDBSource adb;
-    private static PurchasesDBSource pdb;
-    private static HistoryDBSource hdb;
+    private UnitDBSource udb;
+    private UserDBSource usdb;
+    private TradeDBSource tdb;
+    private AssetDBSource adb;
+    private PurchasesDBSource pdb;
+    private HistoryDBSource hdb;
 
-    private static Trades trade;
-    private static User user;
-    private static Units unit;
-    private static Assets asset;
-    private static int totalCost;
+    private Trades trade;
+    private User user;
+    private Units unit;
+    private Assets asset;
+    private int totalCost;
 
+    public TradeLogic(UnitDBSource udb, UserDBSource usdb, TradeDBSource tdb, AssetDBSource adb,
+                      PurchasesDBSource pdb, HistoryDBSource hdb) {
+        this.udb = udb;
+        this.usdb = usdb;
+        this.tdb = tdb;
+        this.adb = adb;
+        this.pdb = pdb;
+        this.hdb = hdb;
+    }
 
     /**
      * Sets a trade and calls private methods to deal with matching the trade to other trades
      *
      * @param newTrade The trade to be added to the database
-     * @param unitDBSource
-     * @param userDBSource
-     * @param tradeDBSource
-     * @param assetDBSource
      * @throws TradesException
      */
-    public static void setTrade(Trades newTrade, UnitDBSource unitDBSource, UserDBSource userDBSource,
-                                TradeDBSource tradeDBSource, AssetDBSource assetDBSource, PurchasesDBSource pdb,
-                                HistoryDBSource hdb) throws TradesException {
+    public void setTrade(Trades newTrade) throws TradesException {
         trade = newTrade;
         user = usdb.getUser(trade.getUserName());
         unit = udb.getUnit(user.getUnit());
@@ -54,7 +57,7 @@ public class TradeLogic {
      *
      * @throws TradesException If the unit the user belongs to does not have enough credits
      */
-    private static void buyListing() throws TradesException {
+    private void buyListing() throws TradesException {
         int credits = unit.getCredits();
 
         if (credits < totalCost) {
@@ -75,7 +78,7 @@ public class TradeLogic {
      *
      * @throws TradesException If the unit the user belongs to does not have enough of the asset it is selling.
      */
-    private static void sellListing() throws TradesException {
+    private void sellListing() throws TradesException {
         int quantityOwned = asset.getQuantity();
         int quantitySelling = trade.getQuantity();
 
@@ -95,7 +98,7 @@ public class TradeLogic {
      *
      * @param type The type of trade (TradeType.buy or TradeType.sell)
      */
-    private static void matchTrades(Trades.TradeType type) {
+    private void matchTrades(Trades.TradeType type) {
         int matchingTrade = 0;
 
         // If it's a buy, look for sells for that asset
@@ -135,7 +138,7 @@ public class TradeLogic {
      * @param buy The buy trade
      * @param sell The sell trade
      */
-    private static void settleTrade(Trades buy, Trades sell) {
+    private void settleTrade(Trades buy, Trades sell) {
 
         TradeHistory newTrade = null;
 

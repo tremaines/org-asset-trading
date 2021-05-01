@@ -60,7 +60,7 @@ public class MyListingsTableSell extends JFrame {
         // Row data in the table
         // Adds a row for each Asset type
         // Trades as hashmap
-        HashMap<Integer, String[]> trades = tdb.getTradesByUnit(unit.getUnitID(), "buy");
+        HashMap<Integer, String[]> trades = tdb.getTradesByUnit(unit.getUnitID(), "sell");
 
         // Row data in the table
         // Adds a row for each Asset type

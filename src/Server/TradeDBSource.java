@@ -21,8 +21,8 @@ public class TradeDBSource {
             "FROM trades " +
             "JOIN users ON trades.user = users.user_name " +
             "JOIN  units ON users.unit = units.unit_id " +
-            "JOIN assets_produced on trades.asset = assets_produced.asset_id" +
-            "WHERE units.unit_id=? and trades.type=?;";
+            "JOIN assets_produced on trades.asset = assets_produced.asset_id " +
+            "WHERE unit_id = ? and trades.type = ?;";
     private static final String ADD_TRADE = "INSERT INTO trades (type, user, asset, quantity, price, date) " +
             "VALUES (?, ?, ?, ?, ?, NOW());";
     private static final String GET_MATCHING_SELLS = "SELECT MIN(trade_id), MIN(price), quantity " +
@@ -114,7 +114,8 @@ public class TradeDBSource {
                 trades.put(rs.getInt("trade_id"), columns);
             }
         } catch(SQLException sqle) {
-            System.err.println(sqle);
+            System.err.println(sqle + "GET TRADES BY UNIT IS THROWING AN ERROR");
+            System.err.println(sqle.getLocalizedMessage());
         }
         return trades;
     }

@@ -46,6 +46,7 @@ public class AssetDBSource {
             update = connection.prepareStatement(UPDATE);
         } catch (SQLException sqle) {
             System.err.println(sqle);
+
         }
     }
 

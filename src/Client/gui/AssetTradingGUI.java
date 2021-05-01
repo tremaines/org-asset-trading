@@ -54,6 +54,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private AssetDBSource adb;
     private PurchasesDBSource pdb;
     private  HistoryDBSource hdb;
+    TradeLogic implementTrade;
 
 
 
@@ -71,6 +72,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         this.hdb = new HistoryDBSource(connection);
         this.unit = udb.getUnit(user.getUnit());
         this.userLoggedIn = user;
+        implementTrade = new TradeLogic(udb, usdb, tdb, adb, pdb, hdb);
 
         // Setup of main frame
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -315,7 +317,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                         try {
                             newTrade = new Trades(Trades.TradeType.buy, userLoggedIn.getUsername(),
                                     adb.getAsset(type).getAssetID(), Integer.parseInt(amount), Integer.parseInt(price));
-                            TradeLogic.setTrade(newTrade, udb, usdb, tdb, adb, pdb, hdb);
+                            implementTrade.setTrade(newTrade);
                             JOptionPane.showMessageDialog(null, "Buy order was placed!",
                                     "Successful", JOptionPane.INFORMATION_MESSAGE);
                             refreshGUI();
@@ -417,7 +419,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                             newTrade = new Trades(Trades.TradeType.buy, userLoggedIn.getUsername(),
                                     adb.getAsset(type).getAssetID(), Integer.parseInt(amount), Integer.parseInt(price));
                             refreshGUI();
-                            TradeLogic.setTrade(newTrade, udb, usdb, tdb, adb, pdb, hdb);
+                            implementTrade.setTrade(newTrade);
                             cardLayout.show(mainContent, "2");
                             JOptionPane.showMessageDialog(null, "Sell order was placed!",
                                     "Successful", JOptionPane.INFORMATION_MESSAGE);
