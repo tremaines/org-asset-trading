@@ -736,6 +736,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         s1 = new JSpinner();
         s1.setBounds(220 , 80, 150 , 20);
 
+        JComponent editor = s1.getEditor();
+        JSpinner.DefaultEditor spinnerEditor = (JSpinner.DefaultEditor)editor;
+        spinnerEditor.getTextField().setHorizontalAlignment(JTextField.LEFT);
 
         terms = new JCheckBox("Please confirm that the " +
                 "details you have entered are correct");
