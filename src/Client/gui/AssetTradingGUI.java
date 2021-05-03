@@ -37,6 +37,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel topMenuRight;
     private JPanel topMenuLeft;
 
+    // Tables
+    private ModifyAssetsTable modifyAssetsTable;
+    private JPanel tableBordered;
+
     // Side menu components
     private JPanel sideMenuTop;
     private JPanel sideMenuBottom;
@@ -111,13 +115,23 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     public static void main(String[] args) throws UserException, TradesException, AssetsException {
         Organisation organisation = new Organisation();
         List<String> assetsList = new ArrayList<>();
+        List<String> assetsList2 = new ArrayList<>();
+
         assetsList.add("Hardware Resources");
         assetsList.add("Software Licenses");
+        assetsList2.add("Hardware Resources");
+        assetsList2.add("Software Licenses");
+
         List<Integer> assetAmountsList = new ArrayList<>();
+        List<Integer> assetAmountsList2 = new ArrayList<>();
+
         assetAmountsList.add(20);
         assetAmountsList.add(20);
+        assetAmountsList2.add(10);
+        assetAmountsList2.add(10);
+
         organisation.createOrganisation("Microsoft", 100, assetsList, assetAmountsList);
-        organisation.createOrganisation("Google", 200, assetsList, assetAmountsList);
+        organisation.createOrganisation("Google", 200, assetsList2, assetAmountsList2);
         User user = new User(organisation);
         user.createUser("test", "test123", false, "Microsoft");
         user.createUser("test2", "test123", false, "Google");
@@ -833,15 +847,19 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         rightPanel.setBorder(new EmptyBorder(30, 0, 30, 30));
 
         String[] unitNames = org.getUnitNames();
-        List<String> sortedNames = Arrays.asList(unitNames);
+        List<String> sortedNames = new ArrayList(Arrays.asList(unitNames));
+        if(sortedNames.contains("None (Admin)")) {
+            sortedNames.remove("None (Admin)");
+        }
         java.util.Collections.sort(sortedNames);
         unitNames = sortedNames.toArray(new String[0]);
 
         JComboBox units = new JComboBox(unitNames);
         units.setBounds(220, 40, 150, 20);
         String orgName = units.getSelectedItem().toString();
+        Organisation selectedOrg = org.getOrganisation(orgName);
 
-        JPanel tableBordered = new JPanel(new BorderLayout(0, 0));
+        tableBordered = new JPanel(new BorderLayout());
         tableBordered.setBorder(BorderFactory.createTitledBorder(orgName + "'s Assets"));
         rightPanel.add(tableBordered);
 
@@ -859,14 +877,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         label1 = new JLabel("Select Unit");
         label1.setBounds(30, 40, 150, 20);
-
-        units.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                 String orgName = units.getSelectedItem().toString();
-                 tableBordered.setBorder(BorderFactory.createTitledBorder(orgName + "'s Assets"));
-            }
-        });
 
         label2 = new JLabel("Change Unit Name");
         label2.setBounds(30, 70, 150, 20);
@@ -888,15 +898,39 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 "details you have entered are correct");
         terms.setBounds(30 , 130, 400 , 20);
 
-
         submit = new JButton("Submit");
         submit.setBounds(30 , 160, 100 , 20);
 
         msg = new JLabel("");
         msg.setBounds(140 , 180, 100 , 20);
 
-        OrganisationAssetsTable organisationAssetsTable = new OrganisationAssetsTable(tableBordered, allAssets);
-        organisationAssetsTable.getAssetsTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+        modifyAssetsTable = new ModifyAssetsTable(tableBordered, allAssets, selectedOrg);
+        modifyAssetsTable.getAssetsTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+
+        units.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String orgName = units.getSelectedItem().toString();
+                Organisation selectedOrgNew = org.getOrganisation(orgName);
+
+                // Remove old table
+                rightPanel.remove(tableBordered);
+                rightPanel.revalidate();
+                rightPanel.repaint();
+
+                // Add new table
+                tableBordered = new JPanel(new BorderLayout());
+                rightPanel.add(tableBordered);
+                modifyAssetsTable = new ModifyAssetsTable(tableBordered, allAssets, selectedOrgNew);
+                modifyAssetsTable.getAssetsTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+
+                // Update screen
+                rightPanel.revalidate();
+                rightPanel.repaint();
+
+                tableBordered.setBorder(BorderFactory.createTitledBorder(orgName + "'s Assets"));
+            }
+        });
 
         leftPanel.add(label1);
         leftPanel.add(label2);
