@@ -90,6 +90,21 @@ public class OrganisationTest {
         assertEquals(5, orgObject.getAmounts().get(0));
     }
 
+    @Test
+    public void changeName() {
+        Organisation org1 = new Organisation("Apple", 170, assets1, assetAmount1);
+        org1.changeOrganisationName("Hewlett-Packard");
+        assertEquals("Hewlett-Packard", org1.getOrganisationName());
+    }
+
+    @Test
+    public void changeNameMultipleTimes() {
+        Organisation org1 = new Organisation("Apple", 170, assets1, assetAmount1);
+        org1.changeOrganisationName("Hewlett-Packard");
+        org1.changeOrganisationName("Asus");
+        org1.changeOrganisationName("Dell");
+        assertEquals("Dell", org1.getOrganisationName());
+    }
 
 }
 

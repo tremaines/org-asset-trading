@@ -259,4 +259,14 @@ public class Organisation {
             amount.set(index, quantity);
         }
     }
+
+    /**
+     * Changes the name of an organisation
+     */
+    public void changeOrganisationName(String newName) {
+        organisationName = newName;
+    }
+
+
+
 }
