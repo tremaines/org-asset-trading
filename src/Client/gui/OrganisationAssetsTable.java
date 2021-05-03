@@ -4,7 +4,6 @@ import Client.Assets;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 
 public class OrganisationAssetsTable extends JFrame {
 
@@ -47,8 +46,8 @@ public class OrganisationAssetsTable extends JFrame {
         // Make cells uneditable
         assetsTable.setEditingColumn(1);
 
-        JPanel topTableBar = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,15));
-        panel.add(topTableBar, BorderLayout.NORTH);
+//        JPanel topTableBar = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,0));
+//        panel.add(topTableBar, BorderLayout.NORTH);
         panel.add(scrollPane);
     }
 

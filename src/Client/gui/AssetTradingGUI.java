@@ -26,6 +26,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel buyPanel;
     private JPanel sellPanel;
     private JPanel createPanel;
+    private JPanel modifyPanel;
     private JPanel accountPanel;
     private JPanel assetsPanel;
     private JPanel myListingsPanel;
@@ -85,6 +86,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupAssetsPanel();
         setupMyListingsPanel();
         setupCreatePanel();
+        setupModifyPanel();
 
         // Display assets panel on startup
         cardLayout.show(mainContent, "4");
@@ -103,6 +105,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupAssetsPanel();
         setupMyListingsPanel();
         setupAccountPanel();
+        setupModifyPanel();
     }
 
     public static void main(String[] args) throws UserException, TradesException, AssetsException {
@@ -710,7 +713,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         JPanel createPanelContainer = new JPanel(new GridLayout(1, 2));
         JPanel leftPanel = new JPanel(new BorderLayout(0, 0));
         JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
-        rightPanel.setBorder(new EmptyBorder(0,0,30,30));
+        rightPanel.setBorder(new EmptyBorder(30,0,30,30));
 
         createPanelContainer.add(leftPanel);
         createPanelContainer.add(rightPanel);
@@ -812,8 +815,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         });
 
 
-
-
         leftPanel.add(label1);
         leftPanel.add(label2);
         leftPanel.add(t1);
@@ -823,6 +824,91 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         leftPanel.add(msg);
 
         mainContent.add(createPanelContainer, "6");
+    }
+
+    public void setupModifyPanel() {
+        JPanel modifyPanelContainer = new JPanel(new GridLayout(1, 2));
+        JPanel leftPanel = new JPanel(new BorderLayout(0, 0));
+        JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
+        rightPanel.setBorder(new EmptyBorder(30, 0, 30, 30));
+
+        String[] unitNames = org.getUnitNames();
+        List<String> sortedNames = Arrays.asList(unitNames);
+        java.util.Collections.sort(sortedNames);
+        unitNames = sortedNames.toArray(new String[0]);
+
+        JComboBox units = new JComboBox(unitNames);
+        units.setBounds(220, 40, 150, 20);
+        String orgName = units.getSelectedItem().toString();
+
+        JPanel tableBordered = new JPanel(new BorderLayout(0, 0));
+        tableBordered.setBorder(BorderFactory.createTitledBorder(orgName + "'s Assets"));
+        rightPanel.add(tableBordered);
+
+        modifyPanelContainer.add(leftPanel);
+        modifyPanelContainer.add(rightPanel);
+        modifyPanelContainer.setBorder(BorderFactory.createTitledBorder("Modify"));
+
+        setSize(1000, 700);
+        JLabel label1, label2 , label3;
+        JSpinner s1;
+        JTextField t1;
+        JCheckBox terms;
+        JButton submit;
+        JLabel msg;
+
+        label1 = new JLabel("Select Unit");
+        label1.setBounds(30, 40, 150, 20);
+
+        units.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                 String orgName = units.getSelectedItem().toString();
+                 tableBordered.setBorder(BorderFactory.createTitledBorder(orgName + "'s Assets"));
+            }
+        });
+
+        label2 = new JLabel("Change Unit Name");
+        label2.setBounds(30, 70, 150, 20);
+
+        t1 = new JTextField();
+        t1.setBounds(220 , 70, 150 , 20);
+
+        label3 = new JLabel("Set Credits");
+        label3.setBounds(30 , 100, 100 , 20);
+
+        s1 = new JSpinner();
+        s1.setBounds(220 , 100, 150 , 20);
+
+        JComponent editor = s1.getEditor();
+        JSpinner.DefaultEditor spinnerEditor = (JSpinner.DefaultEditor)editor;
+        spinnerEditor.getTextField().setHorizontalAlignment(JTextField.LEFT);
+
+        terms = new JCheckBox("Please confirm that the " +
+                "details you have entered are correct");
+        terms.setBounds(30 , 130, 400 , 20);
+
+
+        submit = new JButton("Submit");
+        submit.setBounds(30 , 160, 100 , 20);
+
+        msg = new JLabel("");
+        msg.setBounds(140 , 180, 100 , 20);
+
+        OrganisationAssetsTable organisationAssetsTable = new OrganisationAssetsTable(tableBordered, allAssets);
+        organisationAssetsTable.getAssetsTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+
+        leftPanel.add(label1);
+        leftPanel.add(label2);
+        leftPanel.add(label3);
+        leftPanel.add(units);
+        leftPanel.add(t1);
+        leftPanel.add(s1);
+        leftPanel.add(terms);
+        leftPanel.add(submit);
+        leftPanel.add(msg);
+
+        mainContent.add(modifyPanelContainer, "7");
     }
 
     @Override
@@ -848,6 +934,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         } else if (btnSrcTxt.equals("Create")) {
             refreshGUI();
             cardLayout.show(mainContent, "6");
+        } else if (btnSrcTxt.equals("Modify")) {
+            refreshGUI();
+            cardLayout.show(mainContent, "7");
         }
 
     }
