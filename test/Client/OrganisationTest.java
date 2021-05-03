@@ -92,19 +92,23 @@ public class OrganisationTest {
 
     @Test
     public void changeName() {
-        Organisation org1 = new Organisation("Apple", 170, assets1, assetAmount1);
-        org1.changeOrganisationName("Hewlett-Packard");
-        assertEquals("Hewlett-Packard", org1.getOrganisationName());
+        orgName = "Microsoft2";
+        Organisation orgObject = org.getOrganisation(orgName);
+        orgObject.changeOrganisationName("Hewlett-Packard");
+        assertEquals("Hewlett-Packard", orgObject.getOrganisationName());
     }
 
     @Test
     public void changeNameMultipleTimes() {
-        Organisation org1 = new Organisation("Apple", 170, assets1, assetAmount1);
-        org1.changeOrganisationName("Hewlett-Packard");
-        org1.changeOrganisationName("Asus");
-        org1.changeOrganisationName("Dell");
-        assertEquals("Dell", org1.getOrganisationName());
+        orgName = "Microsoft2";
+        Organisation orgObject = org.getOrganisation(orgName);
+        orgObject.changeOrganisationName("Hewlett-Packard");
+        orgObject.changeOrganisationName("Asus");
+        orgObject.changeOrganisationName("Dell");
+        assertEquals("Dell", orgObject.getOrganisationName());
     }
+
+
 
 }
 
