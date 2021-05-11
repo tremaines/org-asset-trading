@@ -206,15 +206,20 @@ public class Trades {
     private void tradeCompatibility(int tradeID1, int tradeID2) {
 
         // Variable used to swap tradeIDs if tradeID1 is not the Buy listing
-        int tradeIDSpare;
+        String tradeID1Copy;
+        String tradeID2Copy;
+        int tradeID1Spare, tradeID2Spare;
 
         // Checks if tradeID1 is the Buy listing, if not, swaps with tradeID2 so it will become the
         // buy listing. This ensures tradeID1 will always be the buy listing and tradeID2 the
         // sell listing.
         if(!(multiValueMap.get(tradeID1).get(tradeType) == "Buy")) {
-            tradeIDSpare = tradeID2;
-            tradeID1 = tradeID2;
-            tradeID2 = tradeIDSpare;
+            tradeID1Copy = tradeID1 + "";
+            tradeID2Copy = tradeID2 + "";
+            tradeID1Spare = Integer.parseInt(tradeID1Copy);
+            tradeID2Spare = Integer.parseInt(tradeID2Copy);
+            tradeID1 = tradeID2Spare;
+            tradeID2 = tradeID1Spare;
         }
 
         // Price per unit of an asset for the buy and sell listings
