@@ -287,6 +287,8 @@ public class Trades {
         // Difference in price between the buy and sell amount
         int priceDifference;
 
+        User userBuy, userSell;
+
         // Credits to be returned to the buyer if the buyer's order price is greater than the
         // seller's
         int returnCredits;
@@ -324,6 +326,12 @@ public class Trades {
             // Stores summary of sell listing data
             addTradeHistory(tradeID2);
 
+            // Notifies users of their sale/purchase
+            userBuy = users.getUser(tradeBuy.get(userName));
+            userSell = users.getUser(tradeSell.get(userName));
+            userBuy.setNotificationStatus(true);
+            userSell.setNotificationStatus(true);
+
         } else if (sellAmount == buyAmount) {
             // Gets the amount of credits to be returned to the buyer (if any)
             priceDifference = buyPrice - sellPrice;
@@ -351,6 +359,12 @@ public class Trades {
 
             // Stores summary of sell listing data
             addTradeHistory(tradeID2);
+
+            // Notifies users of their sale/purchase
+            userBuy = users.getUser(tradeBuy.get(userName));
+            userSell = users.getUser(tradeSell.get(userName));
+            userBuy.setNotificationStatus(true);
+            userSell.setNotificationStatus(true);
 
         } else {
             // Gets the amount of credits to be returned to the buyer (if any)
@@ -383,6 +397,12 @@ public class Trades {
 
             // Stores summary of sell listing data
             addTradeHistory(tradeID2);
+
+            // Notifies users of their sale/purchase
+            userBuy = users.getUser(tradeBuy.get(userName));
+            userSell = users.getUser(tradeSell.get(userName));
+            userBuy.setNotificationStatus(true);
+            userSell.setNotificationStatus(true);
         }
     }
 

@@ -23,6 +23,8 @@ public class User {
     private List<User> userList = new ArrayList<>();
     // Collection of Organisation instances
     private Organisation org;
+    // Notification status
+    private boolean notify;
 
     /**
      * Creates an instance of users
@@ -50,6 +52,7 @@ public class User {
         this.password = hashPassword(password);
         this.admin = admin;
         this.organisationName = organisationName;
+        notify = false;
     }
 
     /**
@@ -187,5 +190,23 @@ public class User {
             }
         }
         return userObject;
+    }
+
+    /**
+     * Checks if a user needs to be notified of a completed/partially completed buy/sell listing
+     *
+     * @return True or false if a user needs to be notified
+     */
+    public boolean getNotificationStatus() {
+        return notify;
+    }
+
+    /**
+     * Sets the notification status
+     *
+     * @param status True if user's order has been completed/partially completed
+     */
+    public void setNotificationStatus(boolean status) {
+        notify = status;
     }
 }

@@ -100,6 +100,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+
+        refreshGUI();
     }
 
     public void refreshGUI() {
@@ -113,6 +115,13 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupAccountPanel();
         setupModifyPanel();
         setupAllListingsPanel();
+
+        if(userLoggedIn.getNotificationStatus() == true) {
+            JOptionPane.showMessageDialog(null, "One of your buy/sell orders was recently " +
+                            "completed",
+                    "Order Completed", JOptionPane.INFORMATION_MESSAGE);
+            userLoggedIn.setNotificationStatus(false);
+        }
     }
 
     public static void main(String[] args) throws UserException, TradesException, AssetsException {
@@ -972,8 +981,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         String btnSrcTxt = e.getActionCommand();
 
         if (btnSrcTxt.equals("Buy")) {
+            refreshGUI();
             cardLayout.show(mainContent, "1");
         } else if (btnSrcTxt.equals("Sell")) {
+            refreshGUI();
             cardLayout.show(mainContent, "2");
         } else if (btnSrcTxt.equals("Account")) {
             refreshGUI();
