@@ -31,6 +31,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel assetsPanel;
     private JPanel myListingsPanel;
     private JPanel notificationsPanel;
+    private JPanel allListingsPanel;
 
     // Top menu components
     private JPanel topMenuContainer;
@@ -91,6 +92,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupMyListingsPanel();
         setupCreatePanel();
         setupModifyPanel();
+        setupAllListingsPanel();
 
         // Display assets panel on startup
         cardLayout.show(mainContent, "4");
@@ -110,6 +112,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupMyListingsPanel();
         setupAccountPanel();
         setupModifyPanel();
+        setupAllListingsPanel();
     }
 
     public static void main(String[] args) throws UserException, TradesException, AssetsException {
@@ -251,7 +254,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/bell.png"));
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             String btnName = "";
             switch(i) {
                 case 0:
@@ -262,12 +265,16 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                     icon = new ImageIcon(this.getClass().getResource("images/mylistings.png"));
                     break;
                 case 2:
-                    btnName = "View Assets";
+                    btnName = "Summary";
                     icon = new ImageIcon(this.getClass().getResource("images/viewassets.png"));
                     break;
                 case 3:
                     btnName = "Logout";
                     icon = new ImageIcon(this.getClass().getResource("images/logout.png"));
+                    break;
+                case 4:
+                    btnName = "All Listings";
+                    icon = new ImageIcon(this.getClass().getResource("images/alllistings.png"));
                     break;
 
             }
@@ -945,6 +952,21 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         mainContent.add(modifyPanelContainer, "7");
     }
 
+    public void setupAllListingsPanel() {
+        allListingsPanel = new JPanel(new BorderLayout());
+        allListingsPanel.setBorder(BorderFactory.createTitledBorder("All Listings"));
+        JPanel gridPanel = new JPanel(new GridLayout(1, 2, 10, 20));
+
+        AllListingsTableBuy buyTable = new AllListingsTableBuy(gridPanel, allAssets,
+                allTrades, userLoggedIn, allUsers, org);
+        AllListingsTableSell sellTable  = new AllListingsTableSell(gridPanel, allAssets,
+                allTrades, userLoggedIn, allUsers, org);
+
+        allListingsPanel.add(gridPanel);
+
+        mainContent.add(allListingsPanel, "8");
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         String btnSrcTxt = e.getActionCommand();
@@ -956,7 +978,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         } else if (btnSrcTxt.equals("Account")) {
             refreshGUI();
             cardLayout.show(mainContent, "3");
-        } else if (btnSrcTxt.equals("View Assets")) {
+        } else if (btnSrcTxt.equals("Summary")) {
             refreshGUI();
             cardLayout.show(mainContent, "4");
         } else if (btnSrcTxt.equals("Logout")) {
@@ -971,8 +993,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         } else if (btnSrcTxt.equals("Modify")) {
             refreshGUI();
             cardLayout.show(mainContent, "7");
+        } else if (btnSrcTxt.equals("All Listings")) {
+            refreshGUI();
+            cardLayout.show(mainContent, "8");
         }
-
     }
 }
 
