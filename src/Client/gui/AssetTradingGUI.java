@@ -1007,6 +1007,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                                 "Invalid Entry",
                                 JOptionPane.ERROR_MESSAGE);
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cannot set credits to a negative number",
+                            "Invalid Entry",
+                            JOptionPane.ERROR_MESSAGE);
+                    creditsSpinner.setValue(selectedOrg.getCredits());
                 }
             }
         });
