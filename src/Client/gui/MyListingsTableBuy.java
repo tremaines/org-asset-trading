@@ -28,8 +28,8 @@ public class MyListingsTableBuy extends JFrame {
     private static final int assetAmount = 2;
     // Cost per asset unit
     private static final int price = 3;
-    // Original asset amount
-    private static final int originalAmount = 4;
+    // Sold amount for a sell listing
+    private static final int soldAmount = 4;
     // Username
     private static final int userName = 5;
     // Name of the organisation
@@ -69,7 +69,7 @@ public class MyListingsTableBuy extends JFrame {
 
         // Row data in the table
         // Adds a row for each Asset type
-        for(int i = 0; i < trades.getListing().size() ; i++) {
+        for(int i = 0; i < trades.getListing().size(); i++) {
             ArrayList<String> currentListing = trades.getListing().get(i + 1);
             if ((currentListing.get(orgName) == userLoggedIn.getOrganisationName()) && (currentListing.get(tradeType) == "Buy")) {
                 if (currentListing.get(tradeFulfilled) == "No" || currentListing.get(tradeFulfilled) == "Partial") {

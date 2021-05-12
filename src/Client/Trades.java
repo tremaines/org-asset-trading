@@ -27,8 +27,8 @@ public class Trades {
     private static final int assetAmount = 2;
     // Cost per asset unit
     private static final int price = 3;
-    // Original asset amount
-    private static final int originalAmount = 4;
+    // Sold amount for a sell listing
+    private static final int soldAmount = 4;
     // Username
     private static final int userName = 5;
     // Name of the organisation
@@ -113,7 +113,7 @@ public class Trades {
             multiValueMap.get(tradeID).add(assetAmount + "");
             multiValueMap.get(tradeID).add(assetPrice + "");
             // Stores a copy of the original listing amount (other assetAmount will get modified)
-            multiValueMap.get(tradeID).add(assetAmount + "");
+            multiValueMap.get(tradeID).add(0 + "");
             multiValueMap.get(tradeID).add(username);
             multiValueMap.get(tradeID).add(users.getOrganisationName(username));
             multiValueMap.get(tradeID).add("No");
@@ -328,6 +328,9 @@ public class Trades {
             tradeBuy.set(tradeFulfilled, "Yes");
             tradeSell.set(tradeFulfilled, "Partial");
 
+            // Sets sold amount for seller
+            tradeSell.set(soldAmount, buyAmount + "");
+
             // Stores summary of sell listing data
             addTradeHistory(tradeID2);
 
@@ -361,6 +364,9 @@ public class Trades {
             // Set both orders status to "Yes", as they have been fulfilled
             tradeBuy.set(tradeFulfilled, "Yes");
             tradeSell.set(tradeFulfilled, "Yes");
+
+            // Sets sold amount for seller
+            tradeSell.set(soldAmount, sellAmount + "");
 
             // Stores summary of sell listing data
             addTradeHistory(tradeID2);
@@ -399,6 +405,9 @@ public class Trades {
             // Set buy order to partial and set sell order to Yes (fulfilled)
             tradeBuy.set(tradeFulfilled, "Partial");
             tradeSell.set(tradeFulfilled, "Yes");
+
+            // Sets sold amount for seller
+            tradeSell.set(soldAmount, sellAmount + "");
 
             // Stores summary of sell listing data
             addTradeHistory(tradeID2);
@@ -558,6 +567,7 @@ public class Trades {
 
         tradeHistory.put(tradeHistoryID, new ArrayList<String>());
         tradeHistory.get(tradeHistoryID).add(tradeSell.get(assetType));
+        tradeHistory.get(tradeHistoryID).add(tradeSell.get(soldAmount));
         tradeHistory.get(tradeHistoryID).add(tradeSell.get(price) + "");
         tradeHistory.get(tradeHistoryID).add(LocalDate.now().toString());
     }

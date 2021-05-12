@@ -28,8 +28,8 @@ public class MyListingsTableSell extends JFrame {
     private static final int assetAmount = 2;
     // Cost per asset unit
     private static final int price = 3;
-    // Original asset amount
-    private static final int originalAmount = 4;
+    // Sold amount for a sell listing
+    private static final int soldAmount = 4;
     // Username
     private static final int userName = 5;
     // Name of the organisation

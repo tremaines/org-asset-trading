@@ -30,7 +30,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel accountPanel;
     private JPanel assetsPanel;
     private JPanel myListingsPanel;
-    private JPanel notificationsPanel;
+    private JPanel sellHistoryPanel;
     private JPanel allListingsPanel;
 
     // Top menu components
@@ -283,7 +283,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             String btnName = "";
             switch(i) {
                 case 0:
-                    btnName = "Notifications";
+                    btnName = "Sell History";
+                    icon = new ImageIcon(this.getClass().getResource("images/sellhistory.png"));
                     break;
                 case 1:
                     btnName = "My Listings";
@@ -1040,6 +1041,23 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         allListingsPanel.add(gridPanel);
 
         mainContent.add(allListingsPanel, "8");
+    }
+
+    public void setupSellHistoryPanel() {
+        sellHistoryPanel = new JPanel(new BorderLayout());
+        sellHistoryPanel.setBorder(BorderFactory.createTitledBorder("Asset Sell History"));
+        JPanel gridPanel = new JPanel(new GridLayout(1, 2, 10, 20));
+
+        // Create combo box
+
+        String assetName = "";
+
+        if(assetName == "") {
+            SellHistoryTable historyTable = new SellHistoryTable(gridPanel, allTrades,
+                    allAssets.getAllAssets().get(0));
+        } else {
+            SellHistoryTable historyTable = new SellHistoryTable(gridPanel, allTrades, assetName);
+        }
     }
 
     @Override

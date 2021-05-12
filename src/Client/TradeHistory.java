@@ -16,7 +16,15 @@ public class TradeHistory {
     // Multi valued map of the entire trade history
     Map<Integer, ArrayList<String>> extendedTradeHistory = new HashMap<>();
 
-    // Trade fulfilled status (Yes/No/Partially/Cancelled)
+    // Type of asset
+    private static final int assetType = 0;
+    // Sold amount for a sell listing
+    private static final int soldAmount = 1;
+    // Cost per asset unit
+    private static final int price = 2;
+    // Time of the listing
+    private static final int time = 3;
+    // Trade fulfilled status (Yes/No/Partial/Cancelled)
     private static final int tradeFulfilled = 7;
 
     // Constructor for the TradeHistory class that takes a collection of all trades

@@ -44,7 +44,7 @@ public class ModifyAssetsTable extends JFrame {
         assetsTable.setAutoCreateRowSorter(true);
         assetsTable.setFillsViewportHeight(true);
 
-        // Make cells uneditable
+        // Make column one editable
         assetsTable.setEditingColumn(1);
 
 //        JPanel topTableBar = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,0));
