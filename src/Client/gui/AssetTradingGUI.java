@@ -900,9 +900,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         modifyPanelContainer.setBorder(BorderFactory.createTitledBorder("Modify"));
 
         setSize(1000, 700);
-        JLabel label1, label2 , label3;
+        JLabel label1, label2;
         JSpinner s1;
-        JTextField t1;
         JCheckBox terms;
         JButton submit;
         JLabel msg;
@@ -910,17 +909,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label1 = new JLabel("Select Unit");
         label1.setBounds(30, 40, 150, 20);
 
-        label2 = new JLabel("Change Unit Name");
-        label2.setBounds(30, 70, 150, 20);
-
-        t1 = new JTextField();
-        t1.setBounds(220 , 70, 150 , 20);
-
-        label3 = new JLabel("Set Credits");
-        label3.setBounds(30 , 100, 100 , 20);
+        label2 = new JLabel("Set Credits");
+        label2.setBounds(30 , 70, 100 , 20);
 
         s1 = new JSpinner();
-        s1.setBounds(220 , 100, 150 , 20);
+        s1.setBounds(220 , 70, 150 , 20);
 
         JComponent editor = s1.getEditor();
         JSpinner.DefaultEditor spinnerEditor = (JSpinner.DefaultEditor)editor;
@@ -928,10 +921,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         terms = new JCheckBox("Please confirm that the " +
                 "details you have entered are correct");
-        terms.setBounds(30 , 130, 400 , 20);
+        terms.setBounds(30 , 100, 400 , 20);
 
         submit = new JButton("Submit");
-        submit.setBounds(30 , 160, 100 , 20);
+        submit.setBounds(30 , 130, 100 , 20);
 
         msg = new JLabel("");
         msg.setBounds(140 , 180, 100 , 20);
@@ -966,9 +959,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         leftPanel.add(label1);
         leftPanel.add(label2);
-        leftPanel.add(label3);
         leftPanel.add(units);
-        leftPanel.add(t1);
         leftPanel.add(s1);
         leftPanel.add(terms);
         leftPanel.add(submit);

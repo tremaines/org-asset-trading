@@ -89,26 +89,5 @@ public class OrganisationTest {
         Organisation orgObject = org.getOrganisation(orgName);
         assertEquals(5, orgObject.getAmounts().get(0));
     }
-
-    @Test
-    public void changeName() {
-        orgName = "Microsoft2";
-        Organisation orgObject = org.getOrganisation(orgName);
-        orgObject.changeOrganisationName("Hewlett-Packard");
-        assertEquals("Hewlett-Packard", orgObject.getOrganisationName());
-    }
-
-    @Test
-    public void changeNameMultipleTimes() {
-        orgName = "Microsoft2";
-        Organisation orgObject = org.getOrganisation(orgName);
-        orgObject.changeOrganisationName("Hewlett-Packard");
-        orgObject.changeOrganisationName("Asus");
-        orgObject.changeOrganisationName("Dell");
-        assertEquals("Dell", orgObject.getOrganisationName());
-    }
-
-
-
 }
 

@@ -260,13 +260,4 @@ public class Organisation {
         }
     }
 
-    /**
-     * Changes the name of an organisation
-     */
-    public void changeOrganisationName(String newName) {
-        organisationName = newName;
-    }
-
-
-
 }
