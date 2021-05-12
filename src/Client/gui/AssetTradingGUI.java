@@ -41,6 +41,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     // Tables
     private ModifyAssetsTable modifyAssetsTable;
     private JPanel tableBordered;
+    private JPanel tableBorder;
 
     // Side menu components
     private JPanel sideMenuTop;
@@ -1075,8 +1076,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         SellHistoryTable historyTable = new SellHistoryTable(gridPanel, allTrades,
                assetName);
 
-        tableBordered = new JPanel(new BorderLayout());
-        tableBordered.setBorder(BorderFactory.createTitledBorder(assetName + " Sales History"));
+        tableBorder = new JPanel(new BorderLayout());
+        tableBorder.setBorder(BorderFactory.createTitledBorder(assetName + " Sales History"));
 
         assets.addActionListener(new ActionListener() {
             @Override
