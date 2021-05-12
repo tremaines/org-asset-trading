@@ -1070,21 +1070,25 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         if(nameOfAsset.size() == 0) {
             assetName = assets.getSelectedItem().toString();
         } else {
-            assetName = assetName;
+            assetName = nameOfAsset.get(0);
+            nameOfAsset.clear();
         }
-
-        SellHistoryTable historyTable = new SellHistoryTable(gridPanel, allTrades,
-               assetName);
+        assets.setSelectedItem(assetName);
 
         tableBorder = new JPanel(new BorderLayout());
         tableBorder.setBorder(BorderFactory.createTitledBorder(assetName + " Sales History"));
+
+        SellHistoryTable historyTable = new SellHistoryTable(gridPanel, allTrades,
+               assetName);
 
         assets.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 assetName = assets.getSelectedItem().toString();
-                nameOfAsset.add("");
+                nameOfAsset.add(assetName);
+                assets.setSelectedItem(assetName);
                 refreshGUI();
+                cardLayout.show(mainContent, "9");
             }
         });
 
