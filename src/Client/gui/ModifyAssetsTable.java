@@ -52,7 +52,7 @@ public class ModifyAssetsTable extends JFrame {
         panel.add(scrollPane);
     }
 
-    public JTable getAssetsTable() {
+    public JTable getModifyTable() {
         return assetsTable;
     }
 

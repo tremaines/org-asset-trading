@@ -803,8 +803,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         OrganisationAssetsTable organisationAssetsTable = new OrganisationAssetsTable(rightPanel, allAssets);
         organisationAssetsTable.getAssetsTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-
-
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -930,13 +928,13 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         msg.setBounds(140 , 180, 100 , 20);
 
         modifyAssetsTable = new ModifyAssetsTable(tableBordered, allAssets, selectedOrg);
-        modifyAssetsTable.getAssetsTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+        modifyAssetsTable.getModifyTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
         units.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String orgName = units.getSelectedItem().toString();
-                Organisation selectedOrgNew = org.getOrganisation(orgName);
+                Organisation selectedOrg = org.getOrganisation(orgName);
 
                 // Remove old table
                 rightPanel.remove(tableBordered);
@@ -946,14 +944,66 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 // Add new table
                 tableBordered = new JPanel(new BorderLayout());
                 rightPanel.add(tableBordered);
-                modifyAssetsTable = new ModifyAssetsTable(tableBordered, allAssets, selectedOrgNew);
-                modifyAssetsTable.getAssetsTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+                modifyAssetsTable = new ModifyAssetsTable(tableBordered, allAssets, selectedOrg);
+                modifyAssetsTable.getModifyTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
                 // Update screen
                 rightPanel.revalidate();
                 rightPanel.repaint();
 
                 tableBordered.setBorder(BorderFactory.createTitledBorder(orgName + "'s Assets"));
+            }
+        });
+
+
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String orgName = units.getSelectedItem().toString();
+                Organisation selectedOrg = org.getOrganisation(orgName);
+                int creditsInput = (Integer) s1.getValue();
+                boolean boxSelected = terms.isSelected();
+
+                List<Integer> newOrgAmounts = new ArrayList<>();
+
+                if(creditsInput >= 0) {
+                    try {
+                        for (int i = 0; i < allAssets.getAllAssets().size(); i++) {
+                            if (Integer.parseInt(modifyAssetsTable.getModifyTable().getValueAt(i, 1).toString()) > 0) {
+
+                                // Asset amount
+                                newOrgAmounts.add(Integer.parseInt(modifyAssetsTable.getModifyTable().getValueAt(i,
+                                        1).toString()));
+                            }
+                            else if (Integer.parseInt(modifyAssetsTable.getModifyTable().getValueAt(i, 1).toString()) < 0) {
+                                JOptionPane.showMessageDialog(null, "Negative numbers are " +
+                                                "discarded for asset quantities.",
+                                        "Asset Quantity",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+
+                        if (boxSelected) {
+                            selectedOrg.changeAssetAmounts(newOrgAmounts);
+                            selectedOrg.changeCredits(creditsInput);
+
+                            JOptionPane.showMessageDialog(null,
+                                    "Organisation details were updated", "Successful",
+                                JOptionPane.INFORMATION_MESSAGE);
+
+                        } else {
+                            JOptionPane.showMessageDialog(null, "You have not accepted " +
+                                            "the terms. Please select the checkbox.", "Checkbox Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (NumberFormatException n) {
+                        refreshGUI();
+                        JOptionPane.showMessageDialog(null, "Invalid entry for an asset quantity, " +
+                                        "please only enter integer values.",
+                                "Invalid Entry",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
             }
         });
 

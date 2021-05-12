@@ -260,4 +260,20 @@ public class Organisation {
         }
     }
 
+    /**
+     * Change asset amounts for an organisation
+     * @param newAssetAmount
+     */
+    public void changeAssetAmounts(List<Integer> newAssetAmount) {
+        this.amount = newAssetAmount;
+    }
+
+    /**
+     * Change amount of credits for an organisation
+     * @param newCredits
+     */
+    public void changeCredits(int newCredits) {
+        this.credits = newCredits;
+    }
+
 }
