@@ -54,7 +54,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private Assets allAssets;
     private Trades allTrades;
 
+    private String assetName;
+
     private int tableTradeID;
+
+    List<String> nameOfAsset;
 
     public AssetTradingGUI(Organisation organisation, User userAccount,
                            User allUserAccounts, Assets assets,
@@ -71,6 +75,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         this.allAssets = assets;
         // Current Trades object
         this.allTrades = trades;
+
+        nameOfAsset = new ArrayList<>();
 
         // Setup of main frame
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -93,6 +99,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupCreatePanel();
         setupModifyPanel();
         setupAllListingsPanel();
+        setupSellHistoryPanel();
 
 
         if(userLoggedIn.getBuyNotificationStatus()) {
@@ -126,6 +133,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupAccountPanel();
         setupModifyPanel();
         setupAllListingsPanel();
+        setupSellHistoryPanel();
 
         if(userLoggedIn.getBuyNotificationStatus()) {
             JOptionPane.showMessageDialog(null, "One of your buy orders was recently " +
@@ -495,7 +503,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
-
         });
 
         // Row data in the table
@@ -1046,18 +1053,44 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     public void setupSellHistoryPanel() {
         sellHistoryPanel = new JPanel(new BorderLayout());
         sellHistoryPanel.setBorder(BorderFactory.createTitledBorder("Asset Sell History"));
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,10,15));
         JPanel gridPanel = new JPanel(new GridLayout(1, 2, 10, 20));
 
-        // Create combo box
 
-        String assetName = "";
 
-        if(assetName == "") {
-            SellHistoryTable historyTable = new SellHistoryTable(gridPanel, allTrades,
-                    allAssets.getAllAssets().get(0));
+        String[] assetNames = allAssets.getAllAssets().toArray(new String[0]);
+        List<String> assetList = new ArrayList(Arrays.asList(assetNames));
+
+        JComboBox assets = new JComboBox(assetNames);
+        assets.setBounds(220, 40, 150, 20);
+
+        topPanel.add(assets);
+
+        if(nameOfAsset.size() == 0) {
+            assetName = assets.getSelectedItem().toString();
         } else {
-            SellHistoryTable historyTable = new SellHistoryTable(gridPanel, allTrades, assetName);
+            assetName = assetName;
         }
+
+        SellHistoryTable historyTable = new SellHistoryTable(gridPanel, allTrades,
+               assetName);
+
+        tableBordered = new JPanel(new BorderLayout());
+        tableBordered.setBorder(BorderFactory.createTitledBorder(assetName + " Sales History"));
+
+        assets.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                assetName = assets.getSelectedItem().toString();
+                nameOfAsset.add("");
+                refreshGUI();
+            }
+        });
+
+
+        sellHistoryPanel.add(topPanel, BorderLayout.NORTH);
+        sellHistoryPanel.add(gridPanel);
+        mainContent.add(sellHistoryPanel, "9");
     }
 
     @Override
@@ -1091,6 +1124,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         } else if (btnSrcTxt.equals("All Listings")) {
             refreshGUI();
             cardLayout.show(mainContent, "8");
+        } else if (btnSrcTxt.equals("Sell History")) {
+            refreshGUI();
+            cardLayout.show(mainContent, "9");
         }
     }
 }

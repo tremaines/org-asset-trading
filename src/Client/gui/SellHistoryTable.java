@@ -39,12 +39,11 @@ public class SellHistoryTable extends JFrame {
         model.addColumn("Price");
 
         // Adds a row for each Asset type
-        for(int i = 0; i < tradeHistory.getSummaryTradeHistory().size(); i++) {
+        for(int i = 1; i < tradeHistory.getSummaryTradeHistory().size() + 1; i++) {
             if(tradeHistory.getSummaryTradeHistory().get(i).get(assetType) == assetName) {
                 model.addRow(new Object[]{tradeHistory.getSummaryTradeHistory().get(i).get(soldAmount),
                         tradeHistory.getSummaryTradeHistory().get(i).get(price)});
             }
-
         }
 
 
