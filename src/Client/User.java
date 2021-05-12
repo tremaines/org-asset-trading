@@ -222,9 +222,9 @@ public class User {
      */
     public void setNotificationStatus(String type, boolean status) {
         if(type == "Buy") {
-            notifyBuy = true;
+            notifyBuy = status;
         } else if(type == "Sell") {
-            notifySell = true;
+            notifySell = status;
         }
     }
 }
