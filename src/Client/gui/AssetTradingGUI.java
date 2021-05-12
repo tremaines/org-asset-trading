@@ -704,7 +704,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
     public void setupAssetsPanel() {
         assetsPanel = new JPanel(new BorderLayout(0, 0));
-        assetsPanel.setBorder(BorderFactory.createTitledBorder("Assets"));
+        assetsPanel.setBorder(BorderFactory.createTitledBorder("Asset Summary"));
         mainContent.add(assetsPanel, "4");
         AssetsTable table = new AssetsTable(assetsPanel, allAssets, allTrades);
     }
