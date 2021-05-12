@@ -334,8 +334,8 @@ public class Trades {
             // Notifies users of their sale/purchase
             userBuy = users.getUser(tradeBuy.get(userName));
             userSell = users.getUser(tradeSell.get(userName));
-            userBuy.setNotificationStatus(true);
-            userSell.setNotificationStatus(true);
+            userBuy.setNotificationStatus("Buy", true);
+            userSell.setNotificationStatus("Sell", true);
 
         } else if (sellAmount == buyAmount) {
             // Gets the amount of credits to be returned to the buyer (if any)
@@ -368,8 +368,8 @@ public class Trades {
             // Notifies users of their sale/purchase
             userBuy = users.getUser(tradeBuy.get(userName));
             userSell = users.getUser(tradeSell.get(userName));
-            userBuy.setNotificationStatus(true);
-            userSell.setNotificationStatus(true);
+            userBuy.setNotificationStatus("Buy", true);
+            userSell.setNotificationStatus("Sell", true);
 
         } else {
             // Gets the amount of credits to be returned to the buyer (if any)
@@ -406,8 +406,8 @@ public class Trades {
             // Notifies users of their sale/purchase
             userBuy = users.getUser(tradeBuy.get(userName));
             userSell = users.getUser(tradeSell.get(userName));
-            userBuy.setNotificationStatus(true);
-            userSell.setNotificationStatus(true);
+            userBuy.setNotificationStatus("Buy", true);
+            userSell.setNotificationStatus("Sell", true);
         }
     }
 

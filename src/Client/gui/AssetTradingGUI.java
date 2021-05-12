@@ -94,14 +94,25 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupModifyPanel();
         setupAllListingsPanel();
 
+
+        if(userLoggedIn.getBuyNotificationStatus()) {
+            JOptionPane.showMessageDialog(null, "One of your buy orders was recently " +
+                            "partially or fully completed",
+                    "Buy Order Update", JOptionPane.INFORMATION_MESSAGE);
+            userLoggedIn.setNotificationStatus("Buy", false);
+        } else if(userLoggedIn.getSellNotificationStatus()) {
+            JOptionPane.showMessageDialog(null, "One of your sell orders was recently " +
+                            "partially or fully completed",
+                    "Sell Order Update", JOptionPane.INFORMATION_MESSAGE);
+            userLoggedIn.setNotificationStatus("Sell", false);
+        }
+
         // Display assets panel on startup
         cardLayout.show(mainContent, "4");
 
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
-
-        refreshGUI();
     }
 
     public void refreshGUI() {
@@ -116,11 +127,16 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupModifyPanel();
         setupAllListingsPanel();
 
-        if(userLoggedIn.getNotificationStatus() == true) {
-            JOptionPane.showMessageDialog(null, "One of your buy/sell orders was recently " +
-                            "completed",
-                    "Order Completed", JOptionPane.INFORMATION_MESSAGE);
-            userLoggedIn.setNotificationStatus(false);
+        if(userLoggedIn.getBuyNotificationStatus()) {
+            JOptionPane.showMessageDialog(null, "One of your buy orders was recently " +
+                            "partially or fully completed",
+                    "Buy Order Update", JOptionPane.INFORMATION_MESSAGE);
+            userLoggedIn.setNotificationStatus("Buy", false);
+        } else if(userLoggedIn.getSellNotificationStatus()) {
+            JOptionPane.showMessageDialog(null, "One of your sell orders was recently " +
+                            " partially or completed",
+                    "Sell Order Update", JOptionPane.INFORMATION_MESSAGE);
+            userLoggedIn.setNotificationStatus("Sell", false);
         }
     }
 

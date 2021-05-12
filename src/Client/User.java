@@ -23,8 +23,10 @@ public class User {
     private List<User> userList = new ArrayList<>();
     // Collection of Organisation instances
     private Organisation org;
+    // Notification status on a sell listing
+    private boolean notifySell;
     // Notification status
-    private boolean notify;
+    private boolean notifyBuy;
 
     /**
      * Creates an instance of users
@@ -52,7 +54,10 @@ public class User {
         this.password = hashPassword(password);
         this.admin = admin;
         this.organisationName = organisationName;
-        notify = false;
+
+        // Notification status default value is false
+        notifySell = false;
+        notifyBuy = false;
     }
 
     /**
@@ -193,12 +198,21 @@ public class User {
     }
 
     /**
-     * Checks if a user needs to be notified of a completed/partially completed buy/sell listing
+     * Checks if a user needs to be notified of a completed/partially buy listing
      *
      * @return True or false if a user needs to be notified
      */
-    public boolean getNotificationStatus() {
-        return notify;
+    public boolean getBuyNotificationStatus() {
+        return notifyBuy;
+    }
+
+    /**
+     * Checks if a user needs to be notified of a completed/partially sell listing
+     *
+     * @return True or false if a user needs to be notified
+     */
+    public boolean getSellNotificationStatus() {
+        return notifySell;
     }
 
     /**
@@ -206,7 +220,11 @@ public class User {
      *
      * @param status True if user's order has been completed/partially completed
      */
-    public void setNotificationStatus(boolean status) {
-        notify = status;
+    public void setNotificationStatus(String type, boolean status) {
+        if(type == "Buy") {
+            notifyBuy = true;
+        } else if(type == "Sell") {
+            notifySell = true;
+        }
     }
 }
