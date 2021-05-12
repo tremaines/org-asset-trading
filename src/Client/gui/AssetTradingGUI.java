@@ -899,7 +899,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         setSize(1000, 700);
         JLabel label1, label2;
-        JSpinner s1;
+        JSpinner creditsSpinner;
         JCheckBox terms;
         JButton submit;
         JLabel msg;
@@ -910,10 +910,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label2 = new JLabel("Set Credits");
         label2.setBounds(30 , 70, 100 , 20);
 
-        s1 = new JSpinner();
-        s1.setBounds(220 , 70, 150 , 20);
+        creditsSpinner = new JSpinner();
+        creditsSpinner.setValue(selectedOrg.getCredits());
+        creditsSpinner.setBounds(220 , 70, 150 , 20);
 
-        JComponent editor = s1.getEditor();
+        JComponent editor = creditsSpinner.getEditor();
         JSpinner.DefaultEditor spinnerEditor = (JSpinner.DefaultEditor)editor;
         spinnerEditor.getTextField().setHorizontalAlignment(JTextField.LEFT);
 
@@ -941,6 +942,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 rightPanel.revalidate();
                 rightPanel.repaint();
 
+                // Show credits for selected organisation
+                creditsSpinner.setValue(selectedOrg.getCredits());
+
                 // Add new table
                 tableBordered = new JPanel(new BorderLayout());
                 rightPanel.add(tableBordered);
@@ -961,7 +965,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 String orgName = units.getSelectedItem().toString();
                 Organisation selectedOrg = org.getOrganisation(orgName);
-                int creditsInput = (Integer) s1.getValue();
+                int creditsInput = (Integer) creditsSpinner.getValue();
                 boolean boxSelected = terms.isSelected();
 
                 List<Integer> newOrgAmounts = new ArrayList<>();
@@ -1010,7 +1014,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         leftPanel.add(label1);
         leftPanel.add(label2);
         leftPanel.add(units);
-        leftPanel.add(s1);
+        leftPanel.add(creditsSpinner);
         leftPanel.add(terms);
         leftPanel.add(submit);
         leftPanel.add(msg);
