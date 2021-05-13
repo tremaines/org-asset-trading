@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TreeMap;
 
 
 /**
@@ -983,12 +984,19 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                     try {
                         for (int i = 0; i < allAssets.getAllAssets().size(); i++) {
                             if (Integer.parseInt(modifyAssetsTable.getModifyTable().getValueAt(i, 1).toString()) > 0) {
-
                                 // Asset amount
                                 newOrgAmounts.add(Integer.parseInt(modifyAssetsTable.getModifyTable().getValueAt(i,
                                         1).toString()));
                             }
                             else if (Integer.parseInt(modifyAssetsTable.getModifyTable().getValueAt(i, 1).toString()) < 0) {
+                                // If value entered in amount cell is negative, use the previous positive value instead
+                                String assetName = modifyAssetsTable.getModifyTable().getValueAt(i, 0).toString();
+                                TreeMap<String, Integer> previousAssets = selectedOrg.getAssetsAndAmounts();
+                                System.out.println(previousAssets.get(assetName));
+
+                                // Add previous value
+                                newOrgAmounts.add(previousAssets.get(assetName));
+
                                 JOptionPane.showMessageDialog(null, "Negative numbers are " +
                                                 "discarded for asset quantities.",
                                         "Asset Quantity",

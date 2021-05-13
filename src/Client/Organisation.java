@@ -264,7 +264,7 @@ public class Organisation {
      * Change asset amounts for an organisation
      * @param newAssetAmount
      */
-    public void changeAssetAmounts(List<Integer> newAssetAmount) {
+    public void changeAssetAmounts(List<Integer> newAssetAmount) throws OrganisationException{
         this.amount = newAssetAmount;
     }
 
