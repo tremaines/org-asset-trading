@@ -977,6 +977,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 Organisation selectedOrg = org.getOrganisation(orgName);
                 int creditsInput = (Integer) creditsSpinner.getValue();
                 boolean boxSelected = terms.isSelected();
+                boolean hasNegativeInput = false;
 
                 List<Integer> newOrgAmounts = new ArrayList<>();
 
@@ -997,6 +998,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                                 // Add previous value
                                 newOrgAmounts.add(previousAssets.get(assetName));
 
+                                hasNegativeInput = true;
+
                                 JOptionPane.showMessageDialog(null, "Negative numbers are " +
                                                 "discarded for asset quantities.",
                                         "Asset Quantity",
@@ -1007,11 +1010,25 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                         if (boxSelected) {
                             selectedOrg.changeAssetAmounts(newOrgAmounts);
                             selectedOrg.changeCredits(creditsInput);
-                            
-                            JOptionPane.showMessageDialog(null,
-                                    "Organisation details were updated", "Successful",
-                                JOptionPane.INFORMATION_MESSAGE);
 
+                            if (hasNegativeInput) {
+                                // TODO: Put following code in rerender table function
+                                // Rerender table
+                                rightPanel.remove(tableBordered);
+                                rightPanel.revalidate();
+                                rightPanel.repaint();
+                                tableBordered = new JPanel(new BorderLayout());
+                                rightPanel.add(tableBordered);
+                                modifyAssetsTable = new ModifyAssetsTable(tableBordered, allAssets, selectedOrg);
+                                modifyAssetsTable.getModifyTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+                                rightPanel.revalidate();
+                                rightPanel.repaint();
+                                tableBordered.setBorder(BorderFactory.createTitledBorder(orgName + "'s Assets"));
+                            } else {
+                                JOptionPane.showMessageDialog(null,
+                                        "Organisation details were updated", "Successful",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                            }
                         } else {
                             JOptionPane.showMessageDialog(null, "You have not accepted " +
                                             "the terms. Please select the checkbox.", "Checkbox Error",
