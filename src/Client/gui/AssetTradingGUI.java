@@ -1000,6 +1000,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                             selectedOrg.changeAssetAmounts(newOrgAmounts);
                             selectedOrg.changeCredits(creditsInput);
 
+                            // TODO: Bug where if u change asset amounts to negative, then go to switch organisations in the dropdown, it crashes.
+
                             JOptionPane.showMessageDialog(null,
                                     "Organisation details were updated", "Successful",
                                 JOptionPane.INFORMATION_MESSAGE);
@@ -1009,7 +1011,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                                             "the terms. Please select the checkbox.", "Checkbox Error",
                                     JOptionPane.ERROR_MESSAGE);
                         }
-                    } catch (NumberFormatException n) {
+                    } catch (NumberFormatException | OrganisationException n) {
                         refreshGUI();
                         JOptionPane.showMessageDialog(null, "Invalid entry for an asset quantity, " +
                                         "please only enter integer values.",

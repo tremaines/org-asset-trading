@@ -89,5 +89,36 @@ public class OrganisationTest {
         Organisation orgObject = org.getOrganisation(orgName);
         assertEquals(5, orgObject.getAmounts().get(0));
     }
+
+    // Check changeCredtis() method
+    @Test
+    public void changeCreditsCheck() throws OrganisationException {
+        orgName = "Microsoft2";
+        Organisation orgObject = org.getOrganisation(orgName);
+        orgObject.changeCredits(125);
+        assertEquals(125, orgObject.getCredits());
+    }
+
+    // Check changeCredtis() method multiple after multiple changes
+    @Test
+    public void changeCreditsMultipleCheck() throws OrganisationException {
+        orgName = "Microsoft2";
+        Organisation orgObject = org.getOrganisation(orgName);
+        orgObject.changeCredits(125);
+        orgObject.changeCredits(100);
+        orgObject.changeCredits(150);
+        orgObject.changeCredits(165);
+        assertEquals(165, orgObject.getCredits());
+    }
+
+    // Checks that exception is thrown if change credits is set to negative number
+    @Test
+    public void changeCreditsNegativeCheck() throws OrganisationException{
+        orgName = "Microsoft";
+        Organisation orgObject = org.getOrganisation(orgName);
+        assertThrows(OrganisationException.class, () -> {
+            orgObject.changeCredits(-50);
+        });
+    }
 }
 

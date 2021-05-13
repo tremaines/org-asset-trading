@@ -272,8 +272,12 @@ public class Organisation {
      * Change amount of credits for an organisation
      * @param newCredits
      */
-    public void changeCredits(int newCredits) {
-        this.credits = newCredits;
+    public void changeCredits(int newCredits) throws OrganisationException {
+        if (newCredits < 0) {
+            throw new OrganisationException("Credits cannot be set to a negative number");
+        } else {
+            this.credits = newCredits;
+        }
     }
 
 }
