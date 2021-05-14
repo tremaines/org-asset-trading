@@ -1,30 +1,20 @@
 package Client.gui;
 
+import Client.ServerAPI;
 import Client.User;
-import Server.DBConnection;
-import Server.UserDBSource;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 
 public class LoginGUI extends JFrame {
 
     private static JTextField usernameInput;
     private static JPasswordField passwordInput;
 
-    private UserDBSource db;
-
-    private User userLoggingIn;
-    private User allUsers;
-
-    public LoginGUI() {
+    public LoginGUI(ServerAPI server) {
         super("LOGIN");
-        Connection connection = DBConnection.getConnection("./src/Server/dbserver.props");
-
-        this.db = new UserDBSource(connection);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(500, 500));
@@ -81,13 +71,13 @@ public class LoginGUI extends JFrame {
                 String username = usernameInput.getText();
                 String password = User.hashPassword(passwordInput.getText());
 
-                if(!db.checkUsername(username)) {
+                if(!server.checkUser(username)) {
                     JOptionPane.showMessageDialog(null, "Incorrect Username", "Invalid", JOptionPane.ERROR_MESSAGE);
-                } else if (!(password.equals(db.userPassword(username)))) {
+                } else if (!(password.equals(server.getUser(username).getHashedPassword()))) {
                     JOptionPane.showMessageDialog(null, "Incorrect Password", "Invalid", JOptionPane.ERROR_MESSAGE);
                 } else {
                     setVisible(false);
-                    User user = db.getUser(username);
+                    User user = server.getUser(username);
                     System.out.printf("Login attempt for user '" + user.getFirstName() + "' was successful\n");
                     new AssetTradingGUI(user);
                 }

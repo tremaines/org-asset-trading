@@ -1,3 +1,5 @@
+package Server;
+
 public enum ServerCommands {
     // User commands
     GET_USER,

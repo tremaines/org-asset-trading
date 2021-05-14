@@ -37,8 +37,8 @@ public class AssetDBSource {
      * Constructor
      * @param connection Takes a connection the trading_platform database.
      */
-    public AssetDBSource(Connection connection) {
-        this.connection = connection;
+    public AssetDBSource() {
+        this.connection = DBConnection.getConnection();
 
         try{
             getAsset = connection.prepareStatement(GET_ASSET);

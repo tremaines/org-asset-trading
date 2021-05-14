@@ -52,8 +52,8 @@ public class TradeDBSource {
      * Constructor that takes a connection to the trading_platform database
      * @param connection Connection the to the trading_platform database
      */
-    public TradeDBSource(Connection connection) {
-        this.connection = connection;
+    public TradeDBSource() {
+        this.connection = DBConnection.getConnection();
 
         try{
             getTradesByAsset = connection.prepareStatement(GET_TRADES_BY_ASSET);

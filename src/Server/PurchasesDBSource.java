@@ -29,8 +29,8 @@ public class PurchasesDBSource {
      * Constructor
      * @param connection A connection to the database
      */
-    public PurchasesDBSource(Connection connection) {
-        this.connection = connection;
+    public PurchasesDBSource() {
+        this.connection = DBConnection.getConnection();
 
         try {
             add = connection.prepareStatement(ADD);

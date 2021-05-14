@@ -33,8 +33,8 @@ public class UnitDBSource {
      *
      * @param connection A connection to the trading_platform database
      */
-    public UnitDBSource(Connection connection) {
-        this.connection = connection;
+    public UnitDBSource() {
+        this.connection = DBConnection.getConnection();
         try{
             select = connection.prepareStatement(SELECT);
             getUnit = connection.prepareStatement(GET_UNIT);

@@ -99,15 +99,14 @@ public class DBConnection {
 
     /***
      * Constructor initialises connection, creates database and tables if necessary
-     * @param path
      */
-    private DBConnection(String path) {
+    private DBConnection() {
         Properties props = new Properties();
         FileInputStream details = null;
 
         try {
             // Read in details for database connection
-            details = new FileInputStream(path);
+            details = new FileInputStream("./src/Server/dbserver.props");
             props.load(details);
             details.close();
 
@@ -198,9 +197,9 @@ public class DBConnection {
      *
      * @return A conenction to the database
      */
-    public static Connection getConnection(String path) {
+    public static Connection getConnection() {
         if (connection  == null) {
-            new DBConnection(path);
+            new DBConnection();
         }
         return connection;
     }

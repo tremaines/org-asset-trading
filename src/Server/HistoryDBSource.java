@@ -24,8 +24,8 @@ public class HistoryDBSource {
      * Constructor for the database table wrapper
      * @param connection A connection to the MariaDB database
      */
-    public HistoryDBSource(Connection connection) {
-        this.connection = connection;
+    public HistoryDBSource() {
+        this.connection = DBConnection.getConnection();
 
         try{
             add = connection.prepareStatement(ADD);

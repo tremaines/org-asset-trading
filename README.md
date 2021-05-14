@@ -10,7 +10,7 @@
 
 ### To get started with the database
 
-I found it easiest just to manually add a unit first and then add an admin user either throught the terminal or the GUI that comes with MariaDB.
+I found it easiest just to manually add a unit first and then add an admin user either through the terminal or the GUI that comes with MariaDB.
 Add the first unit: 
 ```sql
 INSERT INTO units(unit_name, credits) VALUES ("IT Administration", 1000);

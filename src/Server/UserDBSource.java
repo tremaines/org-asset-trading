@@ -31,11 +31,9 @@ public class UserDBSource {
 
     /***
      * Constructor
-     *
-     * @param connection Takes a connection to the trading_platform database
      */
-    public UserDBSource(Connection connection) {
-        this.connection = connection;
+    public UserDBSource() {
+        this.connection = DBConnection.getConnection();
         try{
             getPassword = connection.prepareStatement(GET_PASSWORD);
             checkUserName = connection.prepareStatement(CHECK_USERNAME);

@@ -1,10 +1,14 @@
 package Client;
 
+import java.io.Serializable;
+
 /**
  * Users are accounts which have been authorised by a particular organisation unit
  * to engage on the electronic trading marketplace.
  */
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 7384848292353565937L;
 
     private String firstName;
     private String lastName;

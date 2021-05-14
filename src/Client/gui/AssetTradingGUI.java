@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
 import java.util.Arrays;
 
 
@@ -56,6 +55,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private PurchasesDBSource pdb;
     private  HistoryDBSource hdb;
     TradeLogic implementTrade;
+    // Server connection
+    private static final ServerAPI server =new ServerAPI();
 
 
 
@@ -64,13 +65,12 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         super("Asset Trading");
 
         // Create connection to database and instantiate database wrappers
-        Connection connection = DBConnection.getConnection("./src/Server/dbserver.props");
-        this.udb = new UnitDBSource(connection);
-        this.tdb = new TradeDBSource(connection);
-        this.adb = new AssetDBSource(connection);
-        this.usdb = new UserDBSource(connection);
-        this.pdb = new PurchasesDBSource(connection);
-        this.hdb = new HistoryDBSource(connection);
+        this.udb = new UnitDBSource();
+        this.tdb = new TradeDBSource();
+        this.adb = new AssetDBSource();
+        this.usdb = new UserDBSource();
+        this.pdb = new PurchasesDBSource();
+        this.hdb = new HistoryDBSource();
         this.unit = udb.getUnit(user.getUnit());
         this.userLoggedIn = user;
         implementTrade = new TradeLogic(udb, usdb, tdb, adb, pdb, hdb);
@@ -116,7 +116,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws UserException, TradesException, AssetsException {
-        new LoginGUI();
+        new LoginGUI(server);
     }
 
     public void addTopMenu() {
@@ -838,7 +838,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             cardLayout.show(mainContent, "4");
         } else if (btnSrcTxt.equals("Logout")) {
             setVisible(false);
-            new LoginGUI();
+            new LoginGUI(server);
         } else if (btnSrcTxt.equals("My Listings")) {
             refreshGUI();
             cardLayout.show(mainContent, "5");
