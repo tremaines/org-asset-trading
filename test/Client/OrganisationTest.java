@@ -122,6 +122,29 @@ public class OrganisationTest {
         });
     }
 
+    // Checks changeAssetAmounts() method with positive values
+    @Test
+    public void changeAssetAmountsPositiveCheck() {
+        orgName = "Microsoft";
+        Organisation orgObject = org.getOrganisation(orgName);
+        orgObject.addAssets("Software Licenses", 30);
+        orgObject.addAssets("CPU Hours", 120);
+
+        // Amounts passed to changeAssetAmounts() method
+        List<Integer> newAmounts = new ArrayList<>();
+        newAmounts.add(50);
+        newAmounts.add(50);
+
+        // Expected Results
+        List<Integer> expectedAmounts = new ArrayList<>();
+        expectedAmounts.add(50);
+        expectedAmounts.add(50);
+
+        orgObject.changeAssetAmounts(newAmounts);
+
+        assertEquals(expectedAmounts, orgObject.getAmounts());
+    }
+
     // Checks changeAssetAmounts() method if negative value is entered
     @Test
     public void changeAssetAmountsNegativeCheck() {
@@ -139,6 +162,29 @@ public class OrganisationTest {
         List<Integer> expectedAmounts = new ArrayList<>();
         expectedAmounts.add(50);
         expectedAmounts.add(120);
+
+        orgObject.changeAssetAmounts(newAmounts);
+
+        assertEquals(expectedAmounts, orgObject.getAmounts());
+    }
+
+    // Checks changeAssetAmounts() method if values set to 0
+    @Test
+    public void changeAssetAmountsZeroCheck() {
+        orgName = "Microsoft";
+        Organisation orgObject = org.getOrganisation(orgName);
+        orgObject.addAssets("Software Licenses", 30);
+        orgObject.addAssets("CPU Hours", 120);
+
+        // Amounts passed to changeAssetAmounts() method
+        List<Integer> newAmounts = new ArrayList<>();
+        newAmounts.add(0);
+        newAmounts.add(0);
+
+        // Expected Results
+        List<Integer> expectedAmounts = new ArrayList<>();
+        expectedAmounts.add(0);
+        expectedAmounts.add(0);
 
         orgObject.changeAssetAmounts(newAmounts);
 
