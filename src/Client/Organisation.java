@@ -262,10 +262,22 @@ public class Organisation {
 
     /**
      * Change asset amounts for an organisation
-     * @param newAssetAmount
+     * @param newAssetAmounts
      */
-    public void changeAssetAmounts(List<Integer> newAssetAmount) throws OrganisationException{
-        this.amount = newAssetAmount;
+    public void changeAssetAmounts(List<Integer> newAssetAmounts){
+
+        List<Integer> amountsToCommit = new ArrayList<>();
+
+        // If an amount is negative, revert back to what that amount was before
+        for (int i = 0; i < newAssetAmounts.size(); i++) {
+            if (newAssetAmounts.get(i) >= 0) {
+                amountsToCommit.add(newAssetAmounts.get(i));
+            } else {
+                amountsToCommit.add(amount.get(i));
+            }
+        }
+
+        this.amount = amountsToCommit;
     }
 
     /**

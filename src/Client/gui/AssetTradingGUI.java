@@ -993,7 +993,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                                 // If value entered in amount cell is negative, use the previous positive value instead
                                 String assetName = modifyAssetsTable.getModifyTable().getValueAt(i, 0).toString();
                                 TreeMap<String, Integer> previousAssets = selectedOrg.getAssetsAndAmounts();
-                                System.out.println(previousAssets.get(assetName));
 
                                 // Add previous value
                                 newOrgAmounts.add(previousAssets.get(assetName));
