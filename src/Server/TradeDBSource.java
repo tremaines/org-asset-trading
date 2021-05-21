@@ -248,7 +248,7 @@ public class TradeDBSource {
     /**
      * Get all trades of a certain type
      * @param type Type of trade
-     * @return
+     * @return A HashMap with trade ID as the key and an array of strings as the value
      */
     public HashMap<Integer, String[]> getTypeOfTrade(String type) {
         HashMap<Integer, String[]> allTrades = new HashMap<Integer, String[]>();
@@ -275,7 +275,7 @@ public class TradeDBSource {
      * Get all trades of a certain type and asset
      * @param type The type of trade
      * @param assetName The asset being traded
-     * @return
+     * @return A HashMap with trade ID as the key and an array of strings as the value
      */
     public HashMap<Integer, String[]> getByAssetAndType(String type, String assetName) {
         HashMap<Integer, String[]> allTrades = new HashMap<Integer, String[]>();

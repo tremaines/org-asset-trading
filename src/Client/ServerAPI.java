@@ -418,6 +418,11 @@ public class ServerAPI {
         }
     }
 
+    /**
+     * Gets a trade based on the trade ID
+     * @param tradeID The ID of the trade
+     * @return A trade associated with that ID
+     */
     public Trades getTrade(int tradeID) {
         try {
             outputStream.writeObject(ServerCommands.GET_TRADE_BY_ID);
@@ -431,6 +436,11 @@ public class ServerAPI {
         }
     }
 
+    /**
+     * Gets all the trades of a specific type (buy or sell)
+     * @param type The type of trade
+     * @return A HashMap of trades and their values
+     */
     public HashMap<Integer, String[]>getTradesByType(String type) {
         try {
             outputStream.writeObject(ServerCommands.GET_TYPE_OF_TRADE);
@@ -444,6 +454,12 @@ public class ServerAPI {
         }
     }
 
+    /**
+     * Gets all the trades of a specific time for a specific asset
+     * @param type The trade type (buy or sell)
+     * @param assetName The asset
+     * @return A HashMap of trades and their values
+     */
     public HashMap<Integer, String[]>getByTypeAndAsset(String type, String assetName) {
         try {
             outputStream.writeObject(ServerCommands.GET_BY_TYPE_AND_ASSET);
@@ -458,6 +474,10 @@ public class ServerAPI {
         }
     }
 
+    /**
+     * Tells the server to delete a trade of the trades database
+     * @param trade The trade to be deleted
+     */
     public void cancelTrade(Trades trade) {
         try {
             outputStream.writeObject(ServerCommands.DELETE_TRADE);
@@ -468,6 +488,11 @@ public class ServerAPI {
         }
     }
 
+    /**
+     * Gets the trade history of an asset
+     * @param assetName The asset
+     * @return A list of int[], each int[] contains the quantity and credits value
+     */
     public ArrayList<int[]> getHistory(String assetName) {
         try {
             outputStream.writeObject(ServerCommands.GET_HISTORY);

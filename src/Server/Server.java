@@ -62,6 +62,7 @@ public class Server {
         // Invoke sever socket connection
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             serverSocket.setSoTimeout(SOCKET_ACCEPT_TIMEOUT);
+            // While server is running, wait for a client to connect
             for(;;) {
                 if (!running.get()) {
                     break;
@@ -123,6 +124,7 @@ public class Server {
     private void implementCommands(ObjectInputStream inputStream, ObjectOutputStream outputStream,
                                    ServerCommands command) throws IOException, ClassNotFoundException {
         switch (command) {
+
             case GET_USER: {
                 final String userName = (String) inputStream.readObject();
                 synchronized (users) {
@@ -150,7 +152,6 @@ public class Server {
             break;
 
             case CHECK_USER: {
-                System.out.println("I reached here");
                 final String userName = (String) inputStream.readObject();
                 synchronized (users) {
                     outputStream.writeObject(users.checkUsername(userName));

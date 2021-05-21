@@ -59,6 +59,11 @@ public class HistoryDBSource {
         }
     }
 
+    /**
+     * Gets the quantity and price of completed trades for an asset
+     * @param assetName The asset for which you want the trade history
+     * @return An array of ints, each array contains the quantity and credits values
+     */
     public ArrayList<int[]> getHistoryOfAsset(String assetName) {
         ArrayList<int[]> allValues = new ArrayList<>();
 

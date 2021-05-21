@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-//TODO: Need to deal with the assets_purchased table
+
 /***
  * A wrapper class for accessing the assets_produced table
  */
@@ -96,8 +96,6 @@ public class AssetDBSource {
         return asset;
     }
 
-    //TODO: Not a huge fan of this as asset name is not guaranteed to be unique... But for the purposes of this
-    //TODO: assignment it doesn't matter
     /**
      * Get an asset based on its name
      *

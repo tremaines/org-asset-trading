@@ -31,7 +31,6 @@ public class UnitDBSource {
     /***
      * Constructor
      *
-     * @param connection A connection to the trading_platform database
      */
     public UnitDBSource() {
         this.connection = DBConnection.getConnection();
