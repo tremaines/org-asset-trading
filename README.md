@@ -26,3 +26,8 @@ INSERT INTO users(user_name, admin_status, unit, password) VALUES ('username', t
 There are other fields in `users` like first name, email, etc. but they allow nulls. The database stores and compares the hashed password when logging in from our program so make sure you hash your password using the method in the `Users.java` class and copy-paste that value into the SQL database.
 
 After that you can make more units, users, etc. through our program gui :)
+
+
+### Running the Server and Client
+
+In IntelliJ, you just have to run the ```main``` method in the ```RunServer``` class, then run the ```main``` method in ```AssetTradingGUI```to use the client side of the project. You can allow ```AssetTradingGUI``` to run multiple instances to simulate multiple clients being connected to the server at once.
