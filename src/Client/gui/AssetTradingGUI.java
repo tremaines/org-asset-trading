@@ -1,7 +1,6 @@
 package Client.gui;
 
 import Client.*;
-import Server.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -48,15 +47,15 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private Units unit;
     private User userLoggedIn;
     // Instances of the database wrappers
-    private UnitDBSource udb;
-    private UserDBSource usdb;
-    private TradeDBSource tdb;
-    private AssetDBSource adb;
-    private PurchasesDBSource pdb;
-    private  HistoryDBSource hdb;
-    TradeLogic implementTrade;
+//    private UnitDBSource udb;
+//    private UserDBSource usdb;
+//    private TradeDBSource tdb;
+//    private AssetDBSource adb;
+//    private PurchasesDBSource pdb;
+//    private  HistoryDBSource hdb;
+//    TradeLogic implementTrade;
     // Server connection
-    private static final ServerAPI server =new ServerAPI();
+    private static final ServerAPI server = new ServerAPI();
 
 
 
@@ -64,16 +63,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         super("Asset Trading");
 
-        // Create connection to database and instantiate database wrappers
-        this.udb = new UnitDBSource();
-        this.tdb = new TradeDBSource();
-        this.adb = new AssetDBSource();
-        this.usdb = new UserDBSource();
-        this.pdb = new PurchasesDBSource();
-        this.hdb = new HistoryDBSource();
-        this.unit = udb.getUnit(user.getUnit());
+        this.unit = server.getUnit(user.getUnit());
         this.userLoggedIn = user;
-        implementTrade = new TradeLogic(udb, usdb, tdb, adb, pdb, hdb);
 
         // Setup of main frame
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -107,7 +98,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         topMenuRight.setVisible(false);
         topMenuContainer.setVisible(false);
         topMenuLeft.setVisible(false);
-        unit = udb.getUnit(userLoggedIn.getUnit());
+        unit = server.getUnit(userLoggedIn.getUnit());
         addTopMenu();
         setupSellPanel();
         setupAssetsPanel();
@@ -277,9 +268,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label1 = new JLabel("Asset Type");
         label1.setBounds(30, 50, 100, 20);
 
-        //TODO: Need to change this so a units own assets don't appear
-        //TODO: I.e., a unit doesn't need to buy the assets it makes
-        JComboBox assetTypeList = new JComboBox(adb.getAssetNames());
+        JComboBox assetTypeList = new JComboBox(server.getAssetsExcluding(userLoggedIn.getUnit()));
         assetTypeList.setBounds(140 , 50, 150 , 20);
 
         label2 = new JLabel("Amount");
@@ -319,13 +308,13 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                         Trades newTrade;
                         try {
                             newTrade = new Trades(Trades.TradeType.buy, userLoggedIn.getUsername(),
-                                    adb.getAsset(type).getAssetID(), Integer.parseInt(amount), Integer.parseInt(price));
-                            implementTrade.setTrade(newTrade);
+                                    server.getAsset(type).getAssetID(), Integer.parseInt(amount), Integer.parseInt(price));
+                            server.addTrade(newTrade);
                             JOptionPane.showMessageDialog(null, "Buy order was placed!",
                                     "Successful", JOptionPane.INFORMATION_MESSAGE);
                             refreshGUI();
                         } catch (TradesException tradesException) {
-                            JOptionPane.showMessageDialog(null, tradesException.getMessage()
+                            JOptionPane.showMessageDialog(null, "Not enough credits!"
                                     , "Error", JOptionPane.ERROR_MESSAGE);
                             tradesException.printStackTrace();
                         }
@@ -380,7 +369,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label1.setBounds(30, 50, 100, 20);
 
         JComboBox assetOwnedList =
-                new JComboBox(adb.getAssetNamesByUnit(unit.getUnitID()));
+                new JComboBox(server.getAssetsByUnit(unit.getUnitID()));
         assetOwnedList.setBounds(140 , 50, 150 , 20);
 
         label2 = new JLabel("Amount");
@@ -420,8 +409,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                         try {
                             Trades newTrade;
                             newTrade = new Trades(Trades.TradeType.sell, userLoggedIn.getUsername(),
-                                    adb.getAsset(type).getAssetID(), Integer.parseInt(amount), Integer.parseInt(price));
-                            implementTrade.setTrade(newTrade);
+                                    server.getAsset(type).getAssetID(), Integer.parseInt(amount), Integer.parseInt(price));
+                            server.addTrade(newTrade);
                             refreshGUI();
                             cardLayout.show(mainContent, "2");
                             JOptionPane.showMessageDialog(null, "Sell order was placed!",
@@ -449,7 +438,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         // Row data in the table
         Object tableData[] = new Object[2];
 
-        UserAssetsTable userAssetsTable = new UserAssetsTable(rightPanel, unit, userLoggedIn, adb);
+        UserAssetsTable userAssetsTable = new UserAssetsTable(rightPanel, unit, userLoggedIn, server);
 
         leftPanel.add(label1);
         leftPanel.add(label2);
@@ -477,7 +466,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         //JTextArea ta1;
         String[] messageStrings = {"User", "Admin"};
 
-        String[] unitNames = udb.getUnitNames();
+        String[] unitNames = server.getUnitNames();
 
         //JLabel lbltext = new JLabel();
         JCheckBox terms;
@@ -550,12 +539,12 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                         try {
                             // Initialise new user object
                             User newUser = new User(null, null, null, username, password,
-                                    admin, udb.getUnit(unit).getUnitID());
+                                    admin, server.getUnit(unit).getUnitID());
                             // Check username doesn't exist already
-                            if (usdb.checkUsername(newUser.getUsername())) {
+                            if (server.checkUser(newUser.getUsername())) {
                                 throw new UserException("Username already exists!");
                             } else {
-                                usdb.addUser(newUser);
+                                server.addUser(newUser);
                                 JOptionPane.showMessageDialog(null, username +
                                         " was added to the " + unit + " organisational unit!",
                                         "User added", JOptionPane.INFORMATION_MESSAGE);
@@ -581,7 +570,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                         JOptionPane.showMessageDialog(null, "Password has been changed",
                                 "Successful", JOptionPane.INFORMATION_MESSAGE);
                         userLoggedIn.setPassword(User.hashPassword(newPassword));
-                        usdb.update(userLoggedIn);
+                        server.updateUser(userLoggedIn);
                     } else {
                         JOptionPane.showMessageDialog(null, "Passwords don't match!",
                                 "Invalid", JOptionPane.ERROR_MESSAGE);
@@ -641,7 +630,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         assetsPanel = new JPanel(new BorderLayout(0, 0));
         assetsPanel.setBorder(BorderFactory.createTitledBorder("Assets"));
         mainContent.add(assetsPanel, "4");
-        AssetsTable table = new AssetsTable(assetsPanel, tdb);
+        AssetsTable table = new AssetsTable(assetsPanel, server);
     }
 
     public void setupMyListingsPanel() {
@@ -652,8 +641,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         JButton cancelOrderBtn = new JButton("Cancel Order");
         topPanel.add(cancelOrderBtn);
 
-        MyListingsTableBuy buyTable = new MyListingsTableBuy(gridPanel, unit, userLoggedIn, tdb);
-        MyListingsTableSell sellTable = new MyListingsTableSell(gridPanel, unit, userLoggedIn, tdb);
+        MyListingsTableBuy buyTable = new MyListingsTableBuy(gridPanel, unit, userLoggedIn, server);
+        MyListingsTableSell sellTable = new MyListingsTableSell(gridPanel, unit, userLoggedIn, server);
 
         JTable buyTableClick = buyTable.getBuyTable();
         JTable sellTableClick = sellTable.getSellTable();
@@ -684,9 +673,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Get trades object
-                Trades tradeToCancel = tdb.getTrade(tableTradeID);
+                Trades tradeToCancel = server.getTrade(tableTradeID);
                 // Pass to cancel trade method
-                implementTrade.cancelTrade(tradeToCancel);
+                server.cancelTrade(tradeToCancel);
                 refreshGUI();
                 cardLayout.show(mainContent, "5");
                 JOptionPane.showMessageDialog(null, "Order was successfully cancelled",
@@ -758,7 +747,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 boolean boxSelected = terms.isSelected();
 
 
-                String[] unitNames = udb.getUnitNames();
+                String[] unitNames = server.getUnitNames();
 
                 if(boxSelected) {
                     // Check credits are >= 0, if not set to 0 by default
@@ -767,9 +756,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                     newUnit = new Units(unitName, intCredits);
                     // Check if unit already exists
                     if(!Arrays.asList(unitNames).contains(unitName)) {
-                        udb.add(newUnit);
+                        server.addUnit(newUnit);
                         // Get the unit ID generated by the database
-                        int newUnitId = udb.getUnit(newUnit.getUnitName()).getUnitID();
+                        int newUnitId = server.getUnit(newUnit.getUnitName()).getUnitID();
 
                         // Add unit assets
                         // Loops through table until it comes to a blank asset name cell
@@ -790,7 +779,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                             assetQty = Math.max(assetQty, 0);
 
                             Assets newAsset = new Assets(assetName, assetQty, newUnitId);
-                            adb.add(newAsset);
+                            server.addAsset(newAsset);
                             row++;
                             assetName = organisationAssetsTable.getAssetsTable().getValueAt(row, col).toString();
                         }

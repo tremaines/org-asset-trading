@@ -26,8 +26,8 @@ public class TradeDBSource {
             "JOIN  units ON users.unit = units.unit_id " +
             "JOIN assets_produced on trades.asset = assets_produced.asset_id " +
             "WHERE unit_id = ? and trades.type = ?;";
-    private static final String ADD_TRADE = "INSERT INTO trades (type, user, asset, quantity, price, date) " +
-            "VALUES (?, ?, ?, ?, ?, NOW());";
+    private static final String ADD_TRADE = "INSERT INTO trades (trade_id, type, user, asset, quantity, price, date) " +
+            "VALUES (?, ?, ?, ?, ?, ?, NOW());";
     private static final String GET_MATCHING_SELLS = "SELECT MIN(trade_id), MIN(price), quantity " +
             "from trades WHERE asset=? AND type='sell' AND price <=?;";
     private static final String GET_MATCHING_BUYS = "SELECT MIN(trade_id), price, quantity " +
@@ -50,7 +50,6 @@ public class TradeDBSource {
 
     /***
      * Constructor that takes a connection to the trading_platform database
-     * @param connection Connection the to the trading_platform database
      */
     public TradeDBSource() {
         this.connection = DBConnection.getConnection();
@@ -137,11 +136,12 @@ public class TradeDBSource {
      */
     public void addTrade(Trades trade) {
         try {
-            addTrades.setString(1, trade.getType().name());
-            addTrades.setString(2, trade.getUserName());
-            addTrades.setInt(3, trade.getAssetId());
-            addTrades.setInt(4, trade.getQuantity());
-            addTrades.setInt(5, trade.getPrice());
+            addTrades.setInt(1, trade.getId());
+            addTrades.setString(2, trade.getType().name());
+            addTrades.setString(3, trade.getUserName());
+            addTrades.setInt(4, trade.getAssetId());
+            addTrades.setInt(5, trade.getQuantity());
+            addTrades.setInt(6, trade.getPrice());
             addTrades.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

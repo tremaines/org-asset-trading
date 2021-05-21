@@ -1,11 +1,14 @@
 package Client;
 
+import java.io.Serializable;
+
 /**
  * Resources and assets are shared across organisations. Organisations are also given budgets
  * of a certain number of electronic credits. These credits can be used to buy access to
  * resources from other organisational units.
  */
-public class Units {
+public class Units implements Serializable {
+    private static final long serialVersionUID = -6210314430585695691L;
 
     // Name of the organisation
     private String unitName;

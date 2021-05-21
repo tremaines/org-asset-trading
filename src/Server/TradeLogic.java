@@ -1,6 +1,6 @@
-package Client;
+package Server;
 
-import Server.*;
+import Client.*;
 import Client.Trades.TradeType;
 
 /**
@@ -47,19 +47,24 @@ public class TradeLogic {
      * @param newTrade The trade to be added to the database
      * @throws TradesException
      */
-    public void setTrade(Trades newTrade) throws TradesException {
+    public int setTrade(Trades newTrade) {
         trade = newTrade;
+        trade.setId(generateTradeID());
         user = usdb.getUser(trade.getUserName());
         unit = udb.getUnit(user.getUnit());
         asset = adb.getAsset(trade.getAssetId());
         totalCost = trade.getQuantity() * trade.getPrice();
-
-        if (trade.getType() == Trades.TradeType.buy) {
-            buyListing();
-        } else {
-            sellListing();
+        try {
+            if (trade.getType() == Trades.TradeType.buy) {
+                buyListing();
+            } else {
+                sellListing();
+            }
+            matchTrades(trade.getType());
+        } catch (TradesException te) {
+            return -1;
         }
-        matchTrades(trade.getType());
+        return 0;
     }
 
     /**
@@ -253,5 +258,17 @@ public class TradeLogic {
                     buy.getUserName(), sell.getUserName());
         }
         hdb.addToHistory(newTrade);
+    }
+
+    private int generateTradeID() {
+        long time = System.currentTimeMillis();
+        String timeString = Long.toString(time);
+        int total = 0;
+        for (char c : timeString.toCharArray()) {
+            total += c - '0';
+        }
+        total += trade.getAssetId();
+        total+= trade.getPrice();
+        return total;
     }
 }

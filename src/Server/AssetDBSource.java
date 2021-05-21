@@ -19,6 +19,7 @@ public class AssetDBSource {
     private static final String GET_ASSET_BY_NAME = "SELECT * FROM assets_produced WHERE asset_name=?;";
     private static final String GET_ASSETS_BY_UNIT = "SELECT * FROM assets_produced WHERE unit=?;";
     private static final String GET_NAMES = "SELECT asset_name FROM assets_produced;";
+    private static final String GET_NAMES_EXCLUDING = "SELECT asset_name FROM assets_produced WHERE unit <> ?;";
     private static final String UPDATE = "UPDATE assets_produced SET asset_name = ?, quantity = ?, unit = ? " +
             "WHERE asset_id= ?;";
     private static final String ADD = "INSERT INTO assets_produced (asset_name, quantity, unit) VALUES(?, ?, ?);";
@@ -28,6 +29,7 @@ public class AssetDBSource {
     private PreparedStatement getAssetByName;
     private PreparedStatement getAssetsByUnit;
     private PreparedStatement getNames;
+    private PreparedStatement getNamesExcludingUnit;
     private PreparedStatement update;
     private PreparedStatement add;
 
@@ -45,6 +47,7 @@ public class AssetDBSource {
             getAssetByName = connection.prepareStatement(GET_ASSET_BY_NAME);
             getAssetsByUnit = connection.prepareStatement(GET_ASSETS_BY_UNIT);
             getNames = connection.prepareStatement(GET_NAMES);
+            getNamesExcludingUnit = connection.prepareStatement(GET_NAMES_EXCLUDING);
             update = connection.prepareStatement(UPDATE);
             add = connection.prepareStatement(ADD);
         } catch (SQLException sqle) {
@@ -136,6 +139,29 @@ public class AssetDBSource {
                 names.add(rs.getString("asset_name"));
             }
         } catch(SQLException sqle){
+            System.err.println(sqle);
+        }
+
+        return names.toArray(new String[0]);
+    }
+
+    /**
+     * Gets a list of all asset names excluding those produced by the unit associated with
+     * the unit ID passed in
+     * @param unitID The unit to be excluded
+     * @return A string array of asset names
+     */
+    public String[] getNamesExcludingUnit(int unitID) {
+        ArrayList<String> names = new ArrayList<>();
+        ResultSet rs = null;
+
+        try {
+            getNamesExcludingUnit.setInt(1, unitID);
+            rs = getNamesExcludingUnit.executeQuery();
+            while (rs.next()) {
+                names.add(rs.getString("asset_name"));
+            }
+        }catch (SQLException sqle) {
             System.err.println(sqle);
         }
 

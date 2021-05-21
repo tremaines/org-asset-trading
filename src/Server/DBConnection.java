@@ -53,7 +53,7 @@ public class DBConnection {
                     ");";
     private static final String CREATE_TRADES =
             "CREATE TABLE IF NOT EXISTS trades (" +
-                    "trade_id INT NOT NULL AUTO_INCREMENT," +
+                    "trade_id INT NOT NULL," +
                     "type ENUM('buy', 'sell') NOT NULL," +
                     "user VARCHAR(30) NOT NULL," +
                     "asset INT NOT NULL," +

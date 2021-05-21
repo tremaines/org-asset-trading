@@ -1,7 +1,8 @@
 package Client.gui;
 
-import Client.*;
-import Server.TradeDBSource;
+import Client.ServerAPI;
+import Client.Units;
+import Client.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -14,34 +15,13 @@ public class MyListingsTableSell extends JFrame {
 
     private User userLoggedIn;
     private Units unit;
-    private TradeDBSource tdb;
-
-    // Trade type (Buy/Sell)
-    private static final int tradeType = 0;
-    // Type of asset
-    private static final int assetType = 1;
-    // Quantity of the asset
-    private static final int assetAmount = 2;
-    // Cost per asset unit
-    private static final int price = 3;
-    // Original asset amount
-    private static final int originalAmount = 4;
-    // Username
-    private static final int userName = 5;
-    // Name of the organisation
-    private static final int orgName = 6;
-    // Trade fulfilled status (Yes/No/Partial/Cancelled)
-    private static final int tradeFulfilled = 7;
-    // Time of the listing
-    private static final int time = 8;
 
 
-    public MyListingsTableSell(JPanel panel, Units unit, User userLoggedIn, TradeDBSource tdb) {
+    public MyListingsTableSell(JPanel panel, Units unit, User userLoggedIn, ServerAPI server) {
         setLayout(new FlowLayout());
 
         this.userLoggedIn = userLoggedIn;
         this.unit = unit;
-        this.tdb = tdb;
 
         // Row data in the table
         Object tableData[] = new Object[3];
@@ -60,7 +40,7 @@ public class MyListingsTableSell extends JFrame {
         // Row data in the table
         // Adds a row for each Asset type
         // Trades as hashmap
-        HashMap<Integer, String[]> trades = tdb.getTradesByUnit(unit.getUnitID(), "sell");
+        HashMap<Integer, String[]> trades = server.getTradesByUnit(unit.getUnitID(), "sell");
 
         // Row data in the table
         // Adds a row for each Asset type

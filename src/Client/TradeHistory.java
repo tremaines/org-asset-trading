@@ -2,12 +2,15 @@ package Client;
 
 import Client.Trades.TradeType;
 
+import java.io.Serializable;
+
 /**
  * Trade History gives the information about the asset and its trade
  * value along with the users that have traded it for users to know if they should
  * buy that asset.
  */
-public class TradeHistory {
+public class TradeHistory implements Serializable {
+    private static final long serialVersionUID = -6492420611118026208L;
 
     int id;
     TradeType status;

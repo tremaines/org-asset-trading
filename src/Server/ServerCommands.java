@@ -18,6 +18,7 @@ public enum ServerCommands {
     ADD_ASSET,
     UPDATE_ASSET,
     GET_ASSET_NAMES,
+    GET_ASST_NAMES_EXCLUDING,
     GET_ASSETS_BY_UNIT,
     GET_ASSET_AND_AMOUNTS,
     // Purchases commands
@@ -26,10 +27,7 @@ public enum ServerCommands {
     GET_ALL_TRADES,
     GET_TRADES_BY_UNIT,
     ADD_TRADE,
-    MATCH_TRADES,
     GET_TRADE_BY_ID,
     UPDATE_TRADE,
-    DELETE_TRADE,
-    // Trade Hx Commands
-    ADD_TO_HISTORY
+    DELETE_TRADE
 }

@@ -1,8 +1,6 @@
 package Server;
 
-import Client.Assets;
-import Client.Units;
-import Client.User;
+import Client.*;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -29,6 +27,7 @@ public class Server {
     TradeDBSource trades;
     UnitDBSource units;
     UserDBSource users;
+    TradeLogic tradeLogic;
 
     /**
      * Starts the server by reading the port number and waiting for a connection
@@ -41,6 +40,7 @@ public class Server {
         trades = new TradeDBSource();
         units = new UnitDBSource();
         users = new UserDBSource();
+        tradeLogic = new TradeLogic(units, users, trades, assets, purchases, tradeHx);
 
         // Read the port number from the .props file
         Properties props = new Properties();
@@ -251,6 +251,15 @@ public class Server {
             }
             break;
 
+            case GET_ASST_NAMES_EXCLUDING: {
+                final Integer unitID = (Integer) inputStream.readObject();
+                synchronized (assets) {
+                    outputStream.writeObject(assets.getNamesExcludingUnit(unitID));
+                }
+                outputStream.flush();
+            }
+            break;
+
             case GET_ASSETS_BY_UNIT: {
                 final Integer id = (Integer) inputStream.readObject();
                 synchronized (assets) {
@@ -297,13 +306,25 @@ public class Server {
             }
             break;
 
+            case GET_TRADE_BY_ID: {
+                Integer tradeID = (Integer) inputStream.readObject();
+                synchronized (trades) {
+                    outputStream.writeObject(trades.getTrade(tradeID));
+                }
+                outputStream.flush();
+            }
+            break;
+
             case ADD_TRADE: {
-                // TODO: Add logic (want to move the TradeLogic class to the backend)
+                final Trades trade = (Trades) inputStream.readObject();
+                outputStream.writeObject(tradeLogic.setTrade(trade));
+                outputStream.flush();
             }
             break;
 
             case DELETE_TRADE: {
-                //TODO: As above with ADD_TRADE
+                final Trades trade = (Trades) inputStream.readObject();
+                tradeLogic.cancelTrade(trade);
             }
             break;
         }

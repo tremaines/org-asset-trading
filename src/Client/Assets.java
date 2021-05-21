@@ -1,10 +1,13 @@
 package Client;
 
+import java.io.Serializable;
+
 /**
  * Assets are available to be purchased or sold on the electronic marketplace, with
  * users spending credits to obtain said assets.
  */
-public class Assets {
+public class Assets implements Serializable {
+    private static final long serialVersionUID = 6118712080445043041L;
 
     private int assetID;
     private String assetName;

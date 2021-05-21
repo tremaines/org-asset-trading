@@ -1,20 +1,20 @@
 package Client.gui;
 
-import Server.TradeDBSource;
+import Client.ServerAPI;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.HashMap;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 
 public class AssetsTable extends JFrame {
 
-    public AssetsTable(JPanel panel, TradeDBSource db) {
+    public AssetsTable(JPanel panel, ServerAPI server) {
 
-        HashMap<String, int[]> trades = db.getTrades();
+        HashMap<String, int[]> trades = server.getAllSells();
 
         // Row data in the table
         Object tableData[] = new Object[3];

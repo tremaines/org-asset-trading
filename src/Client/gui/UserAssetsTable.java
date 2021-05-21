@@ -1,5 +1,6 @@
 package Client.gui;
 
+import Client.ServerAPI;
 import Client.Units;
 import Client.User;
 import Server.AssetDBSource;
@@ -16,7 +17,7 @@ public class UserAssetsTable extends JFrame {
     User userLoggedIn;
     AssetDBSource adb;
 
-    public UserAssetsTable(JPanel panel, Units unit, User userLoggedIn, AssetDBSource adb) {
+    public UserAssetsTable(JPanel panel, Units unit, User userLoggedIn, ServerAPI server) {
         this.userLoggedIn = userLoggedIn;
         this.unit = unit;
         this.adb = adb;
@@ -33,7 +34,7 @@ public class UserAssetsTable extends JFrame {
         model.addColumn("Asset");
         model.addColumn("Amount");
 
-        HashMap<String, Integer> assets = adb.getAssetsAndAmounts(unit.getUnitID());
+        HashMap<String, Integer> assets = server.getAssetAndAmounts(unit.getUnitID());
 
         // Adds a row for each Asset type
         for(String asset : assets.keySet()) {

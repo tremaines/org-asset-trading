@@ -1,5 +1,6 @@
 package Client;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
@@ -9,7 +10,9 @@ import java.sql.Date;
  * Similarly, assets may also be assigned to an organisation when they are created and these can
  * be sold for credits.
  */
-public class Trades {
+public class Trades implements Serializable {
+    private static final long serialVersionUID = -625445006411263343L;
+
     /**
      * Active trades can be either buy or sell
      * Archived trades (TradeHistory objects) can be completed (buyer/seller transaction) or cancelled

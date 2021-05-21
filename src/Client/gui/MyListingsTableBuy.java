@@ -1,8 +1,8 @@
 package Client.gui;
 
+import Client.ServerAPI;
 import Client.Units;
 import Client.User;
-import Server.TradeDBSource;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -15,15 +15,13 @@ public class MyListingsTableBuy extends JFrame {
 
     private User userLoggedIn;
     private Units unit;
-    private TradeDBSource tdb;
 
 
-    public MyListingsTableBuy(JPanel panel, Units unit, User userLoggedIn, TradeDBSource tdb) {
+    public MyListingsTableBuy(JPanel panel, Units unit, User userLoggedIn, ServerAPI server) {
         setLayout(new FlowLayout());
 
         this.userLoggedIn = userLoggedIn;
         this.unit = unit;
-        this.tdb = tdb;
 
         // Row data in the table
         Object tableData[] = new Object[3];
@@ -44,7 +42,7 @@ public class MyListingsTableBuy extends JFrame {
         buyTable.setFillsViewportHeight(true);
 
         // Trades as hashmap
-        HashMap<Integer, String[]> trades = tdb.getTradesByUnit(unit.getUnitID(), "buy");
+        HashMap<Integer, String[]> trades = server.getTradesByUnit(unit.getUnitID(), "buy");
 
         // Row data in the table
         // Adds a row for each Asset type
