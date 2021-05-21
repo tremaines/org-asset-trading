@@ -1,17 +1,19 @@
 package Client.gui;
 
 import Client.Assets;
+import Client.ServerAPI;
+import Client.Units;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class OrganisationAssetsTable extends JFrame {
+public class ModifyAssetsTable extends JFrame {
 
     JTable assetsTable;
-    Assets assets;
+    Assets[] assets;
 
-    public OrganisationAssetsTable(JPanel panel, int rows) {
-        this.assets = assets;
+    public ModifyAssetsTable(JPanel panel, Units unit, ServerAPI server) {
+        this.assets = server.getAllAssets(unit.getUnitID());
 
         // Row data in the table
         Object tableData[] = new Object[3];
@@ -19,40 +21,40 @@ public class OrganisationAssetsTable extends JFrame {
         //DefaultTableModel model = new DefaultTableModel();
 
         DefaultTableModel model = new DefaultTableModel() {
-//            @Override
-//            public boolean isCellEditable(int row, int column) {
-//                return column == 1;
-//            }
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 2;
+            }
         };
 
         // Assets Table
         assetsTable = new JTable(model);
 
         // Column names
-        model.addColumn("Asset");
+        model.addColumn("Asset ID");
+        model.addColumn("Asset Name");
         model.addColumn("Amount");
 
         // Adds a row for each Asset type
-        // Make the "Asset" fields blank (to be filled by admin) and the quantity default to 0
-        for(int i = 0; i < rows; i++) {
+        for(Assets asset : assets) {
             model.addRow(new Object[]{
-                    "",
-                    0});
+                    asset.getAssetID(),
+                    asset.getAssetName(), asset.getQuantity()});
         }
 
         JScrollPane scrollPane = new JScrollPane(assetsTable);
         assetsTable.setAutoCreateRowSorter(true);
         assetsTable.setFillsViewportHeight(true);
 
-        // Make cells uneditable
-        //assetsTable.setEditingColumn(1);
+        // Make column one editable
+        assetsTable.setEditingColumn(1);
 
 //        JPanel topTableBar = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,0));
 //        panel.add(topTableBar, BorderLayout.NORTH);
         panel.add(scrollPane);
     }
 
-    public JTable getAssetsTable() {
+    public JTable getModifyTable() {
         return assetsTable;
     }
 

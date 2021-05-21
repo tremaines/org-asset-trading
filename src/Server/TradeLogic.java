@@ -156,7 +156,7 @@ public class TradeLogic {
                     Trades match = tdb.getTrade(matchingTrade);
                     settleTrade(trade, match);
                 }
-            } while (matchingTrade > 0);
+            } while (matchingTrade > 0 && trade.getQuantity() != 0);
 
         }
         // If it's a sell, look for buys for that asset
@@ -170,7 +170,7 @@ public class TradeLogic {
                     Trades match = tdb.getTrade(matchingTrade);
                     settleTrade(match, trade);
                 }
-            } while (matchingTrade > 0);
+            } while (matchingTrade > 0 && trade.getQuantity() != 0);
 
         }
     }
@@ -185,6 +185,7 @@ public class TradeLogic {
     private void settleTrade(Trades buy, Trades sell) {
 
         TradeHistory newTrade = null;
+        boolean tradeComplete;
 
         // Get the organisational unit each trade belongs to (based on user)
         Units buyerUnit = udb.getUnit(usdb.getUser(buy.getUserName()).getUnit());
@@ -236,6 +237,7 @@ public class TradeLogic {
             // Add to trade history
             newTrade = new TradeHistory(TradeType.complete, buy.getAssetId(), buy.getQuantity(), sellingPrice,
                     buy.getUserName(), sell.getUserName());
+            buy.setQuantity(0);
         }
         // If buy qty is greater than sell qty
         else if (qtyDiff > 0) {
@@ -256,6 +258,7 @@ public class TradeLogic {
             // Add to trade history
             newTrade = new TradeHistory(TradeType.complete, buy.getAssetId(), sell.getQuantity(), sellingPrice,
                     buy.getUserName(), sell.getUserName());
+            sell.setQuantity(0);
         }
         hdb.addToHistory(newTrade);
     }

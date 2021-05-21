@@ -31,13 +31,13 @@ public class TradeHistoryTest {
     private static final int assetAmount = 2;
     // Cost per asset unit
     private static final int price = 3;
-    // Original asset amount
-    private static final int originalAmount = 4;
+    // Sold amount for a sell listing
+    private static final int soldAmount = 4;
     // Username
     private static final int userName = 5;
     // Name of the organisation
     private static final int orgName = 6;
-    // Trade fulfilled status (Yes/No/Partially/Cancelled)
+    // Trade fulfilled status (Yes/No/Partial/Cancelled)
     private static final int tradeFulfilled = 7;
     // Time of the listing
     private static final int time = 8;

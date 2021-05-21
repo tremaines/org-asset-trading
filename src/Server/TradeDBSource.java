@@ -33,6 +33,14 @@ public class TradeDBSource {
     private static final String GET_MATCHING_BUYS = "SELECT MIN(trade_id), price, quantity " +
             "from trades WHERE asset=? AND type='buy' AND price >=?;";
     private static final String GET_TRADE = "SELECT * FROM trades WHERE trade_id=?;";
+    private static final String GET_TYPE = "SELECT trade_id, asset_name, trades.quantity, price " +
+            "FROM trades " +
+            "JOIN assets_produced on trades.asset = assets_produced.asset_id " +
+            "WHERE type=?;";
+    private static final String GET_BY_ASSET_AND_TYPE = "SELECT trade_id, asset_name, trades.quantity, price " +
+            "FROM trades " +
+            "JOIN assets_produced on trades.asset = assets_produced.asset_id " +
+            "WHERE type=? and asset_name=?;";
     private static final String UPDATE_QTY = "UPDATE trades SET quantity = ? WHERE trade_id = ?;";
     private static final String DELETE = "DELETE FROM trades WHERE trade_id=?;";
 
@@ -43,6 +51,8 @@ public class TradeDBSource {
     private PreparedStatement getMatchingSells;
     private PreparedStatement getMatchingBuys;
     private PreparedStatement getTrade;
+    private PreparedStatement getType;
+    private PreparedStatement getByAssetAndType;
     private PreparedStatement updateQty;
     private PreparedStatement delete;
 
@@ -61,6 +71,8 @@ public class TradeDBSource {
             getMatchingSells = connection.prepareStatement(GET_MATCHING_SELLS);
             getMatchingBuys = connection.prepareStatement(GET_MATCHING_BUYS);
             getTrade = connection.prepareStatement(GET_TRADE);
+            getType = connection.prepareStatement(GET_TYPE);
+            getByAssetAndType = connection.prepareStatement(GET_BY_ASSET_AND_TYPE);
             updateQty = connection.prepareStatement(UPDATE_QTY);
             delete = connection.prepareStatement(DELETE);
 
@@ -231,6 +243,60 @@ public class TradeDBSource {
         }
 
         return trade;
+    }
+
+    /**
+     * Get all trades of a certain type
+     * @param type Type of trade
+     * @return
+     */
+    public HashMap<Integer, String[]> getTypeOfTrade(String type) {
+        HashMap<Integer, String[]> allTrades = new HashMap<Integer, String[]>();
+        ResultSet rs = null;
+
+        try {
+            getType.setString(1, type);
+            rs = getType.executeQuery();
+            while (rs.next()) {
+                String[] columns = new String[3];
+                columns[0] = rs.getString("asset_name");
+                columns[1] = ((Integer)rs.getInt("quantity")).toString();
+                columns[2] = ((Integer)rs.getInt("price")).toString();
+
+                allTrades.put(rs.getInt("trade_id"), columns);
+            }
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+        return allTrades;
+    }
+
+    /**
+     * Get all trades of a certain type and asset
+     * @param type The type of trade
+     * @param assetName The asset being traded
+     * @return
+     */
+    public HashMap<Integer, String[]> getByAssetAndType(String type, String assetName) {
+        HashMap<Integer, String[]> allTrades = new HashMap<Integer, String[]>();
+        ResultSet rs = null;
+
+        try {
+            getByAssetAndType.setString(1, type);
+            getByAssetAndType.setString(2, assetName);
+            rs = getByAssetAndType.executeQuery();
+            while (rs.next()) {
+                String[] columns = new String[3];
+                columns[0] = rs.getString("asset_name");
+                columns[1] = ((Integer)rs.getInt("quantity")).toString();
+                columns[2] = ((Integer)rs.getInt("price")).toString();
+
+                allTrades.put(rs.getInt("trade_id"), columns);
+            }
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+        return allTrades;
     }
 
     /**

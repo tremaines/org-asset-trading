@@ -4,7 +4,9 @@ import Client.TradeHistory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * A wrapper for interacting with the trade_history table in the database
@@ -14,21 +16,26 @@ public class HistoryDBSource {
     // SQL Statements
     private static final String ADD = "INSERT INTO trade_history (status, asset, qty, date, seller, buyer, credits) " +
             "VALUES(?, ?, ?, NOW(), ?, ?, ?);";
+    private static final String GET_BY_ASSET = "SELECT qty, credits " +
+            "FROM trade_history " +
+            "JOIN assets_produced on trade_history.asset = assets_produced.asset_id " +
+            "WHERE status='complete' and asset_name=?;";
 
     // Prepared Statements
     private PreparedStatement add;
+    private PreparedStatement getByAsset;
 
     Connection connection;
 
     /**
      * Constructor for the database table wrapper
-     * @param connection A connection to the MariaDB database
      */
     public HistoryDBSource() {
         this.connection = DBConnection.getConnection();
 
         try{
             add = connection.prepareStatement(ADD);
+            getByAsset = connection.prepareStatement(GET_BY_ASSET);
         } catch(SQLException sqle){
             System.err.println(sqle);
         }
@@ -50,5 +57,26 @@ public class HistoryDBSource {
         } catch(SQLException sqle) {
             System.err.println(sqle);
         }
+    }
+
+    public ArrayList<int[]> getHistoryOfAsset(String assetName) {
+        ArrayList<int[]> allValues = new ArrayList<>();
+
+        ResultSet rs = null;
+
+        try {
+            getByAsset.setString(1, assetName);
+            rs = getByAsset.executeQuery();
+            while (rs.next()) {
+                int[] values = new int[2];
+                values[0] = rs.getInt("qty");
+                values[1] = rs.getInt("credits");
+
+                allValues.add(values);
+            }
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+        return allValues;
     }
 }

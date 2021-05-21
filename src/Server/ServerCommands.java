@@ -15,6 +15,7 @@ public enum ServerCommands {
     // Assets produced commands
     GET_ASSET_BY_ID,
     GET_ASSET_BY_NAME,
+    GET_ALL_ASSETS_BY_ID,
     ADD_ASSET,
     UPDATE_ASSET,
     GET_ASSET_NAMES,
@@ -28,6 +29,10 @@ public enum ServerCommands {
     GET_TRADES_BY_UNIT,
     ADD_TRADE,
     GET_TRADE_BY_ID,
+    GET_TYPE_OF_TRADE,
+    GET_BY_TYPE_AND_ASSET,
     UPDATE_TRADE,
-    DELETE_TRADE
+    DELETE_TRADE,
+    // Trade History
+    GET_HISTORY
 }

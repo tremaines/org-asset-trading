@@ -227,6 +227,15 @@ public class Server {
             }
             break;
 
+            case GET_ALL_ASSETS_BY_ID: {
+                final Integer unitID = (Integer) inputStream.readObject();
+                synchronized (assets) {
+                    outputStream.writeObject(assets.getAssetsByUnit(unitID));
+                }
+                outputStream.flush();
+            }
+            break;
+
             case ADD_ASSET: {
                 final Assets asset = (Assets) inputStream.readObject();
                 synchronized (assets) {
@@ -315,6 +324,25 @@ public class Server {
             }
             break;
 
+            case GET_TYPE_OF_TRADE: {
+                String typeOfTrade = (String) inputStream.readObject();
+                synchronized (trades) {
+                    outputStream.writeObject(trades.getTypeOfTrade(typeOfTrade));
+                }
+                outputStream.flush();
+            }
+            break;
+
+            case GET_BY_TYPE_AND_ASSET: {
+                String typeofTrade = (String) inputStream.readObject();
+                String assetName = (String) inputStream.readObject();
+                synchronized (trades) {
+                    outputStream.writeObject(trades.getByAssetAndType(typeofTrade, assetName));
+                }
+                outputStream.flush();
+            }
+            break;
+
             case ADD_TRADE: {
                 final Trades trade = (Trades) inputStream.readObject();
                 outputStream.writeObject(tradeLogic.setTrade(trade));
@@ -325,6 +353,15 @@ public class Server {
             case DELETE_TRADE: {
                 final Trades trade = (Trades) inputStream.readObject();
                 tradeLogic.cancelTrade(trade);
+            }
+            break;
+
+            case GET_HISTORY: {
+                String assetName = (String) inputStream.readObject();
+                synchronized (tradeHx) {
+                    outputStream.writeObject(tradeHx.getHistoryOfAsset(assetName));
+                }
+                outputStream.flush();
             }
             break;
         }

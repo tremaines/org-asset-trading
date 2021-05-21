@@ -5,6 +5,7 @@ import Server.ServerCommands;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -231,6 +232,19 @@ public class ServerAPI {
         }
     }
 
+    public Assets[] getAllAssets(int unitID) {
+        try {
+            outputStream.writeObject(ServerCommands.GET_ALL_ASSETS_BY_ID);
+            outputStream.writeObject(unitID);
+            outputStream.flush();
+
+            return (Assets[]) inputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * Send a new asset to the server to be added to the database
      * @param asset The asset to be added
@@ -263,7 +277,7 @@ public class ServerAPI {
      * Get an array of the names of all assets
      * @return A string array of asset names
      */
-    public String[] getAssetName() {
+    public String[] getAssetNames() {
         try {
             outputStream.writeObject(ServerCommands.GET_ASSET_NAMES);
             outputStream.flush();
@@ -417,6 +431,33 @@ public class ServerAPI {
         }
     }
 
+    public HashMap<Integer, String[]>getTradesByType(String type) {
+        try {
+            outputStream.writeObject(ServerCommands.GET_TYPE_OF_TRADE);
+            outputStream.writeObject(type);
+            outputStream.flush();
+
+            return (HashMap<Integer, String[]>) inputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public HashMap<Integer, String[]>getByTypeAndAsset(String type, String assetName) {
+        try {
+            outputStream.writeObject(ServerCommands.GET_BY_TYPE_AND_ASSET);
+            outputStream.writeObject(type);
+            outputStream.writeObject(assetName);
+            outputStream.flush();
+
+            return (HashMap<Integer, String[]>) inputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void cancelTrade(Trades trade) {
         try {
             outputStream.writeObject(ServerCommands.DELETE_TRADE);
@@ -425,5 +466,18 @@ public class ServerAPI {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<int[]> getHistory(String assetName) {
+        try {
+            outputStream.writeObject(ServerCommands.GET_HISTORY);
+            outputStream.writeObject(assetName);
+            outputStream.flush();
+
+            return (ArrayList<int[]>) inputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

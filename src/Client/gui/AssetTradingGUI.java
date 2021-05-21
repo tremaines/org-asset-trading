@@ -9,8 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.List;
+import java.util.TreeMap;
 
 
 /**
@@ -25,15 +27,23 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private JPanel buyPanel;
     private JPanel sellPanel;
     private JPanel createPanel;
+    private JPanel modifyPanel;
     private JPanel accountPanel;
     private JPanel assetsPanel;
     private JPanel myListingsPanel;
-    private JPanel notificationsPanel;
+    private JPanel sellHistoryPanel;
+    private JPanel allListingsPanel;
+    private JPanel assetListingPanel;
 
     // Top menu components
     private JPanel topMenuContainer;
     private JPanel topMenuRight;
     private JPanel topMenuLeft;
+
+    // Tables
+    private ModifyAssetsTable modifyAssetsTable;
+    private JPanel tableBordered;
+    private JPanel tableBorder;
 
     // Side menu components
     private JPanel sideMenuTop;
@@ -42,21 +52,13 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     private CardLayout cardLayout = new CardLayout();
 
     private int tableTradeID;
+    private String assetName = null;
 
     // The unit the logged in user belongs to
     private Units unit;
     private User userLoggedIn;
-    // Instances of the database wrappers
-//    private UnitDBSource udb;
-//    private UserDBSource usdb;
-//    private TradeDBSource tdb;
-//    private AssetDBSource adb;
-//    private PurchasesDBSource pdb;
-//    private  HistoryDBSource hdb;
-//    TradeLogic implementTrade;
     // Server connection
     private static final ServerAPI server = new ServerAPI();
-
 
 
     public AssetTradingGUI(User user) {
@@ -65,6 +67,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         this.unit = server.getUnit(user.getUnit());
         this.userLoggedIn = user;
+
 
         // Setup of main frame
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -85,6 +88,23 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupAssetsPanel();
         setupMyListingsPanel();
         setupCreatePanel();
+        setupModifyPanel();
+        setupAllListingsPanel();
+        setupSellHistoryPanel();
+        setupAssetListingPanel();
+
+
+        if(userLoggedIn.getBuyNotificationStatus()) {
+            JOptionPane.showMessageDialog(null, "One of your buy orders was recently " +
+                            "partially or fully completed",
+                    "Buy Order Update", JOptionPane.INFORMATION_MESSAGE);
+            userLoggedIn.setNotificationStatus("Buy", false);
+        } else if(userLoggedIn.getSellNotificationStatus()) {
+            JOptionPane.showMessageDialog(null, "One of your sell orders was recently " +
+                            "partially or fully completed",
+                    "Sell Order Update", JOptionPane.INFORMATION_MESSAGE);
+            userLoggedIn.setNotificationStatus("Sell", false);
+        }
 
         // Display assets panel on startup
         cardLayout.show(mainContent, "4");
@@ -104,6 +124,22 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupAssetsPanel();
         setupMyListingsPanel();
         setupAccountPanel();
+        setupModifyPanel();
+        setupAllListingsPanel();
+        setupSellHistoryPanel();
+        setupAssetListingPanel();
+
+        if(userLoggedIn.getBuyNotificationStatus()) {
+            JOptionPane.showMessageDialog(null, "One of your buy orders was recently " +
+                            "partially or fully completed",
+                    "Buy Order Update", JOptionPane.INFORMATION_MESSAGE);
+            userLoggedIn.setNotificationStatus("Buy", false);
+        } else if(userLoggedIn.getSellNotificationStatus()) {
+            JOptionPane.showMessageDialog(null, "One of your sell orders was recently " +
+                            " partially or completed",
+                    "Sell Order Update", JOptionPane.INFORMATION_MESSAGE);
+            userLoggedIn.setNotificationStatus("Sell", false);
+        }
     }
 
     public static void main(String[] args) throws UserException, TradesException, AssetsException {
@@ -218,23 +254,32 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/bell.png"));
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             String btnName = "";
             switch(i) {
                 case 0:
-                    btnName = "Notifications";
+                    btnName = "Sell History";
+                    icon = new ImageIcon(this.getClass().getResource("images/sellhistory.png"));
                     break;
                 case 1:
                     btnName = "My Listings";
                     icon = new ImageIcon(this.getClass().getResource("images/mylistings.png"));
                     break;
                 case 2:
-                    btnName = "View Assets";
+                    btnName = "Summary";
                     icon = new ImageIcon(this.getClass().getResource("images/viewassets.png"));
                     break;
                 case 3:
                     btnName = "Logout";
                     icon = new ImageIcon(this.getClass().getResource("images/logout.png"));
+                    break;
+                case 4:
+                    btnName = "All Listings";
+                    icon = new ImageIcon(this.getClass().getResource("images/alllistings.png"));
+                    break;
+                case 5:
+                    btnName = "Assets List";
+                    icon = new ImageIcon(this.getClass().getResource("images/assetlistings.png"));
                     break;
 
             }
@@ -432,7 +477,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
-
         });
 
         // Row data in the table
@@ -628,7 +672,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
     public void setupAssetsPanel() {
         assetsPanel = new JPanel(new BorderLayout(0, 0));
-        assetsPanel.setBorder(BorderFactory.createTitledBorder("Assets"));
+        assetsPanel.setBorder(BorderFactory.createTitledBorder("Asset Summary"));
         mainContent.add(assetsPanel, "4");
         AssetsTable table = new AssetsTable(assetsPanel, server);
     }
@@ -693,7 +737,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         JPanel createPanelContainer = new JPanel(new GridLayout(1, 2));
         JPanel leftPanel = new JPanel(new BorderLayout(0, 0));
         JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
-        rightPanel.setBorder(new EmptyBorder(0,0,30,30));
+        rightPanel.setBorder(new EmptyBorder(30,0,30,30));
 
         createPanelContainer.add(leftPanel);
         createPanelContainer.add(rightPanel);
@@ -719,6 +763,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         s1 = new JSpinner();
         s1.setBounds(220 , 80, 150 , 20);
 
+        JComponent editor = s1.getEditor();
+        JSpinner.DefaultEditor spinnerEditor = (JSpinner.DefaultEditor)editor;
+        spinnerEditor.getTextField().setHorizontalAlignment(JTextField.LEFT);
 
         terms = new JCheckBox("Please confirm that the " +
                 "details you have entered are correct");
@@ -811,18 +858,289 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         mainContent.add(createPanelContainer, "6");
     }
 
+    public void setupModifyPanel() {
+        JPanel modifyPanelContainer = new JPanel(new GridLayout(1, 2));
+        JPanel leftPanel = new JPanel(new BorderLayout(0, 0));
+        JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
+        rightPanel.setBorder(new EmptyBorder(30, 0, 30, 30));
+
+        String[] unitNames = server.getUnitNames();
+        List<String> sortedNames = new ArrayList(Arrays.asList(unitNames));
+//        if(sortedNames.contains("None (Admin)")) {
+//            sortedNames.remove("None (Admin)");
+//        }
+        java.util.Collections.sort(sortedNames);
+        unitNames = sortedNames.toArray(new String[0]);
+
+        JComboBox units = new JComboBox(unitNames);
+        units.setBounds(220, 40, 150, 20);
+        String unitName = units.getSelectedItem().toString();
+        Units selectedOrg = server.getUnit(unitName);
+
+        tableBordered = new JPanel(new BorderLayout());
+        tableBordered.setBorder(BorderFactory.createTitledBorder(unitName + "'s Assets"));
+        rightPanel.add(tableBordered);
+
+        modifyPanelContainer.add(leftPanel);
+        modifyPanelContainer.add(rightPanel);
+        modifyPanelContainer.setBorder(BorderFactory.createTitledBorder("Modify"));
+
+        setSize(1000, 700);
+        JLabel label1, label2;
+        JSpinner creditsSpinner;
+        JCheckBox terms;
+        JButton submit;
+        JLabel msg;
+
+        label1 = new JLabel("Select Unit");
+        label1.setBounds(30, 40, 150, 20);
+
+        label2 = new JLabel("Set Credits");
+        label2.setBounds(30 , 70, 100 , 20);
+
+        creditsSpinner = new JSpinner();
+        creditsSpinner.setValue(selectedOrg.getCredits());
+        creditsSpinner.setBounds(220 , 70, 150 , 20);
+
+        JComponent editor = creditsSpinner.getEditor();
+        JSpinner.DefaultEditor spinnerEditor = (JSpinner.DefaultEditor)editor;
+        spinnerEditor.getTextField().setHorizontalAlignment(JTextField.LEFT);
+
+        terms = new JCheckBox("Please confirm that the " +
+                "details you have entered are correct");
+        terms.setBounds(30 , 100, 400 , 20);
+
+        submit = new JButton("Submit");
+        submit.setBounds(30 , 130, 100 , 20);
+
+        msg = new JLabel("");
+        msg.setBounds(140 , 180, 100 , 20);
+
+        modifyAssetsTable = new ModifyAssetsTable(tableBordered, server.getUnit(unitName), server);
+        modifyAssetsTable.getModifyTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+
+        units.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String unitName = units.getSelectedItem().toString();
+                Units selectedUnit = server.getUnit(unitName);
+
+                // Remove old table
+                rightPanel.remove(tableBordered);
+                rightPanel.revalidate();
+                rightPanel.repaint();
+
+                // Show credits for selected organisation
+                creditsSpinner.setValue(selectedUnit.getCredits());
+
+                // Add new table
+                tableBordered = new JPanel(new BorderLayout());
+                rightPanel.add(tableBordered);
+                modifyAssetsTable = new ModifyAssetsTable(tableBordered, server.getUnit(unitName), server);
+                modifyAssetsTable.getModifyTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+
+                // Update screen
+                rightPanel.revalidate();
+                rightPanel.repaint();
+
+                tableBordered.setBorder(BorderFactory.createTitledBorder(unitName + "'s Assets"));
+            }
+        });
+
+
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String unitName = units.getSelectedItem().toString();
+                Units selectedUnit = server.getUnit(unitName);
+                int creditsInput = (Integer) creditsSpinner.getValue();
+                boolean boxSelected = terms.isSelected();
+                boolean hasNegativeInput = false;
+
+                List<Assets> updatedAssets = new ArrayList<>();
+
+                if(creditsInput >= 0) {
+                    try {
+
+                        for (int i = 0; i < modifyAssetsTable.getModifyTable().getRowCount(); i++) {
+                            int assetId = Integer.parseInt(modifyAssetsTable.getModifyTable().getValueAt(i, 0).toString());
+                            String assetName = modifyAssetsTable.getModifyTable().getValueAt(i, 1).toString();
+                            int assetQty = Integer.parseInt(modifyAssetsTable.getModifyTable().getValueAt(i, 2).toString());
+
+                            if (assetQty >= 0) {
+                                // Asset amount
+                                Assets updatedAsset = new Assets(assetId, assetName, assetQty);
+                                updatedAssets.add(updatedAsset);
+                            }
+                            else if (assetQty < 0) {
+                                hasNegativeInput = true;
+
+                                JOptionPane.showMessageDialog(null, "Negative numbers are " +
+                                                "discarded for asset quantities.",
+                                        "Asset Quantity",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+
+                        if (boxSelected) {
+                            for (Assets asset : updatedAssets) {
+                                server.updateAsset(asset);
+                            }
+                            selectedUnit.setCredits(creditsInput);
+                            server.updateUnit(selectedUnit);
+
+                            if (hasNegativeInput) {
+                                // TODO: Put following code in rerender table function
+                                // Rerender table
+                                rightPanel.remove(tableBordered);
+                                rightPanel.revalidate();
+                                rightPanel.repaint();
+                                tableBordered = new JPanel(new BorderLayout());
+                                rightPanel.add(tableBordered);
+                                modifyAssetsTable = new ModifyAssetsTable(tableBordered, unit, server);
+                                modifyAssetsTable.getModifyTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+                                rightPanel.revalidate();
+                                rightPanel.repaint();
+                                tableBordered.setBorder(BorderFactory.createTitledBorder(unitName + "'s Assets"));
+                            } else {
+                                JOptionPane.showMessageDialog(null,
+                                        "Organisation details were updated", "Successful",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "You have not accepted " +
+                                            "the terms. Please select the checkbox.", "Checkbox Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (NumberFormatException nfe) {
+                        refreshGUI();
+                        JOptionPane.showMessageDialog(null, "Invalid entry for an asset quantity, " +
+                                        "please only enter integer values.",
+                                "Invalid Entry",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cannot set credits to a negative number",
+                            "Invalid Entry",
+                            JOptionPane.ERROR_MESSAGE);
+                    creditsSpinner.setValue(selectedUnit.getCredits());
+                }
+            }
+        });
+
+        leftPanel.add(label1);
+        leftPanel.add(label2);
+        leftPanel.add(units);
+        leftPanel.add(creditsSpinner);
+        leftPanel.add(terms);
+        leftPanel.add(submit);
+        leftPanel.add(msg);
+
+        mainContent.add(modifyPanelContainer, "7");
+    }
+
+    public void setupAllListingsPanel() {
+        allListingsPanel = new JPanel(new BorderLayout());
+        allListingsPanel.setBorder(BorderFactory.createTitledBorder("All Listings"));
+        JPanel gridPanel = new JPanel(new GridLayout(1, 2, 10, 20));
+
+        AllListingsTableBuy buyTable = new AllListingsTableBuy(gridPanel, server);
+        AllListingsTableSell sellTable  = new AllListingsTableSell(gridPanel, server);
+
+        allListingsPanel.add(gridPanel);
+
+        mainContent.add(allListingsPanel, "8");
+    }
+
+    private void setupAssetListingPanel() {
+        assetListingPanel = new JPanel(new BorderLayout());
+        sellHistoryPanel.setBorder(BorderFactory.createTitledBorder("Asset Sell History"));
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,10,15));
+        JPanel gridPanel = new JPanel(new GridLayout(1, 2, 10, 20));
+
+        String[] assetNames = server.getAssetNames();
+        assetName = assetName == null ? assetNames[0] : assetName;
+
+        JComboBox assets = new JComboBox(assetNames);
+        assets.setBounds(220, 40, 150, 20);
+
+        topPanel.add(assets);
+
+        assets.setSelectedItem(assetName);
+
+        AssetListingsTableBuy buyTable = new AssetListingsTableBuy(gridPanel, assetName, server);
+
+        AssetListingsTableSell sellTable = new AssetListingsTableSell(gridPanel, assetName, server);
+
+        assets.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                assetName = assets.getSelectedItem().toString();
+                assets.setSelectedItem(assetName);
+                refreshGUI();
+                cardLayout.show(mainContent, "10");
+            }
+        });
+
+        assetListingPanel.add(topPanel, BorderLayout.NORTH);
+        assetListingPanel.add(gridPanel);
+
+        mainContent.add(assetListingPanel, "10");
+    }
+
+    public void setupSellHistoryPanel() {
+        sellHistoryPanel = new JPanel(new BorderLayout());
+        sellHistoryPanel.setBorder(BorderFactory.createTitledBorder("Asset Sell History"));
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,10,15));
+        JPanel gridPanel = new JPanel(new GridLayout(1, 2, 10, 20));
+
+
+
+        String[] assetNames = server.getAssetNames();
+        assetName = assetName == null ? assetNames[0] : assetName;
+
+        JComboBox assets = new JComboBox(assetNames);
+        assets.setBounds(220, 40, 150, 20);
+
+        topPanel.add(assets);
+
+        assets.setSelectedItem(assetName);
+
+        tableBorder = new JPanel(new BorderLayout());
+        tableBorder.setBorder(BorderFactory.createTitledBorder(assetName + " Sales History"));
+
+        SellHistoryTable historyTable = new SellHistoryTable(gridPanel, assetName, server);
+
+        assets.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                assetName = assets.getSelectedItem().toString();
+                assets.setSelectedItem(assetName);
+                refreshGUI();
+                cardLayout.show(mainContent, "9");
+            }
+        });
+
+
+        sellHistoryPanel.add(topPanel, BorderLayout.NORTH);
+        sellHistoryPanel.add(gridPanel);
+        mainContent.add(sellHistoryPanel, "9");
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         String btnSrcTxt = e.getActionCommand();
 
         if (btnSrcTxt.equals("Buy")) {
+            refreshGUI();
             cardLayout.show(mainContent, "1");
         } else if (btnSrcTxt.equals("Sell")) {
+            refreshGUI();
             cardLayout.show(mainContent, "2");
         } else if (btnSrcTxt.equals("Account")) {
             refreshGUI();
             cardLayout.show(mainContent, "3");
-        } else if (btnSrcTxt.equals("View Assets")) {
+        } else if (btnSrcTxt.equals("Summary")) {
             refreshGUI();
             cardLayout.show(mainContent, "4");
         } else if (btnSrcTxt.equals("Logout")) {
@@ -834,8 +1152,19 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         } else if (btnSrcTxt.equals("Create")) {
             refreshGUI();
             cardLayout.show(mainContent, "6");
+        } else if (btnSrcTxt.equals("Modify")) {
+            refreshGUI();
+            cardLayout.show(mainContent, "7");
+        } else if (btnSrcTxt.equals("All Listings")) {
+            refreshGUI();
+            cardLayout.show(mainContent, "8");
+        } else if (btnSrcTxt.equals("Sell History")) {
+            refreshGUI();
+            cardLayout.show(mainContent, "9");
+        } else if (btnSrcTxt.equals("Assets List")) {
+            refreshGUI();
+            cardLayout.show(mainContent, "10");
         }
-
     }
 }
 

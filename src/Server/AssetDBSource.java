@@ -20,7 +20,7 @@ public class AssetDBSource {
     private static final String GET_ASSETS_BY_UNIT = "SELECT * FROM assets_produced WHERE unit=?;";
     private static final String GET_NAMES = "SELECT asset_name FROM assets_produced;";
     private static final String GET_NAMES_EXCLUDING = "SELECT asset_name FROM assets_produced WHERE unit <> ?;";
-    private static final String UPDATE = "UPDATE assets_produced SET asset_name = ?, quantity = ?, unit = ? " +
+    private static final String UPDATE = "UPDATE assets_produced SET asset_name = ?, quantity = ? " +
             "WHERE asset_id= ?;";
     private static final String ADD = "INSERT INTO assets_produced (asset_name, quantity, unit) VALUES(?, ?, ?);";
 
@@ -37,7 +37,6 @@ public class AssetDBSource {
 
     /***
      * Constructor
-     * @param connection Takes a connection the trading_platform database.
      */
     public AssetDBSource() {
         this.connection = DBConnection.getConnection();
@@ -176,8 +175,7 @@ public class AssetDBSource {
         try{
             update.setString(1, asset.getAssetName());
             update.setInt(2, asset.getQuantity());
-            update.setInt(3, asset.getUnitID());
-            update.setInt(4, asset.getAssetID());
+            update.setInt(3, asset.getAssetID());
             update.execute();
         } catch (SQLException sqle) {
             System.err.println(sqle);
@@ -205,6 +203,32 @@ public class AssetDBSource {
         }
 
         return names.toArray(new String[0]);
+    }
+
+    /**
+     * Get an Assets array of all assets a unit produces
+     * @param unitID The unit ID
+     * @return An array of assets
+     */
+    public Assets[] getAssetsByUnit(int unitID) {
+        ArrayList<Assets> assets = new ArrayList<>();
+        ResultSet rs = null;
+
+        try {
+            getAssetsByUnit.setInt(1, unitID);
+            rs = getAssetsByUnit.executeQuery();
+            while (rs.next()) {
+                Assets asset = new Assets();
+                asset.setAssetID(rs.getInt("asset_id"));
+                asset.setAssetName(rs.getString("asset_name"));
+                asset.setQuantity(rs.getInt("quantity"));
+                asset.setUnitID(rs.getInt("unit"));
+                assets.add(asset);
+            }
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+        return assets.toArray(new Assets[0]);
     }
 
     /**

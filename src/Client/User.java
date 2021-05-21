@@ -21,6 +21,10 @@ public class User implements Serializable {
     private boolean admin;
     // Units name the account is registered to
     private int unit;
+    // Notification status on a sell listing
+    private boolean notifySell;
+    // Notification status
+    private boolean notifyBuy;
 
     public User() { }
 
@@ -42,6 +46,9 @@ public class User implements Serializable {
         this.password = hashPassword(password);
         this.admin = admin;
         this.unit = unit;
+        // Notification status default value is false
+        notifySell = false;
+        notifyBuy = false;
     }
 
     public String getFirstName() {
@@ -161,54 +168,34 @@ public class User implements Serializable {
         this.unit = unit;
     }
 
-    //    /**
-//     * Checks whether a the username and password details entered match those of the actual user
-//     * account
-//     *
-//     * @param username Name of the user account
-//     * @param password Password for the user account
-//     * @return True or false
-//     */
-//    public boolean loginSuccessful(String username, String password) {
-//        if(users.contains(username)) {
-//            User userToLogin = getUser(username);
-//
-//            String hashedPassword = hashPassword(password);
-//
-//            if(hashedPassword.equals(userToLogin.getHashedPassword())) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//
-//    /**
-//     * Checks the list of usernames to verify whether the username entered exists within the list
-//     *
-//     * @param username Name of the user account
-//     * @return True or false
-//     */
-//    public boolean userExists(String username) {
-//        if(users.contains(username)) {
-//            User userToLogin = getUser(username);
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    /**
-//     * Gets the User object based on a matching username
-//     *
-//     * @return User object of the user account
-//     */
-//    public User getUser(String username) {
-//        User userObject = new User(org);
-//
-//        for(int i = 0; i < userList.size(); i++) {
-//            if(userList.get(i).getUsername().equals(username)) {
-//                userObject = userList.get(i);
-//            }
-//        }
-//        return userObject;
-//    }
+    /**
+     * Checks if a user needs to be notified of a completed/partially buy listing
+     *
+     * @return True or false if a user needs to be notified
+     */
+    public boolean getBuyNotificationStatus() {
+        return notifyBuy;
+    }
+
+    /**
+     * Checks if a user needs to be notified of a completed/partially sell listing
+     *
+     * @return True or false if a user needs to be notified
+     */
+    public boolean getSellNotificationStatus() {
+        return notifySell;
+    }
+
+    /**
+     * Sets the notification status
+     *
+     * @param status True if user's order has been completed/partially completed
+     */
+    public void setNotificationStatus(String type, boolean status) {
+        if(type == "Buy") {
+            notifyBuy = status;
+        } else if(type == "Sell") {
+            notifySell = status;
+        }
+    }
 }

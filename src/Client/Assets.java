@@ -27,6 +27,12 @@ public class Assets implements Serializable {
         this.unitID = unitID;
     }
 
+    public Assets(int assetID, String assetName, int quantity) {
+        this.assetID = assetID;
+        this.assetName = assetName;
+        this.quantity = quantity;
+    }
+
     public Assets(int assetID, String assetName, int quantity, int unitID) {
         this.assetID = assetID;
         this.assetName = assetName;
