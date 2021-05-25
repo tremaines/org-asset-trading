@@ -264,14 +264,15 @@ public class TradeLogic {
     }
 
     private int generateTradeID() {
-        long time = System.currentTimeMillis();
-        String timeString = Long.toString(time);
-        int total = 0;
-        for (char c : timeString.toCharArray()) {
-            total += c - '0';
-        }
-        total += trade.getAssetId();
-        total+= trade.getPrice();
-        return total;
+//        long time = System.currentTimeMillis();
+//        String timeString = Long.toString(time);
+//        int total = 0;
+//        for (char c : timeString.toCharArray()) {
+//            total += c - '0';
+//        }
+//        total += trade.getAssetId();
+//        total+= trade.getPrice();
+//        return total;
+        return tdb.getTradeID();
     }
 }
