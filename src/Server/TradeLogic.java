@@ -263,6 +263,11 @@ public class TradeLogic {
         hdb.addToHistory(newTrade);
     }
 
+    /**
+     * Gets the trade ID for a listing
+     *
+     * @return Trade ID to be assigned to the listing
+     */
     private int generateTradeID() {
 //        long time = System.currentTimeMillis();
 //        String timeString = Long.toString(time);

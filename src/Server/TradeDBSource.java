@@ -331,6 +331,11 @@ public class TradeDBSource {
         }
     }
 
+    /**
+     * Counts the number of listings in the database and generates a trade ID in ascending order
+     *
+     * @return Current trade ID to be assigned to new listing
+     */
     public int getTradeID() {
         ResultSet rs = null;
         int currentTradeID = 1;
