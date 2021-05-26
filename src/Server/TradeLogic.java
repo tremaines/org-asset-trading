@@ -157,8 +157,8 @@ public class TradeLogic {
                     settleTrade(trade, match);
                 }
             } while (matchingTrade > 0 && trade.getQuantity() != 0);
-
         }
+
         // If it's a sell, look for buys for that asset
         else if (type == Trades.TradeType.sell) {
             // Keep looking as long as there are matching trades
@@ -171,7 +171,6 @@ public class TradeLogic {
                     settleTrade(match, trade);
                 }
             } while (matchingTrade > 0 && trade.getQuantity() != 0);
-
         }
     }
 
@@ -269,15 +268,6 @@ public class TradeLogic {
      * @return Trade ID to be assigned to the listing
      */
     private int generateTradeID() {
-//        long time = System.currentTimeMillis();
-//        String timeString = Long.toString(time);
-//        int total = 0;
-//        for (char c : timeString.toCharArray()) {
-//            total += c - '0';
-//        }
-//        total += trade.getAssetId();
-//        total+= trade.getPrice();
-//        return total;
         return tdb.getTradeID();
     }
 }
