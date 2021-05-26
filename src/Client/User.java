@@ -50,6 +50,12 @@ public class User implements Serializable {
         notifySell = false;
         notifyBuy = false;
     }
+    public User (String username, boolean admin, int unit, String password) {
+        this.username = username;
+        this.admin = admin;
+        this.unit = unit;
+        this.password = hashPassword(password);
+    }
 
     public String getFirstName() {
         return firstName;

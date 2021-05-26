@@ -1,12 +1,12 @@
 package Server;
 
+import Client.Units;
+import Client.User;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
 
 /***
@@ -93,9 +93,11 @@ public class DBConnection {
             CREATE_TRADES_HX, CREATE_ASSETS_PUR};
 
     // CREATE statements for first uni (IT Admin) and user (root)
-    private static final String ADD_FIRST_UNIT = "INSERT INTO units(unit_id, unit_name, credits) VALUES (?, ?, ?)";
-    private static final String ADD_FIRST_ADMIN = "INSERT INTO users(user_name, first_name, last_name, email, " +
-            "admin_status, unit, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String ADD_FIRST_UNIT = "INSERT INTO units(unit_name, credits) VALUES (?, ?);";
+    private static final String ADD_FIRST_ADMIN = "INSERT INTO users(user_name, admin_status, unit, password) " +
+            "VALUES (?, ?, ?, ?);";
+    private static final Units unit = new Units("IT Administration", 10000);
+    private static final User user = new User("admin", true, 1, "password");
 
     /***
      * Constructor initialises connection, creates database and tables if necessary
@@ -122,6 +124,8 @@ public class DBConnection {
             connection.setCatalog("trading_platform");
             // Create tables if needed
             createTables();
+            // Insert first unit and user if needed
+            insertUnitAndUser();
 
 
         } catch (SQLException sqle) {
@@ -159,42 +163,76 @@ public class DBConnection {
         }
     }
 
+    private void insertUnitAndUser() {
+        if (!checkTable("units")) {
+            addFirstUnit(unit);
+        }
+        if (!checkTable("users")) {
+            addFirstUser(user);
+        }
+    }
+
     /***
      * Helper method to create an initial unit and user
      * @param org The first organisation to be added (IT Admin)
+     */
+    private void addFirstUnit(Units org) {
+        try {
+            PreparedStatement addUnit = connection.prepareStatement(ADD_FIRST_UNIT);
+
+            // Add unit details
+            addUnit.setString(1, org.getUnitName());
+            addUnit.setInt(2, org.getCredits());
+            addUnit.execute();
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+    }
+
+    /***
+     * Helper method to create an initial unit and user
      * @param root The first user (root)
      */
-//    private void addRoot(Units org, User root) {
-//        try {
-//            PreparedStatement addUnit = connection.prepareStatement(ADD_FIRST_UNIT);
-//            PreparedStatement addRoot = connection.prepareStatement(ADD_FIRST_ADMIN);
-//
-//            // Add unit details
-//            addUnit.setString(1, org.getUnitID());
-//            addUnit.setString(2, org.getUnitName());
-//            addUnit.setInt(3, org.getCredits());
-//            addUnit.execute();
-//            //Add user details
-//            addRoot.setString(1, root.getUsername());
-//            addRoot.setString(2, root.getFirstName());
-//            addRoot.setString(3, root.getLastName());
-//            addRoot.setString(4, root.getEmail());
-//            addRoot.setBoolean(5, root.getAdminStatus());
-//            addRoot.setString(6, org.getUnitID());
-//            addRoot.setString(7, root.getHashedPassword());
-//            addRoot.execute();
-//        } catch (SQLException sqle) {
-//            System.err.println(sqle);
-//        }
-//    }
+    private void addFirstUser(User root) {
+        try {
+            PreparedStatement addRoot = connection.prepareStatement(ADD_FIRST_ADMIN);
+
+            //Add user details
+            addRoot.setString(1, root.getUsername());
+            addRoot.setBoolean(2, root.getAdminStatus());
+            addRoot.setInt(3, root.getUnit());
+            addRoot.setString(4, root.getHashedPassword());
+            addRoot.execute();
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+    }
+
+    /***
+     * Checks if there are any relations in a table
+     *
+     * @param table The table as a string
+     * @return True if there are relations, false otherwise
+     */
+    public boolean checkTable(String table) {
+        boolean exists = false;
+        String CHECK_TABLE = "SELECT * FROM " + table + ";";
+
+        try {
+        PreparedStatement checkCount = connection.prepareStatement(CHECK_TABLE);
+        ResultSet rs = null;
+        rs = checkCount.executeQuery();
+        exists =  rs.next();
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+        return exists;
+    }
 
     //TODO: At this stage, I'm not sure how this works as far as differences between client and server go
     //TODO: Clients will have to have their own .prods file so will need to suss that out later
     /***
      * Public method to create a connection to the database
-     *
-     * @param path The location of the .props file
-     *
      * @return A conenction to the database
      */
     public static Connection getConnection() {
