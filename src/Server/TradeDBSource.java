@@ -33,6 +33,7 @@ public class TradeDBSource {
     private static final String GET_MATCHING_BUYS = "SELECT MIN(trade_id), price, quantity " +
             "from trades WHERE asset=? AND type='buy' AND price >=?;";
     private static final String GET_TRADE = "SELECT * FROM trades WHERE trade_id=?;";
+    private static final String GET_LARGEST_TRADE_ID = "SELECT MAX(trade_id) AS max_id FROM trades";
     private static final String GET_TYPE = "SELECT trade_id, asset_name, trades.quantity, price " +
             "FROM trades " +
             "JOIN assets_produced on trades.asset = assets_produced.asset_id " +
@@ -51,6 +52,7 @@ public class TradeDBSource {
     private PreparedStatement getMatchingSells;
     private PreparedStatement getMatchingBuys;
     private PreparedStatement getTrade;
+    private PreparedStatement getLargestTradeID;
     private PreparedStatement getType;
     private PreparedStatement getByAssetAndType;
     private PreparedStatement updateQty;
@@ -71,6 +73,7 @@ public class TradeDBSource {
             getMatchingSells = connection.prepareStatement(GET_MATCHING_SELLS);
             getMatchingBuys = connection.prepareStatement(GET_MATCHING_BUYS);
             getTrade = connection.prepareStatement(GET_TRADE);
+            getLargestTradeID = connection.prepareStatement(GET_LARGEST_TRADE_ID);
             getType = connection.prepareStatement(GET_TYPE);
             getByAssetAndType = connection.prepareStatement(GET_BY_ASSET_AND_TYPE);
             updateQty = connection.prepareStatement(UPDATE_QTY);
@@ -326,5 +329,29 @@ public class TradeDBSource {
         } catch(SQLException sqle){
             System.err.println(sqle);
         }
+    }
+
+    /**
+     * Counts the number of listings in the database and generates a trade ID in ascending order
+     *
+     * @return Current trade ID to be assigned to new listing
+     */
+    public int getTradeID() {
+        ResultSet rs = null;
+        int currentTradeID = 1;
+        try {
+            rs = getLargestTradeID.executeQuery();
+
+            if(rs.next()) {
+                var count = rs.getInt("max_id");
+                if(count > 0) {
+                    currentTradeID = count + 1;
+                }
+            }
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+
+        return currentTradeID;
     }
 }

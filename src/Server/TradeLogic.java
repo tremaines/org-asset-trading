@@ -149,29 +149,48 @@ public class TradeLogic {
         if (type == Trades.TradeType.buy) {
             // Keep looking as long as there are matching trades
             // This should only be the case if there are sell orders that are too small to meet the full quantity
-            do{
+
+//            do{
+//                matchingTrade = tdb.matchSell(trade.getAssetId(), trade.getPrice());
+//
+//                if (matchingTrade > 0){
+//                    Trades match = tdb.getTrade(matchingTrade);
+//                    settleTrade(trade, match);
+//                }
+//            } while (matchingTrade > 0 && trade.getQuantity() != 0);
+
+            for(int i = 0; i < trade.getQuantity(); i++) {
                 matchingTrade = tdb.matchSell(trade.getAssetId(), trade.getPrice());
 
                 if (matchingTrade > 0){
                     Trades match = tdb.getTrade(matchingTrade);
                     settleTrade(trade, match);
                 }
-            } while (matchingTrade > 0 && trade.getQuantity() != 0);
-
+            }
         }
+
         // If it's a sell, look for buys for that asset
         else if (type == Trades.TradeType.sell) {
             // Keep looking as long as there are matching trades
             // This should only be the case if there are buy order that are too small to meet the full quantity
-            do {
+
+//            do {
+//                matchingTrade = tdb.matchBuy(trade.getAssetId(), trade.getPrice());
+//
+//                if (matchingTrade > 0) {
+//                    Trades match = tdb.getTrade(matchingTrade);
+//                    settleTrade(match, trade);
+//                }
+//            } while (matchingTrade > 0 && trade.getQuantity() != 0);
+
+            for(int i = 0; i < trade.getQuantity(); i++) {
                 matchingTrade = tdb.matchBuy(trade.getAssetId(), trade.getPrice());
 
-                if (matchingTrade > 0) {
+                if (matchingTrade > 0){
                     Trades match = tdb.getTrade(matchingTrade);
-                    settleTrade(match, trade);
+                    settleTrade(trade, match);
                 }
-            } while (matchingTrade > 0 && trade.getQuantity() != 0);
-
+            }
         }
     }
 
@@ -263,15 +282,12 @@ public class TradeLogic {
         hdb.addToHistory(newTrade);
     }
 
+    /**
+     * Gets the trade ID for a listing
+     *
+     * @return Trade ID to be assigned to the listing
+     */
     private int generateTradeID() {
-        long time = System.currentTimeMillis();
-        String timeString = Long.toString(time);
-        int total = 0;
-        for (char c : timeString.toCharArray()) {
-            total += c - '0';
-        }
-        total += trade.getAssetId();
-        total+= trade.getPrice();
-        return total;
+        return tdb.getTradeID();
     }
 }
