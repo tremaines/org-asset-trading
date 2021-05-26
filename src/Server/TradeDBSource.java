@@ -344,7 +344,6 @@ public class TradeDBSource {
 
             if(rs.next()) {
                 var count = rs.getInt("max_id");
-                System.out.println(count);
                 if(count > 0) {
                     currentTradeID = count + 1;
                 }
