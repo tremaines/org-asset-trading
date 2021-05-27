@@ -743,12 +743,15 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         createPanelContainer.setBorder(BorderFactory.createTitledBorder("Create"));
 
         setSize(1000, 700);
-        JLabel label1 , label2;
+        JLabel label1 , label2, label3, label4;
         JSpinner s1;
-        JTextField t1;
+        JTextField t1, t2, t3;
         JCheckBox terms;
-        JButton submit;
+        JButton submitOrg, submitAsset;
         JLabel msg;
+
+
+        // Create organisation elements
 
         label1 = new JLabel("Organisational Unit Name");
         label1.setBounds(30, 50, 150, 20);
@@ -768,19 +771,36 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         terms = new JCheckBox("Please confirm that the " +
                 "details you have entered are correct");
-        terms.setBounds(30 , 200, 400 , 20);
+        terms.setBounds(30 , 110, 400 , 20);
 
 
-        submit = new JButton("Submit");
-        submit.setBounds(30 , 230, 100 , 20);
+        submitOrg = new JButton("Create");
+        submitOrg.setBounds(30 , 140, 100 , 20);
 
         msg = new JLabel("");
         msg.setBounds(140 , 180, 100 , 20);
 
         OrganisationAssetsTable organisationAssetsTable = new OrganisationAssetsTable(rightPanel, server);
+        // Create Asset elements
+
+        label3 = new JLabel("Asset Name");
+        label3.setBounds(30, 230, 150, 20);
+
+        label4 = new JLabel("Asset Amount");
+        label4.setBounds(30, 260, 150, 20);
+
+        t2 = new JTextField();
+        t2.setBounds(220 , 230, 150 , 20);
+
+        t3 = new JTextField();
+        t3.setBounds(220 , 260, 150 , 20);
+
+        submitAsset = new JButton("Create");
+        submitAsset.setBounds(30 , 290, 100 , 20);
+
         organisationAssetsTable.getAssetsTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-        submit.addActionListener(new ActionListener() {
+        submitOrg.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Units newUnit;
@@ -840,10 +860,15 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         leftPanel.add(label1);
         leftPanel.add(label2);
+        leftPanel.add(label3);
+        leftPanel.add(label4);
         leftPanel.add(t1);
+        leftPanel.add(t2);
+        leftPanel.add(t3);
         leftPanel.add(s1);
         leftPanel.add(terms);
-        leftPanel.add(submit);
+        leftPanel.add(submitOrg);
+        leftPanel.add(submitAsset);
         leftPanel.add(msg);
 
         mainContent.add(createPanelContainer, "6");
