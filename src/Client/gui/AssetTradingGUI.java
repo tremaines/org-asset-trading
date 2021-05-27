@@ -122,6 +122,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupAssetsPanel();
         setupMyListingsPanel();
         setupAccountPanel();
+        setupCreatePanel();
         setupModifyPanel();
         setupAllListingsPanel();
         setupSellHistoryPanel();
@@ -711,7 +712,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         JLabel label1 , label2, label3, label4;
         JSpinner s1;
         JTextField t1, t2, t3;
-        JCheckBox terms;
+        JCheckBox terms, terms2;
         JButton submitOrg, submitAsset;
         JLabel msg;
 
@@ -738,6 +739,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 "details you have entered are correct");
         terms.setBounds(30 , 110, 400 , 20);
 
+        terms2 = new JCheckBox("Please confirm that the " +
+                "details you have entered are correct");
+        terms2.setBounds(30 , 260, 400 , 20);
+
 
         submitOrg = new JButton("Create");
         submitOrg.setBounds(30 , 140, 100 , 20);
@@ -751,17 +756,12 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label3 = new JLabel("Asset Name");
         label3.setBounds(30, 230, 150, 20);
 
-        label4 = new JLabel("Asset Amount");
-        label4.setBounds(30, 260, 150, 20);
-
         t2 = new JTextField();
         t2.setBounds(220 , 230, 150 , 20);
 
-        t3 = new JTextField();
-        t3.setBounds(220 , 260, 150 , 20);
 
-        submitAsset = new JButton("Create");
-        submitAsset.setBounds(30 , 290, 100 , 20);
+        submitAsset = new JButton("Create Asset");
+        submitAsset.setBounds(30 , 290, 140 , 20);
 
         organisationAssetsTable.getAssetsTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
@@ -823,15 +823,46 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         });
 
+        submitAsset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String newAssetName = t2.getText();
+                String[] assetNames = server.getAssetNames();
+                boolean boxSelected = terms2.isSelected();
+
+                if(boxSelected) {
+                    if(Arrays.asList(assetNames).contains(newAssetName)) {
+                        JOptionPane.showMessageDialog(null, "An asset with this name already exists " +
+                                        "in the system", "Asset Creation Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        Assets newAsset = new Assets();
+                        newAsset.setAssetName(newAssetName);
+                        server.addAsset(newAsset);
+
+                        refreshGUI();
+                        cardLayout.show(mainContent, "6");
+
+                        JOptionPane.showMessageDialog(null,
+                                newAssetName+ " has been added as a new asset"  , "Successful",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "You have not accepted " +
+                                    "the terms. Please select the checkbox.", "Checkbox Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         leftPanel.add(label1);
         leftPanel.add(label2);
         leftPanel.add(label3);
-        leftPanel.add(label4);
         leftPanel.add(t1);
         leftPanel.add(t2);
-        leftPanel.add(t3);
         leftPanel.add(s1);
         leftPanel.add(terms);
+        leftPanel.add(terms2);
         leftPanel.add(submitOrg);
         leftPanel.add(submitAsset);
         leftPanel.add(msg);
