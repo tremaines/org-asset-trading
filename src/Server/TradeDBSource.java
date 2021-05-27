@@ -17,14 +17,14 @@ public class TradeDBSource {
     // SELECT statements
     private static final String GET_TRADES_BY_ASSET = "SELECT asset_name, SUM(trades.quantity), MIN(price) " +
             "FROM trades " +
-            "JOIN assets_produced ON trades.asset = assets_produced.asset_id " +
+            "JOIN assets ON trades.asset = assets.asset_id " +
             "WHERE type='sell' GROUP BY asset;";
     private static final String GET_TRADES_BY_UNIT = "" +
-            "SELECT trade_id, assets_produced.asset_name, trades.quantity, trades.price " +
+            "SELECT trade_id, assets.asset_name, trades.quantity, trades.price " +
             "FROM trades " +
             "JOIN users ON trades.user = users.user_name " +
             "JOIN  units ON users.unit = units.unit_id " +
-            "JOIN assets_produced on trades.asset = assets_produced.asset_id " +
+            "JOIN assets on trades.asset = assets.asset_id " +
             "WHERE unit_id = ? and trades.type = ?;";
     private static final String ADD_TRADE = "INSERT INTO trades (trade_id, type, user, asset, quantity, price, date) " +
             "VALUES (?, ?, ?, ?, ?, ?, NOW());";
@@ -36,11 +36,11 @@ public class TradeDBSource {
     private static final String GET_LARGEST_TRADE_ID = "SELECT MAX(trade_id) AS max_id FROM trades";
     private static final String GET_TYPE = "SELECT trade_id, asset_name, trades.quantity, price " +
             "FROM trades " +
-            "JOIN assets_produced on trades.asset = assets_produced.asset_id " +
+            "JOIN assets on trades.asset = assets.asset_id " +
             "WHERE type=?;";
     private static final String GET_BY_ASSET_AND_TYPE = "SELECT trade_id, asset_name, trades.quantity, price " +
             "FROM trades " +
-            "JOIN assets_produced on trades.asset = assets_produced.asset_id " +
+            "JOIN assets on trades.asset = assets.asset_id " +
             "WHERE type=? and asset_name=?;";
     private static final String UPDATE_QTY = "UPDATE trades SET quantity = ? WHERE trade_id = ?;";
     private static final String DELETE = "DELETE FROM trades WHERE trade_id=?;";

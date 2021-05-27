@@ -198,16 +198,14 @@ public class ServerAPI {
 
     /**
      * Retrieve an asset from the database
-     * @param id The ID of the asset to be retrieved
      * @return The asset associated with that ID, null if there is none
      */
-    public Assets getAsset(int id) {
+    public Assets[] getAllAssets() {
         try {
-            outputStream.writeObject(ServerCommands.GET_ASSET_BY_ID);
-            outputStream.writeObject(id);
+            outputStream.writeObject(ServerCommands.GET_ALL_ASSETS);
             outputStream.flush();
 
-            return (Assets) inputStream.readObject();
+            return (Assets[]) inputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -278,11 +276,16 @@ public class ServerAPI {
      * @return A string array of asset names
      */
     public String[] getAssetNames() {
+        ArrayList<String> names = new ArrayList<>();
         try {
-            outputStream.writeObject(ServerCommands.GET_ASSET_NAMES);
+            outputStream.writeObject(ServerCommands.GET_ALL_ASSETS);
             outputStream.flush();
 
-            return (String[]) inputStream.readObject();
+            Assets[] assets = (Assets[]) inputStream.readObject();
+            for (Assets asset : assets) {
+                names.add(asset.getAssetName());
+            }
+            return names.toArray(new String[0]);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -313,12 +316,19 @@ public class ServerAPI {
      * @return A string array of the names of all assets held by that unit
      */
     public String[] getAssetsByUnit(int unitID) {
+        ArrayList<String> names = new ArrayList<>();
+
         try {
-            outputStream.writeObject(ServerCommands.GET_ASSETS_BY_UNIT);
+            outputStream.writeObject(ServerCommands.GET_ALL_ASSETS_BY_ID);
             outputStream.writeObject(unitID);
             outputStream.flush();
 
-            return (String[]) inputStream.readObject();
+            Assets[] assets = (Assets[]) inputStream.readObject();
+            for (Assets asset : assets) {
+                names.add(asset.getAssetName());
+            }
+
+            return names.toArray(new String[0]);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -347,14 +357,16 @@ public class ServerAPI {
      * Send a new asset purchase to the database
      * @param assetID The ID of the asset
      * @param unitID The ID of the unit
-     * @param assetQty The quantity of the asset purchased
+     * @param assetQty The quantity of the asset owned
+     * @param replace Mark true if you are replacing the quantity with a new one
      */
-    public void addAssetPurchased(int assetID, int unitID, int assetQty) {
+    public void addAssetOwned(int assetID, int unitID, int assetQty, boolean replace) {
         try {
             outputStream.writeObject(ServerCommands.ADD_ASSET_PURCHASED);
             outputStream.writeObject(assetID);
             outputStream.writeObject(unitID);
             outputStream.writeObject(assetQty);
+            outputStream.writeObject(replace);
             outputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();

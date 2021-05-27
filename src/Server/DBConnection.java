@@ -42,14 +42,11 @@ public class DBConnection {
                     "PRIMARY KEY (user_name)," +
                     "FOREIGN KEY (unit) REFERENCES units(unit_id)" +
                     ");";
-    private static final String CREATE_ASSETS_PRO =
-            "CREATE TABLE IF NOT EXISTS assets_produced (" +
+    private static final String CREATE_ASSETS =
+            "CREATE TABLE IF NOT EXISTS assets (" +
                     "asset_id INT NOT NULL AUTO_INCREMENT UNIQUE," +
                     "asset_name VARCHAR(100) NOT NULL," +
-                    "quantity INT NOT NULL," +
-                    "unit INT NOT NULL," +
-                    "PRIMARY KEY (asset_id)," +
-                    "FOREIGN KEY (unit) REFERENCES units(unit_id)" +
+                    "PRIMARY KEY (asset_id)" +
                     ");";
     private static final String CREATE_TRADES =
             "CREATE TABLE IF NOT EXISTS trades (" +
@@ -62,7 +59,7 @@ public class DBConnection {
                     "date DATETIME NOT NULL," +
                     "PRIMARY KEY (trade_id)," +
                     "FOREIGN KEY (user) REFERENCES users(user_name)," +
-                    "FOREIGN KEY (asset) REFERENCES assets_produced(asset_id)" +
+                    "FOREIGN KEY (asset) REFERENCES assets(asset_id)" +
                     ");";
     private static final String CREATE_TRADES_HX =
             "CREATE TABLE IF NOT EXISTS trade_history (" +
@@ -78,19 +75,19 @@ public class DBConnection {
                     "FOREIGN KEY (seller) REFERENCES users(user_name)," +
                     "FOREIGN KEY (buyer) REFERENCES users(user_name)" +
                     ");";
-    private static final String CREATE_ASSETS_PUR =
-            "CREATE TABLE IF NOT EXISTS assets_purchased (" +
+    private static final String CREATE_ASSETS_OWNED =
+            "CREATE TABLE IF NOT EXISTS assets_owned (" +
                     "asset_id INT NOT NULL," +
                     "unit INT NOT NULL," +
                     "quantity INT NOT NULL," +
                     "PRIMARY KEY (asset_id, unit)," +
-                    "FOREIGN KEY (asset_id) REFERENCES assets_produced(asset_id)," +
+                    "FOREIGN KEY (asset_id) REFERENCES assets(asset_id)," +
                     "FOREIGN KEY (unit) REFERENCES units(unit_id)" +
                     ");";
 
     // Store statements in an array
-    private static final String[] createTables = {CREATE_UNITS, CREATE_USERS, CREATE_ASSETS_PRO, CREATE_TRADES,
-            CREATE_TRADES_HX, CREATE_ASSETS_PUR};
+    private static final String[] createTables = {CREATE_UNITS, CREATE_USERS, CREATE_ASSETS, CREATE_TRADES,
+            CREATE_TRADES_HX, CREATE_ASSETS_OWNED};
 
     // CREATE statements for first uni (IT Admin) and user (root)
     private static final String ADD_FIRST_UNIT = "INSERT INTO units(unit_name, credits) VALUES (?, ?);";
@@ -214,7 +211,7 @@ public class DBConnection {
      * @param table The table as a string
      * @return True if there are relations, false otherwise
      */
-    public boolean checkTable(String table) {
+    private boolean checkTable(String table) {
         boolean exists = false;
         String CHECK_TABLE = "SELECT * FROM " + table + ";";
 
@@ -233,7 +230,7 @@ public class DBConnection {
     //TODO: Clients will have to have their own .prods file so will need to suss that out later
     /***
      * Public method to create a connection to the database
-     * @return A conenction to the database
+     * @return A connection to the database
      */
     public static Connection getConnection() {
         if (connection  == null) {

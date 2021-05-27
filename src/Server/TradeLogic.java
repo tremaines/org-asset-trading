@@ -11,7 +11,6 @@ public class TradeLogic {
     private UnitDBSource udb;
     private UserDBSource usdb;
     private TradeDBSource tdb;
-    private AssetDBSource adb;
     private PurchasesDBSource pdb;
     private HistoryDBSource hdb;
 
@@ -27,16 +26,14 @@ public class TradeLogic {
      * @param udb
      * @param usdb
      * @param tdb
-     * @param adb
      * @param pdb
      * @param hdb
      */
-    public TradeLogic(UnitDBSource udb, UserDBSource usdb, TradeDBSource tdb, AssetDBSource adb,
+    public TradeLogic(UnitDBSource udb, UserDBSource usdb, TradeDBSource tdb,
                       PurchasesDBSource pdb, HistoryDBSource hdb) {
         this.udb = udb;
         this.usdb = usdb;
         this.tdb = tdb;
-        this.adb = adb;
         this.pdb = pdb;
         this.hdb = hdb;
     }
@@ -52,7 +49,7 @@ public class TradeLogic {
         trade.setId(generateTradeID());
         user = usdb.getUser(trade.getUserName());
         unit = udb.getUnit(user.getUnit());
-        asset = adb.getAsset(trade.getAssetId());
+        asset = pdb.getAsset(trade.getAssetId(), unit.getUnitID());
         totalCost = trade.getQuantity() * trade.getPrice();
         try {
             if (trade.getType() == Trades.TradeType.buy) {
@@ -76,7 +73,7 @@ public class TradeLogic {
         trade = cancelledTrade;
         user = usdb.getUser(trade.getUserName());
         unit = udb.getUnit(user.getUnit());
-        asset = adb.getAsset(trade.getAssetId());
+        asset = pdb.getAsset(trade.getAssetId(), unit.getUnitID());
         totalCost = trade.getQuantity() * trade.getPrice();
 
         TradeHistory tradeToCancel = new TradeHistory(cancelledTrade);
@@ -90,7 +87,7 @@ public class TradeLogic {
             int qty = trade.getQuantity();
             int oldQty = asset.getQuantity();
             asset.setQuantity((qty + oldQty));
-            adb.update(asset);
+            pdb.addToPurchases(asset.getAssetID(), unit.getUnitID(), asset.getQuantity(), true);
         }
 
         tdb.delete(trade.getId());
@@ -133,7 +130,7 @@ public class TradeLogic {
             tdb.addTrade(trade);
             asset.setQuantity((quantityOwned - quantitySelling));
             // Update the asset's quantity in the database
-            adb.update(asset);
+            pdb.addToPurchases(asset.getAssetID(), user.getUnit(), asset.getQuantity(), true);
         }
     }
 
@@ -188,7 +185,7 @@ public class TradeLogic {
 
                 if (matchingTrade > 0){
                     Trades match = tdb.getTrade(matchingTrade);
-                    settleTrade(trade, match);
+                    settleTrade(match, trade);
                 }
             }
         }
@@ -232,7 +229,7 @@ public class TradeLogic {
             tdb.delete(buy.getId());
             tdb.delete(sell.getId());
             // Add to asset_purchases table
-            pdb.addToPurchases(buy.getAssetId(), buyerUnit.getUnitID(), buy.getQuantity());
+            pdb.addToPurchases(buy.getAssetId(), buyerUnit.getUnitID(), buy.getQuantity(), false);
             // Add to trade history
             newTrade = new TradeHistory(TradeType.complete, buy.getAssetId(), buy.getQuantity(), sellingPrice,
                     buy.getUserName(), sell.getUserName());
@@ -252,7 +249,7 @@ public class TradeLogic {
             // Delete buy trade from database as its qty is now 0
             tdb.delete(buy.getId());
             // Add to asset_purchases table
-            pdb.addToPurchases(buy.getAssetId(), buyerUnit.getUnitID(), buy.getQuantity());
+            pdb.addToPurchases(buy.getAssetId(), buyerUnit.getUnitID(), buy.getQuantity(), false);
             // Add to trade history
             newTrade = new TradeHistory(TradeType.complete, buy.getAssetId(), buy.getQuantity(), sellingPrice,
                     buy.getUserName(), sell.getUserName());
@@ -273,7 +270,7 @@ public class TradeLogic {
             // Can delete sell trade as its qty is now 0
             tdb.delete(sell.getId());
             // Add to asset_purchases table
-            pdb.addToPurchases(buy.getAssetId(), buyerUnit.getUnitID(), sell.getQuantity());
+            pdb.addToPurchases(buy.getAssetId(), buyerUnit.getUnitID(), sell.getQuantity(), false);
             // Add to trade history
             newTrade = new TradeHistory(TradeType.complete, buy.getAssetId(), sell.getQuantity(), sellingPrice,
                     buy.getUserName(), sell.getUserName());

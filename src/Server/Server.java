@@ -40,7 +40,7 @@ public class Server {
         trades = new TradeDBSource();
         units = new UnitDBSource();
         users = new UserDBSource();
-        tradeLogic = new TradeLogic(units, users, trades, assets, purchases, tradeHx);
+        tradeLogic = new TradeLogic(units, users, trades, purchases, tradeHx);
 
         // Read the port number from the .props file
         Properties props = new Properties();
@@ -206,10 +206,9 @@ public class Server {
             }
             break;
 
-            case GET_ASSET_BY_ID: {
-                final Integer id = (Integer) inputStream.readObject();
+            case GET_ALL_ASSETS: {
                 synchronized (assets) {
-                    final Assets asset = assets.getAsset(id);
+                    final Assets[] asset = assets.getAllAssets();
 
                     outputStream.writeObject(asset);
                 }
@@ -231,7 +230,7 @@ public class Server {
             case GET_ALL_ASSETS_BY_ID: {
                 final Integer unitID = (Integer) inputStream.readObject();
                 synchronized (assets) {
-                    outputStream.writeObject(assets.getAssetsByUnit(unitID));
+                    outputStream.writeObject(purchases.getAssetsByUnit(unitID));
                 }
                 outputStream.flush();
             }
@@ -253,36 +252,10 @@ public class Server {
             }
             break;
 
-            case GET_ASSET_NAMES: {
-                synchronized (assets) {
-                    outputStream.writeObject(assets.getAssetNames());
-                }
-                outputStream.flush();
-            }
-            break;
-
-            case GET_ASST_NAMES_EXCLUDING: {
-                final Integer unitID = (Integer) inputStream.readObject();
-                synchronized (assets) {
-                    outputStream.writeObject(assets.getNamesExcludingUnit(unitID));
-                }
-                outputStream.flush();
-            }
-            break;
-
-            case GET_ASSETS_BY_UNIT: {
-                final Integer id = (Integer) inputStream.readObject();
-                synchronized (assets) {
-                    outputStream.writeObject(assets.getAssetNamesByUnit(id));
-                }
-                outputStream.flush();
-            }
-            break;
-
             case GET_ASSET_AND_AMOUNTS: {
                 final Integer id = (Integer) inputStream.readObject();
                 synchronized (assets) {
-                    outputStream.writeObject(assets.getAssetsAndAmounts(id));
+                    outputStream.writeObject(purchases.getAssetsAndAmounts(id));
                 }
                 outputStream.flush();
             }
@@ -292,8 +265,9 @@ public class Server {
                 final Integer asset = (Integer) inputStream.readObject();
                 final Integer unit = (Integer) inputStream.readObject();
                 final Integer qty = (Integer) inputStream.readObject();
+                final Boolean replace = (Boolean) inputStream.readObject();
                 synchronized (purchases) {
-                    purchases.addToPurchases(asset, unit, qty);
+                    purchases.addToPurchases(asset, unit, qty, replace);
                 }
             }
             break;

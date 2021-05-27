@@ -1,6 +1,7 @@
 package Client.gui;
 
 import Client.Assets;
+import Client.ServerAPI;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -8,10 +9,8 @@ import javax.swing.table.DefaultTableModel;
 public class OrganisationAssetsTable extends JFrame {
 
     JTable assetsTable;
-    Assets assets;
 
-    public OrganisationAssetsTable(JPanel panel, int rows) {
-        this.assets = assets;
+    public OrganisationAssetsTable(JPanel panel, ServerAPI server) {
 
         // Row data in the table
         Object tableData[] = new Object[3];
@@ -25,18 +24,21 @@ public class OrganisationAssetsTable extends JFrame {
 //            }
         };
 
+        Assets[] assets = server.getAllAssets();
         // Assets Table
         assetsTable = new JTable(model);
 
         // Column names
+        model.addColumn("ID");
         model.addColumn("Asset");
         model.addColumn("Amount");
 
         // Adds a row for each Asset type
         // Make the "Asset" fields blank (to be filled by admin) and the quantity default to 0
-        for(int i = 0; i < rows; i++) {
+        for(int i = 0; i < assets.length; i++) {
             model.addRow(new Object[]{
-                    "",
+                    assets[i].getAssetID(),
+                    assets[i].getAssetName(),
                     0});
         }
 

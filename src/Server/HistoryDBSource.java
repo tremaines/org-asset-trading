@@ -18,7 +18,7 @@ public class HistoryDBSource {
             "VALUES(?, ?, ?, NOW(), ?, ?, ?);";
     private static final String GET_BY_ASSET = "SELECT qty, credits " +
             "FROM trade_history " +
-            "JOIN assets_produced on trade_history.asset = assets_produced.asset_id " +
+            "JOIN assets on trade_history.asset = assets.asset_id " +
             "WHERE status='complete' and asset_name=?;";
 
     // Prepared Statements

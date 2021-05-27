@@ -12,7 +12,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.TreeMap;
 
 
 /**
@@ -313,7 +312,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label1 = new JLabel("Asset Type");
         label1.setBounds(30, 50, 100, 20);
 
-        JComboBox assetTypeList = new JComboBox(server.getAssetsExcluding(userLoggedIn.getUnit()));
+        JComboBox assetTypeList = new JComboBox(server.getAssetNames());
         assetTypeList.setBounds(140 , 50, 150 , 20);
 
         label2 = new JLabel("Amount");
@@ -778,11 +777,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         msg = new JLabel("");
         msg.setBounds(140 , 180, 100 , 20);
 
-        // I'm just passing in an arbitrary number of rows to fill out the table
-        // My reasoning is admins can add bespoke assets when creating a class, rather than pre-filling from a set
-        // list
-        int numRows = 30;
-        OrganisationAssetsTable organisationAssetsTable = new OrganisationAssetsTable(rightPanel, numRows);
+        OrganisationAssetsTable organisationAssetsTable = new OrganisationAssetsTable(rightPanel, server);
         organisationAssetsTable.getAssetsTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
         submit.addActionListener(new ActionListener() {
@@ -808,16 +803,15 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                         int newUnitId = server.getUnit(newUnit.getUnitName()).getUnitID();
 
                         // Add unit assets
-                        // Loops through table until it comes to a blank asset name cell
-                        int row = 0;
-                        int col = 0;
-                        String assetName = organisationAssetsTable.getAssetsTable().getValueAt(row, col).toString();
+                        int assetID;
                         int assetQty;
-                        while (assetName.trim().length() != 0) {
+                        for (int i = 0; i < organisationAssetsTable.getAssetsTable().getRowCount(); i++) {
+                            assetID = Integer.parseInt(organisationAssetsTable.getAssetsTable()
+                                    .getValueAt(i, 0).toString());
                             // If the user has entered a non-numerical value, default to 0
                             try{
                                 assetQty = Integer.parseInt(organisationAssetsTable.getAssetsTable()
-                                        .getValueAt(row, (col + 1)).toString());
+                                        .getValueAt(i, 2).toString());
                             } catch (NumberFormatException err) {
                                 assetQty = 0;
                             }
@@ -825,10 +819,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                             // Check if asset qty >= 0, if not set to 0 as default
                             assetQty = Math.max(assetQty, 0);
 
-                            Assets newAsset = new Assets(assetName, assetQty, newUnitId);
-                            server.addAsset(newAsset);
-                            row++;
-                            assetName = organisationAssetsTable.getAssetsTable().getValueAt(row, col).toString();
+                            server.addAssetOwned(assetID, newUnitId, assetQty, false);
                         }
                         JOptionPane.showMessageDialog(null,
                                 unitName + " has been added as a new organisation"  , "Successful",
@@ -984,7 +975,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
                         if (boxSelected) {
                             for (Assets asset : updatedAssets) {
-                                server.updateAsset(asset);
+                                server.addAssetOwned(asset.getAssetID(), selectedUnit.getUnitID(),
+                                        asset.getQuantity(), true);
                             }
                             selectedUnit.setCredits(creditsInput);
                             server.updateUnit(selectedUnit);
@@ -1097,7 +1089,12 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
 
         String[] assetNames = server.getAssetNames();
-        assetName = assetName == null ? assetNames[0] : assetName;
+        try {
+            assetName = assetName == null ? assetNames[0] : assetName;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            assetName = "No Assets Found!";
+        }
+
 
         JComboBox assets = new JComboBox(assetNames);
         assets.setBounds(220, 40, 150, 20);
