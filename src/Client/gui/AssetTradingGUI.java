@@ -166,10 +166,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         userLabel.setForeground(Color.WHITE);
         topMenuLeft.add(userLabel);
 
+        // Set initial icon and then change it in loop below for other buttons
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/bell.png"));
 
+        // Create buttons for top menu
         if(userLoggedIn.getAdminStatus() == true) {
-            // Buttons in top menu (Will come back and refactor)
             for (int i = 0; i < 5; i++) {
                 String btnName = "";
                 switch(i) {
@@ -237,7 +238,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public void addSideMenu() {
-
+        // Panel setup
         JPanel leftMenuPanel = new JPanel();
         leftMenuPanel.setPreferredSize(new Dimension(140, 0));
         leftMenuPanel.setLayout(new BorderLayout());
@@ -250,8 +251,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         leftMenuPanel.add(sideMenuTop);
         leftMenuPanel.add(sideMenuBottom, BorderLayout.SOUTH);
 
+        // Set initial icon and then change it in loop below for other buttons
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/bell.png"));
 
+        // Create buttons for side menu
         for (int i = 0; i < 6; i++) {
             String btnName = "";
             switch(i) {
@@ -279,14 +282,15 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                     btnName = "Assets List";
                     icon = new ImageIcon(this.getClass().getResource("images/assetlistings.png"));
                     break;
-
             }
+
             JButton btn = new JButton(btnName, icon);
             btn.setBorderPainted(false);
             btn.setBackground(Utility.DARKGREY);
             btn.setForeground(Color.WHITE);
             btn.setPreferredSize(new Dimension(125, 40));
             btn.addActionListener(this);
+
             if(btnName.equals("Logout")) {
                 sideMenuBottom.add(btn, BorderLayout.SOUTH);
             } else  {
@@ -483,73 +487,56 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public void setupAccountPanel() {
+        // Panel setup
         accountPanel = new JPanel(new BorderLayout(0, 0));
         accountPanel.setBorder(BorderFactory.createTitledBorder("Account"));
-
         setSize(1000, 700);
-        JLabel label1 , label2, label3 , label4, label5, label6, label7;
-        JTextField t1, t2, t3, t4, t5;
+
+        // Panel elements
+        JLabel label1 , label2, label4, label5, label6, label7;
+        JTextField t1;
         JPasswordField userPassword, newPasswordInput, confirmPasswordInput;
-        //JComboBox day, month, year;
-        //JRadioButton AccUser, AccAdmin;
-        //JTextArea ta1;
         String[] messageStrings = {"User", "Admin"};
-
         String[] unitNames = server.getUnitNames();
-
-        //JLabel lbltext = new JLabel();
         JCheckBox terms;
         JButton submit, changePassword;
         JLabel msg;
 
-
         label1 = new JLabel("Username");
-        label1.setBounds(30, 50, 100, 20);
-
-        t1 = new JTextField();
-        t1.setBounds(140 , 50, 100 , 20);
-
         label2 = new JLabel("Password");
-        label2.setBounds(30 , 80, 100 , 20);
-
-        userPassword = new JPasswordField();
-        userPassword.setBounds(140 , 80, 100 , 20);
-
         label4 = new JLabel("Unit");
-        label4.setBounds(30 , 110, 100 , 20);
-
-        JComboBox units = new JComboBox(unitNames);
-        units.setBounds(140 , 110, 100 , 20);
-
         label5 = new JLabel("Access Level");
-        label5.setBounds(30 , 140, 100 , 20);
-
         label6 = new JLabel("New Password");
-        label6.setBounds(30 , 340, 100 , 20);
-
-        newPasswordInput = new JPasswordField();
-        newPasswordInput.setBounds(160 , 340, 100 , 20);
-
         label7 = new JLabel("Confirm Password");
-        label7.setBounds(30 , 370, 130 , 20);
-
+        t1 = new JTextField();
+        userPassword = new JPasswordField();
+        JComboBox units = new JComboBox(unitNames);
+        newPasswordInput = new JPasswordField();
         confirmPasswordInput = new JPasswordField();
-        confirmPasswordInput.setBounds(160 , 370, 100 , 20);
-
         changePassword = new JButton("Change");
-        changePassword.setBounds(30 , 400, 100 , 20);
-
         submit = new JButton("Submit");
-        submit.setBounds(30 , 200, 100 , 20);
-
         JComboBox cmbMessageList = new JComboBox(messageStrings);
-        cmbMessageList.setBounds(140 , 140 , 100, 20);
-
         terms = new JCheckBox("Please accept that the " +
                 "details you have entered are correct");
+
+        // Position elements
+        label1.setBounds(30, 50, 100, 20);
+        label2.setBounds(30 , 80, 100 , 20);
+        label4.setBounds(30 , 110, 100 , 20);
+        label5.setBounds(30 , 140, 100 , 20);
+        label6.setBounds(30 , 340, 100 , 20);
+        label7.setBounds(30 , 370, 130 , 20);
+        t1.setBounds(140 , 50, 100 , 20);
+        units.setBounds(140 , 110, 100 , 20);
+        userPassword.setBounds(140 , 80, 100 , 20);
+        newPasswordInput.setBounds(160 , 340, 100 , 20);
+        confirmPasswordInput.setBounds(160 , 370, 100 , 20);
+        changePassword.setBounds(30 , 400, 100 , 20);
+        submit.setBounds(30 , 200, 100 , 20);
+        cmbMessageList.setBounds(140 , 140 , 100, 20);
         terms.setBounds(30 , 170, 400 , 20);
 
-
+        // Submit new user
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -615,7 +602,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         msg = new JLabel("");
         msg.setBounds(140 , 230, 100 , 20);
 
-
         if(userLoggedIn.getAdminStatus() == false) {
             label6.setBounds(30, 50, 130, 20);
             accountPanel.add(label6);
@@ -628,7 +614,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             accountPanel.add(changePassword);
             changePassword.setBounds(30 , 110, 100 , 20);
         } else {
-            // accountPanel.add();
             accountPanel.add(label1);
             accountPanel.add(t1);
             accountPanel.add(label2);
@@ -641,17 +626,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             accountPanel.add(newPasswordInput);
             accountPanel.add(confirmPasswordInput);
             accountPanel.add(changePassword);
-            //accountPanel.add(AccUser);
-            //accountPanel.add(AccAdmin);
             accountPanel.add(cmbMessageList);
             accountPanel.add(terms);
             accountPanel.add(submit);
         }
         accountPanel.add(msg);
-
-
-        // Change Password
-
         mainContent.add(accountPanel, "3");
     }
 
