@@ -296,51 +296,44 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public void setupBuyPanel() {
-
+        // Panel setup
         buyPanel = new JPanel(new BorderLayout(0, 0));
         buyPanel.setBorder(BorderFactory.createTitledBorder("Buy"));
-
         setSize(1000, 700);
-        JLabel label1 , label2, label3 , label4, label5;
-        JSpinner s2, s3;
 
+        // Panel elements
+        JLabel label1 , label2, label3;
+        JSpinner spinner2, spinner3;
         JCheckBox terms;
         JButton submit;
         JLabel msg;
-
-        label1 = new JLabel("Asset Type");
-        label1.setBounds(30, 50, 100, 20);
-
         JComboBox assetTypeList = new JComboBox(server.getAssetNames());
-        assetTypeList.setBounds(140 , 50, 150 , 20);
-
+        label1 = new JLabel("Asset Type");
         label2 = new JLabel("Amount");
-        label2.setBounds(30 , 80, 100 , 20);
-
-        s2 = new JSpinner();
-        s2.setBounds(140 , 80, 150 , 20);
-
         label3 = new JLabel("Cost Per Unit");
-        label3.setBounds(30 , 110, 100 , 20);
-
-        s3 = new JSpinner();
-        s3.setBounds(140 , 110, 150 , 20);
-
+        spinner2 = new JSpinner();
+        spinner3 = new JSpinner();
         terms = new JCheckBox("Please accept that the details you have entered are correct");
-        terms.setBounds(27 , 143, 400 , 20);
-
         submit = new JButton("Submit");
-        submit.setBounds(30 , 180, 100 , 20);
-
         msg = new JLabel("");
+
+        // Position elements
+        label1.setBounds(30, 50, 100, 20);
+        label2.setBounds(30 , 80, 100 , 20);
+        label3.setBounds(30 , 110, 100 , 20);
+        assetTypeList.setBounds(140 , 50, 150 , 20);
+        spinner2.setBounds(140 , 80, 150 , 20);
+        spinner3.setBounds(140 , 110, 150 , 20);
+        terms.setBounds(27 , 143, 400 , 20);
+        submit.setBounds(30 , 180, 100 , 20);
         msg.setBounds(140 , 230, 100 , 20);
 
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String type = (String) assetTypeList.getSelectedItem();
-                String amount = s2.getValue() + "";
-                String price = s3.getValue() + "";
+                String amount = spinner2.getValue() + "";
+                String price = spinner3.getValue() + "";
                 boolean boxSelected = terms.isSelected();
 
                 // Checks if the amount and price values are positive and non-zero
@@ -374,17 +367,18 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             }
         });
 
-        // accountPanel.add();
+        // Add elements to panel so they are visible
         buyPanel.add(label1);
         buyPanel.add(label2);
-        buyPanel.add(s2);
+        buyPanel.add(spinner2);
         buyPanel.add(label3);
-        buyPanel.add(s3);
+        buyPanel.add(spinner3);
         buyPanel.add(assetTypeList);
         buyPanel.add(terms);
         buyPanel.add(submit);
         buyPanel.add(msg);
 
+        // Display buy panel in card layout
         mainContent.add(buyPanel, "1");
 
     }
