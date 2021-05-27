@@ -56,9 +56,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     // The unit the logged in user belongs to
     private Units unit;
     private User userLoggedIn;
+
     // Server connection
     private static final ServerAPI server = new ServerAPI();
-
 
     public AssetTradingGUI(User user) {
 
@@ -66,7 +66,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         this.unit = server.getUnit(user.getUnit());
         this.userLoggedIn = user;
-
 
         // Setup of main frame
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -373,7 +372,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
-
         });
 
         // accountPanel.add();
@@ -392,57 +390,49 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public void setupSellPanel() {
-
+        // Panel setup
         JPanel sellPanelContainer = new JPanel(new GridLayout(1, 2));
         JPanel leftPanel = new JPanel(new BorderLayout(0, 0));
         JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
         rightPanel.setBorder(new EmptyBorder(0,0,30,30));
-
         sellPanelContainer.add(leftPanel);
         sellPanelContainer.add(rightPanel);
         sellPanelContainer.setBorder(BorderFactory.createTitledBorder("Sell"));
 
+        // Panel elements
         JLabel label1 , label2, label3 , label4, label5;
-        JSpinner s2, s3;
-
+        JSpinner spinner1, spinner2;
         JCheckBox terms;
         JButton submit;
         JLabel msg;
-
         label1 = new JLabel("Asset Type");
-        label1.setBounds(30, 50, 100, 20);
-
+        label2 = new JLabel("Amount");
+        label3 = new JLabel("Cost Per Unit");
         JComboBox assetOwnedList =
                 new JComboBox(server.getAssetsByUnit(unit.getUnitID()));
-        assetOwnedList.setBounds(140 , 50, 150 , 20);
-
-        label2 = new JLabel("Amount");
-        label2.setBounds(30 , 80, 100 , 20);
-
-        s2 = new JSpinner();
-        s2.setBounds(140 , 80, 150 , 20);
-
-        label3 = new JLabel("Cost Per Unit");
-        label3.setBounds(30 , 110, 100 , 20);
-
-        s3 = new JSpinner();
-        s3.setBounds(140 , 110, 150 , 20);
-
+        spinner1 = new JSpinner();
+        spinner2 = new JSpinner();
         terms = new JCheckBox("Please confirm that the details you have entered are correct");
-        terms.setBounds(27 , 143, 400 , 20);
-
         submit = new JButton("Submit");
-        submit.setBounds(30 , 180, 100 , 20);
-
         msg = new JLabel("");
+
+        // Position Elements
+        label1.setBounds(30, 50, 100, 20);
+        label2.setBounds(30 , 80, 100 , 20);
+        label3.setBounds(30 , 110, 100 , 20);
+        assetOwnedList.setBounds(140 , 50, 150 , 20);
+        spinner1.setBounds(140 , 80, 150 , 20);
+        spinner2.setBounds(140 , 110, 150 , 20);
+        terms.setBounds(27 , 143, 400 , 20);
+        submit.setBounds(30 , 180, 100 , 20);
         msg.setBounds(140 , 230, 100 , 20);
 
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String type = (String) assetOwnedList.getSelectedItem();
-                String amount = s2.getValue() + "";
-                String price = s3.getValue() + "";
+                String amount = spinner1.getValue() + "";
+                String price = spinner2.getValue() + "";
                 boolean boxSelected = terms.isSelected();
 
                 // Checks if the amount and price values are positive and non-zero
@@ -483,16 +473,18 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         UserAssetsTable userAssetsTable = new UserAssetsTable(rightPanel, unit, userLoggedIn, server);
 
+        // Add elements to panel so they are visible
         leftPanel.add(label1);
         leftPanel.add(label2);
-        leftPanel.add(s2);
+        leftPanel.add(spinner1);
         leftPanel.add(label3);
-        leftPanel.add(s3);
+        leftPanel.add(spinner2);
         leftPanel.add(assetOwnedList);
         leftPanel.add(terms);
         leftPanel.add(submit);
         leftPanel.add(msg);
 
+        // Display sell panel in card layout
         mainContent.add(sellPanelContainer, "2");
     }
 
