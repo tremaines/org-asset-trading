@@ -192,6 +192,10 @@ public class TradeLogic {
         Units buyerUnit = udb.getUnit(usdb.getUser(buy.getUserName()).getUnit());
         Units sellerUnit = udb.getUnit(usdb.getUser(sell.getUserName()).getUnit());
 
+        // Gets the listing users
+        User buyer = usdb.getUser(buy.getUserName());
+        User seller = usdb.getUser(sell.getUserName());
+
         // Ensures users who made the buy/sell listings are not part of the same organisational
         // unit. If they both belong to the same unit, exits out of the method without settling the
         // trade
@@ -269,6 +273,10 @@ public class TradeLogic {
             sell.setQuantity(0);
         }
         hdb.addToHistory(newTrade);
+        buyer.setNotificationStatus("Buy", true);
+        seller.setNotificationStatus("Sell", true);
+        usdb.update(buyer);
+        usdb.update(seller);
     }
 
     /**

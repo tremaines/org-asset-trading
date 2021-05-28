@@ -39,6 +39,8 @@ public class DBConnection {
                     "admin_status BOOLEAN NOT NULL," +
                     "unit INT NOT NULL," +
                     "password VARCHAR(260) NOT NULL," +
+                    "notify_buy BOOLEAN NOT NULL DEFAULT FALSE," +
+                    "notify_sell BOOLEAN NOT NULL DEFAULT FALSE," +
                     "PRIMARY KEY (user_name)," +
                     "FOREIGN KEY (unit) REFERENCES units(unit_id)" +
                     ");";

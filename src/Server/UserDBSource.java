@@ -18,7 +18,7 @@ public class UserDBSource {
     private static final String ADD = "INSERT INTO users (user_name, first_name, last_name, email, admin_status, " +
             "unit, password) VALUES(?, ?, ?, ?, ?, ?, ?);";
     private static final String UPDATE = "UPDATE users SET first_name = ?, last_name = ?, email = ?, admin_status = ?, " +
-            "unit = ?, password = ? WHERE user_name = ?;";
+            "unit = ?, password = ?, notify_buy = ?, notify_sell = ? WHERE user_name = ?;";
 
     // Prepared statements
     private PreparedStatement getPassword;
@@ -110,6 +110,8 @@ public class UserDBSource {
             user.setAdmin(rs.getBoolean("admin_status"));
             user.setUnit(rs.getInt("unit"));
             user.setPassword(rs.getString("password"));
+            user.setNotificationStatus("Buy", rs.getBoolean("notify_buy"));
+            user.setNotificationStatus("Sell", rs.getBoolean("notify_sell"));
         } catch(SQLException sqle){
             System.err.println(sqle);
         }
@@ -148,7 +150,10 @@ public class UserDBSource {
             update.setBoolean(4, user.getAdminStatus());
             update.setInt(5, user.getUnit());
             update.setString(6, user.getHashedPassword());
-            update.setString(7, user.getUsername());
+            update.setBoolean(7, user.getBuyNotificationStatus());
+            update.setBoolean(8, user.getSellNotificationStatus());
+            update.setString(9, user.getUsername());
+
             update.execute();
         } catch (SQLException sqle) {
             System.err.println(sqle);

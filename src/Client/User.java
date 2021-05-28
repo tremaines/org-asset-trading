@@ -195,7 +195,7 @@ public class User implements Serializable {
     /**
      * Sets the notification status
      *
-     * @param status True if user's order has been completed/partially completed
+     * @param status True or false if a user needs to be notified
      */
     public void setNotificationStatus(String type, boolean status) {
         if(type == "Buy") {

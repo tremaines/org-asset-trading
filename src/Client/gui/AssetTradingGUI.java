@@ -97,11 +97,13 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                             "partially or fully completed",
                     "Buy Order Update", JOptionPane.INFORMATION_MESSAGE);
             userLoggedIn.setNotificationStatus("Buy", false);
+            server.updateUser(userLoggedIn);
         } else if(userLoggedIn.getSellNotificationStatus()) {
             JOptionPane.showMessageDialog(null, "One of your sell orders was recently " +
                             "partially or fully completed",
                     "Sell Order Update", JOptionPane.INFORMATION_MESSAGE);
             userLoggedIn.setNotificationStatus("Sell", false);
+            server.updateUser(userLoggedIn);
         }
 
         // Display assets panel on startup
@@ -129,16 +131,20 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupSellHistoryPanel();
         setupAssetListingPanel();
 
+        userLoggedIn = server.getUser(userLoggedIn.getUsername());
+
         if(userLoggedIn.getBuyNotificationStatus()) {
             JOptionPane.showMessageDialog(null, "One of your buy orders was recently " +
                             "partially or fully completed",
                     "Buy Order Update", JOptionPane.INFORMATION_MESSAGE);
             userLoggedIn.setNotificationStatus("Buy", false);
+            server.updateUser(userLoggedIn);
         } else if(userLoggedIn.getSellNotificationStatus()) {
             JOptionPane.showMessageDialog(null, "One of your sell orders was recently " +
                             " partially or completed",
                     "Sell Order Update", JOptionPane.INFORMATION_MESSAGE);
             userLoggedIn.setNotificationStatus("Sell", false);
+            server.updateUser(userLoggedIn);
         }
     }
 
