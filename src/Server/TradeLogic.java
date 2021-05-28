@@ -142,21 +142,15 @@ public class TradeLogic {
     private void matchTrades(Trades.TradeType type) {
         int matchingTrade = 0;
 
+        // Makes it a static variable for trade's initial quantity
+        int tradeQuantity = Integer.parseInt(trade.getQuantity() + "");
+
         // If it's a buy, look for sells for that asset
         if (type == Trades.TradeType.buy) {
             // Keep looking as long as there are matching trades
             // This should only be the case if there are sell orders that are too small to meet the full quantity
 
-//            do{
-//                matchingTrade = tdb.matchSell(trade.getAssetId(), trade.getPrice());
-//
-//                if (matchingTrade > 0){
-//                    Trades match = tdb.getTrade(matchingTrade);
-//                    settleTrade(trade, match);
-//                }
-//            } while (matchingTrade > 0 && trade.getQuantity() != 0);
-
-            for(int i = 0; i < trade.getQuantity(); i++) {
+            for(int i = 0; i < tradeQuantity; i++) {
                 matchingTrade = tdb.matchSell(trade.getAssetId(), trade.getPrice());
 
                 if (matchingTrade > 0){
@@ -171,16 +165,7 @@ public class TradeLogic {
             // Keep looking as long as there are matching trades
             // This should only be the case if there are buy order that are too small to meet the full quantity
 
-//            do {
-//                matchingTrade = tdb.matchBuy(trade.getAssetId(), trade.getPrice());
-//
-//                if (matchingTrade > 0) {
-//                    Trades match = tdb.getTrade(matchingTrade);
-//                    settleTrade(match, trade);
-//                }
-//            } while (matchingTrade > 0 && trade.getQuantity() != 0);
-
-            for(int i = 0; i < trade.getQuantity(); i++) {
+            for(int i = 0; i < tradeQuantity; i++) {
                 matchingTrade = tdb.matchBuy(trade.getAssetId(), trade.getPrice());
 
                 if (matchingTrade > 0){
