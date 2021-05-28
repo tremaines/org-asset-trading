@@ -118,6 +118,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         topMenuLeft.setVisible(false);
         unit = server.getUnit(userLoggedIn.getUnit());
         addTopMenu();
+        setupBuyPanel();
         setupSellPanel();
         setupAssetsPanel();
         setupMyListingsPanel();

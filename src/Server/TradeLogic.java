@@ -192,6 +192,13 @@ public class TradeLogic {
         Units buyerUnit = udb.getUnit(usdb.getUser(buy.getUserName()).getUnit());
         Units sellerUnit = udb.getUnit(usdb.getUser(sell.getUserName()).getUnit());
 
+        // Ensures users who made the buy/sell listings are not part of the same organisational
+        // unit. If they both belong to the same unit, exits out of the method without settling the
+        // trade
+        if(buyerUnit.getUnitName().equals(sellerUnit.getUnitName())) {
+            return;
+        }
+
         int askingQty = buy.getQuantity();
         int sellingQty = sell.getQuantity();
         int askingPrice = buy.getPrice();
