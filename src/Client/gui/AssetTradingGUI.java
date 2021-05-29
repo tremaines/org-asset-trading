@@ -1074,7 +1074,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
     private void setupAssetListingPanel() {
         assetListingPanel = new JPanel(new BorderLayout());
-        sellHistoryPanel.setBorder(BorderFactory.createTitledBorder("Asset Sell History"));
+        assetListingPanel.setBorder(BorderFactory.createTitledBorder("Assets List"));
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,10,15));
         JPanel gridPanel = new JPanel(new GridLayout(1, 2, 10, 20));
 
