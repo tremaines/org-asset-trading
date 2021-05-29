@@ -41,10 +41,21 @@ public class UserTest {
         assertEquals("tom123", user.getUsername());
     }
 
+    //  Checks the hashPassword() method
+    @Test
+    public void hashedPasswordCheck(){
+        String originalPwd = "hello123";
+        String hashedPwd = (originalPwd.hashCode() * 2.334) + "";
+        assertEquals("" + -1.850199741504E9, hashedPwd);
+    }
+
     //  Checks the getHashedPassword() method
     @Test
     public void getHashedPasswordCheck(){
-        // TODO
+        String originalPwd = "hello123";
+        String hashedPwd = (originalPwd.hashCode() * 2.334) + "";
+        user.setPassword(hashedPwd);
+        assertEquals(hashedPwd, user.getHashedPassword());
     }
 
     //  Checks the getAdminStatus() method
@@ -59,68 +70,87 @@ public class UserTest {
         assertEquals(1, user.getUnit());
     }
 
-//
-//
-//    // Checks the user's organisation name matches with that of the organisation name
-//    @Test
-//    public void getOrganisationCheck(){
-//        assertEquals("Microsoft",
-//                org.getOrganisation(user.getOrganisationName("Tom")).getOrganisationName());
-//    }
-//
-//    // Checks the credits associated with the user's organisation
-//    @Test
-//    public void checkUserCredits(){
-//        assertEquals(200, org.getOrganisation(user.getOrganisationName("Tom")).getCredits());
-//    }
-//
-//    // Checks whether passwords are hashed
-//    @Test
-//    public void hashPasswordCheck(){
-//        String pwd = "abc123";
-//        assertEquals(pwd.hashCode() * 2.334 + "", user.getUser("Tom").getHashedPassword());
-//    }
-//
-//    // Checks admin status (true if admin, false otherwise)
-//    @Test
-//    public void checkAccountType(){
-//        assertFalse(user.getUser("Tom").getAdminStatus());
-//    }
-//
-//    // Create Two users
-//    @Test
-//    public void createMultipleUsers() {
-//        User user1 = new User("Bob", "123test", true, "Microsoft");
-//        User user2 = new User("John", "qwerty", true, "Apple");
-//        assertTrue(user1.getUsername() != user2.getUsername());
-//    }
-//
-//    // Create Two users
-//    @Test
-//    public void getUserCheck() throws UserException {
-//        user.createUser("Bob", "123test", true, "Microsoft");
-//        String orgName = user.getUser("Bob").getOrganisationName();
-//        assertEquals("Microsoft", orgName);
-//    }
-//
-//    // Change password
-//    @Test
-//    public void changePassword() throws UserException {
-//        user.createUser("Bob", "123test", true, "Microsoft");
-//        String newPwd = "new123";
-//        user.getUser("Bob").changePassword(newPwd);
-//        assertEquals(newPwd.hashCode() * 2.334 + "", user.getUser("Bob").getHashedPassword());
-//    }
-//
-//    // Change password multiple times
-//    @Test
-//    public void changePasswordManyTimes() throws UserException {
-//        user.createUser("Bob", "123test", true, "Microsoft");
-//        user.getUser("Bob").changePassword("pwdtest1");
-//        user.getUser("Bob").changePassword("pwdtest2");
-//        user.getUser("Bob").changePassword("pwdtest3");
-//        user.getUser("Bob").changePassword("pwdtest4");
-//        assertEquals("pwdtest4".hashCode() * 2.334 + "", user.getUser("Bob").getHashedPassword());
-//    }
+    //  Checks the setFirstName() method
+    @Test
+    public void setFirstNameCheck(){
+        user.setFirstName("Bob");
+        assertEquals("Bob", user.getFirstName());
+    }
 
+    //  Checks the setLastName() method
+    @Test
+    public void setLastNameCheck(){
+        user.setLastName("lastname");
+        assertEquals("lastname", user.getLastName());
+    }
+
+    //  Checks the setEmail() method
+    @Test
+    public void setEmailCheck(){
+        user.setEmail("test@mail.com");
+        assertEquals("test@mail.com", user.getEmail());
+    }
+
+    //  Checks the setUsername() method
+    @Test
+    public void setUsernameCheck(){
+        user.setUsername("tom456");
+        assertEquals("tom456", user.getUsername());
+    }
+
+    //  Checks the setPassword() method
+    @Test
+    public void setPasswordCheck(){
+        user.setPassword("dog123");
+        assertEquals("dog123", user.getHashedPassword());
+    }
+
+    //  Checks the password after multiple changes in a row
+    @Test
+    public void setPasswordMultipleTimesCheck(){
+        user.setPassword("dog123");
+        user.setPassword("hello1");
+        user.setPassword("cab302");
+        assertEquals("cab302", user.getHashedPassword());
+    }
+
+    //  Checks the setAdmin() method
+    @Test
+    public void setAdminCheck(){
+        user.setAdmin(false);
+        assertEquals(false, user.getAdminStatus());
+    }
+
+    //  Checks the setUnit() method
+    @Test
+    public void setUnit(){
+        user.setUnit(2);
+        assertEquals(2, user.getUnit());
+    }
+
+    //  Checks the getBuyNotificationStatus() method
+    @Test
+    public void getBuyNotificationStatusCheck(){
+        assertEquals(false, user.getBuyNotificationStatus());
+    }
+
+    //  Checks the getSellNotificationStatus() method
+    @Test
+    public void getSellNotificationStatusCheck(){
+        assertEquals(false, user.getSellNotificationStatus());
+    }
+
+    //  Checks the setNotificationStatus() method for the "Buy" option
+    @Test
+    public void setNotificationStatusBuyCheck(){
+        user.setNotificationStatus("Buy", true);
+        assertEquals(true, user.getBuyNotificationStatus());
+    }
+
+    //  Checks the setNotificationStatus() method for the "Sell" option
+    @Test
+    public void setNotificationStatusSellCheck(){
+        user.setNotificationStatus("Sell", true);
+        assertEquals(true, user.getSellNotificationStatus());
+    }
 }
