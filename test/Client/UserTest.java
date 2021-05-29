@@ -1,40 +1,64 @@
 package Client;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
 public class UserTest {
-//
-//    Units unit;
-//    User user;
-//    List<Assets> assets;
-//    List<Integer> assetAmount;
-//
-//
-//    @BeforeEach
-//    @Test
-//    public void setUpUser() throws UserException {
-//        // Parameters for Organisation object
-////        assets = new ArrayList<>();
-////        assetAmount = new ArrayList<>();
-//
-////        assets.add("Hardware Resources");
-////        assetAmount.add(15);
-//
-//        unit = new Units(1, "Human Resources", 1000);
-//        user = new User("Tom", false, 1, "dog123");
-//    }
-//
-//    // Checks that an exception is thrown if a username is already taken
-//    @Test
-//    public void createUserCheck(){
-//        assertThrows(UserException.class, () -> {
-//            user.createUser("Tom", "abc123", false, "Microsoft");
-//        });
-//    }
-//
-//    // Checks the getUsername() method
-//    @Test
-//    public void getUsernameCheck(){
-//        assertEquals("Tom", user.getUser("Tom").getUsername());
-//    }
+
+    Units unit;
+    User user;
+
+    @BeforeEach
+    @Test
+    public void setUpUser()  {
+        unit = new Units(1, "Human Resources", 1000);
+        user = new User("Tom", "Smith", "tom@gmail.com", "tom123", "password", true, 1);
+    }
+
+    //  Checks the getFirstName() method
+    @Test
+    public void getFirstNameCheck(){
+        assertEquals("Tom", user.getFirstName());
+    }
+
+    //  Checks the getLastName() method
+    @Test
+    public void getLastNameCheck(){
+        assertEquals("Smith", user.getLastName());
+    }
+
+    //  Checks the getEmail() method
+    @Test
+    public void getEmailCheck(){
+        assertEquals("tom@gmail.com", user.getEmail());
+    }
+
+    //  Checks the getUsername() method
+    @Test
+    public void getUsernameCheck(){
+        assertEquals("tom123", user.getUsername());
+    }
+
+    //  Checks the getHashedPassword() method
+    @Test
+    public void getHashedPasswordCheck(){
+        // TODO
+    }
+
+    //  Checks the getAdminStatus() method
+    @Test
+    public void getAdminStatusCheck(){
+        assertEquals(true, user.getAdminStatus());
+    }
+
+    //  Checks the getUnit() method
+    @Test
+    public void getUserUnitCheck(){
+        assertEquals(1, user.getUnit());
+    }
+
 //
 //
 //    // Checks the user's organisation name matches with that of the organisation name

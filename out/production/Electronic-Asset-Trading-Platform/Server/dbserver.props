@@ -1,4 +1,4 @@
-jdbc.url=jdbc:mariadb://localhost:3306
+jdbc.url=jdbc:mariadb://localhost:3307
 jdbc.schema=trading-platform
 jdbc.username=root
 jdbc.password=password
