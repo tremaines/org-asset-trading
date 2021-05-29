@@ -13,7 +13,7 @@ public class ModifyAssetsTable extends JFrame {
     Assets[] assets;
 
     public ModifyAssetsTable(JPanel panel, Units unit, ServerAPI server) {
-        this.assets = server.getAllAssets(unit.getUnitID());
+        this.assets = server.getOwnedAndUnownedAssets(unit.getUnitID());
 
         // Row data in the table
         Object tableData[] = new Object[3];

@@ -216,6 +216,15 @@ public class Server {
             }
             break;
 
+            case GET_OWNED_UNOWNED: {
+                final Integer unitID = (Integer) inputStream.readObject();
+                synchronized (purchases) {
+                    outputStream.writeObject(purchases.getOwnedAndUnowned(unitID));
+                }
+                outputStream.flush();
+            }
+            break;
+
             case GET_ASSET_BY_NAME: {
                 final String name = (String) inputStream.readObject();
                 synchronized (assets) {

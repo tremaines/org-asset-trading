@@ -336,6 +336,24 @@ public class ServerAPI {
     }
 
     /**
+     * Retrieves all assets from the server with the quantity of the assets owned by a specific unit
+     * @param unitID The unit id
+     * @return An array of all assets
+     */
+    public Assets[] getOwnedAndUnownedAssets(int unitID) {
+        try {
+            outputStream.writeObject(ServerCommands.GET_OWNED_UNOWNED);
+            outputStream.writeObject(unitID);
+            outputStream.flush();
+
+            return (Assets[]) inputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * Get all the assets and the amount of that asset available
      * @param unitID The unit whose assets we want
      * @return A HashMap where the asset name is the key and the amount is the value

@@ -27,6 +27,15 @@ public class PurchasesDBSource {
     private static final String GET_ASSET_UNIT_COMBO = "SELECT assets_owned.asset_id, unit, quantity, asset_name " +
             "FROM assets_owned INNER JOIN assets on assets_owned.asset_id = assets.asset_id " +
             "WHERE unit=? and assets_owned.asset_id=?;";
+    private static final String GET_OWNED_AND_UNOWNED = "SELECT assets.asset_id, assets.asset_name, assets_owned.quantity " +
+            "FROM assets " +
+            "LEFT JOIN (SELECT asset_id, quantity " +
+            "FROM assets_owned " +
+            "WHERE unit=? " +
+            "GROUP BY asset_id) as assets_owned " +
+            "ON assets.asset_id = assets_owned.asset_id;";
+
+
 
     // Prepared Statements
     private PreparedStatement add;
@@ -34,6 +43,7 @@ public class PurchasesDBSource {
     private PreparedStatement select;
     private PreparedStatement getAssetsByUnit;
     private PreparedStatement getAssetUnitCombo;
+    private PreparedStatement getOwnedAndUnowned;
 
     private Connection connection;
 
@@ -49,6 +59,7 @@ public class PurchasesDBSource {
             select = connection.prepareStatement(SELECT);
             getAssetsByUnit = connection.prepareStatement(GET_ASSETS_BY_UNIT);
             getAssetUnitCombo = connection.prepareStatement(GET_ASSET_UNIT_COMBO);
+            getOwnedAndUnowned = connection.prepareStatement(GET_OWNED_AND_UNOWNED);
         } catch(SQLException sqle) {
             System.err.println(sqle);
         }
@@ -164,6 +175,32 @@ public class PurchasesDBSource {
                 asset.setAssetName(rs.getString("asset_name"));
                 asset.setQuantity(rs.getInt("quantity"));
                 asset.setUnitID(rs.getInt("unit"));
+                assets.add(asset);
+            }
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+        return assets.toArray(new Assets[0]);
+    }
+
+    /**
+     * Returns an array of all assets, including the quantity of the assets owned by the
+     * unit passed in
+     * @param id The unit ID
+     * @return An array of all assets
+     */
+    public Assets[] getOwnedAndUnowned(int id) {
+        ArrayList<Assets> assets = new ArrayList<>();
+        ResultSet rs = null;
+
+        try {
+            getOwnedAndUnowned.setInt(1, id);
+            rs = getOwnedAndUnowned.executeQuery();
+            while (rs.next()) {
+                Assets asset = new Assets();
+                asset.setAssetID(rs.getInt("asset_id"));
+                asset.setAssetName(rs.getString("asset_name"));
+                asset.setQuantity(rs.getInt("quantity"));
                 assets.add(asset);
             }
         } catch (SQLException sqle) {

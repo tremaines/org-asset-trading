@@ -23,6 +23,7 @@ public enum ServerCommands {
     GET_ASSET_AND_AMOUNTS,
     // Purchases commands
     ADD_ASSET_PURCHASED,
+    GET_OWNED_UNOWNED,
     // Trade commands
     GET_ALL_TRADES,
     GET_TRADES_BY_UNIT,
