@@ -19,6 +19,7 @@ public class PurchasesDBSource {
     // SQL Statements
     private static final String ADD = "INSERT INTO assets_owned (asset_id, unit, quantity)" +
             " VALUES(?, ?, ?);";
+    private static final String DELETE = "DELETE FROM assets_owned WHERE asset_id=? AND unit=?;";
     private static final String UPDATE = "UPDATE assets_owned SET quantity=? WHERE asset_id=? AND unit=?;";
     private static final String SELECT = "SELECT * FROM assets_owned WHERE asset_id=? and unit=?;";
     private static final String GET_ASSETS_BY_UNIT = "SELECT assets_owned.asset_id, unit, quantity, asset_name " +
@@ -39,6 +40,7 @@ public class PurchasesDBSource {
 
     // Prepared Statements
     private PreparedStatement add;
+    private PreparedStatement delete;
     private PreparedStatement update;
     private PreparedStatement select;
     private PreparedStatement getAssetsByUnit;
@@ -55,6 +57,7 @@ public class PurchasesDBSource {
 
         try {
             add = connection.prepareStatement(ADD);
+            delete = connection.prepareStatement(DELETE);
             update = connection.prepareStatement(UPDATE);
             select = connection.prepareStatement(SELECT);
             getAssetsByUnit = connection.prepareStatement(GET_ASSETS_BY_UNIT);
@@ -107,6 +110,24 @@ public class PurchasesDBSource {
     }
 
     /**
+     * Removes an asset/unit relation from the table if the quantity owned is 0
+     * @param asset The asset ID
+     * @param unit The unit ID
+     * @param qty The quantity owned
+     * @return True if ownership is 0 and deletion occurred, false otherwise
+     * @throws SQLException
+     */
+    private boolean delete(int asset, int unit, int qty) throws SQLException {
+        if (qty == 0) {
+            delete.setInt(1, asset);
+            delete.setInt(2, unit);
+            delete.execute();
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Takes an asset, unit and quantity and either adds the unit/asset combination to the purchased_assets table
      * if it is a new combination or adds the new quantity to the existing quantity for that combination
      *
@@ -118,6 +139,10 @@ public class PurchasesDBSource {
     public void addToPurchases(int asset, int unit, int qty, boolean replace) {
         ResultSet rs = null;
         try{
+            if(delete(asset, unit, qty)) {
+                return;
+            }
+
             select.setInt(1, asset);
             select.setInt(2, unit);
             rs = select.executeQuery();
