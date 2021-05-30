@@ -1042,6 +1042,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                                         "please only enter integer values.",
                                 "Invalid Entry",
                                 JOptionPane.ERROR_MESSAGE);
+                    } catch (UnitsException nfe) {
+                        refreshGUI();
+                        JOptionPane.showMessageDialog(null, "Cannot set credits to negative number",
+                                "Invalid Entry",
+                                JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Cannot set credits to a negative number",
