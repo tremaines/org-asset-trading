@@ -1,7 +1,6 @@
 package Server;
 
 import Client.Units;
-import Client.UnitsException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -51,7 +50,7 @@ public class UnitDBSource {
      * @param id The unit id as a String
      * @return An instance of the Units class
      */
-    public Units getUnit(int id) throws UnitsException {
+    public Units getUnit(int id) {
         Units unit = new Units();
         ResultSet rs = null;
 
@@ -127,7 +126,7 @@ public class UnitDBSource {
      * @param name The name of the unit
      * @return An instance of the Units class
      */
-    public Units getUnit(String name) throws UnitsException{
+    public Units getUnit(String name) {
         Units unit = new Units();
         ResultSet rs = null;
 

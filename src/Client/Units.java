@@ -63,12 +63,8 @@ public class Units implements Serializable {
      *
      * @param amount New credit amount to be owned by an organisation
      */
-    public void setCredits(int amount) throws UnitsException{
-        if (amount < 0) {
-            throw new UnitsException("Credits cannot be set to a negative number");
-        } else {
-            this.credits = amount;
-        }
+    public void setCredits(int amount) {
+        this.credits = amount;
     }
 
     /**

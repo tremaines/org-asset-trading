@@ -44,7 +44,7 @@ public class TradeLogic {
      * @param newTrade The trade to be added to the database
      * @throws TradesException
      */
-    public int setTrade(Trades newTrade) throws UnitsException{
+    public int setTrade(Trades newTrade) {
         trade = newTrade;
         trade.setId(generateTradeID());
         user = usdb.getUser(trade.getUserName());
@@ -69,7 +69,7 @@ public class TradeLogic {
      *
      * @param cancelledTrade The trade to be cancelled
      */
-    public void cancelTrade(Trades cancelledTrade) throws UnitsException {
+    public void cancelTrade(Trades cancelledTrade) {
         trade = cancelledTrade;
         user = usdb.getUser(trade.getUserName());
         unit = udb.getUnit(user.getUnit());
@@ -98,7 +98,7 @@ public class TradeLogic {
      *
      * @throws TradesException If the unit the user belongs to does not have enough credits
      */
-    private void buyListing() throws TradesException, UnitsException{
+    private void buyListing() throws TradesException {
         int credits = unit.getCredits();
 
         if (credits < totalCost) {
@@ -139,7 +139,7 @@ public class TradeLogic {
      *
      * @param type The type of trade (TradeType.buy or TradeType.sell)
      */
-    private void matchTrades(Trades.TradeType type) throws UnitsException {
+    private void matchTrades(Trades.TradeType type) {
         int matchingTrade = 0;
 
         // Makes it a static variable for trade's initial quantity
@@ -183,7 +183,7 @@ public class TradeLogic {
      * @param buy The buy trade
      * @param sell The sell trade
      */
-    private void settleTrade(Trades buy, Trades sell) throws UnitsException{
+    private void settleTrade(Trades buy, Trades sell) {
 
         TradeHistory newTrade = null;
         boolean tradeComplete;
