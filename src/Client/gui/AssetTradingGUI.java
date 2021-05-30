@@ -566,7 +566,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                                     admin, server.getUnit(unit).getUnitID());
                             // Check username doesn't exist already
                             if (server.checkUser(newUser.getUsername())) {
+                                JOptionPane.showMessageDialog(null, "This username already exists" +
+                                                " in the system.",
+                                        "Username Error", JOptionPane.ERROR_MESSAGE);
                                 throw new UserException("Username already exists!");
+
                             } else {
                                 server.addUser(newUser);
                                 JOptionPane.showMessageDialog(null, username +

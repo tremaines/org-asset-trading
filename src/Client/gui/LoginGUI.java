@@ -78,7 +78,7 @@ public class LoginGUI extends JFrame {
                 } else {
                     setVisible(false);
                     User user = server.getUser(username);
-                    System.out.printf("Login attempt for user '" + user.getFirstName() + "' was successful\n");
+                    System.out.printf("Login attempt for user '" + user.getUsername() + "' was successful\n");
                     new AssetTradingGUI(user);
                 }
             }
