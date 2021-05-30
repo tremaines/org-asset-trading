@@ -730,7 +730,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         // Create organisation elements
 
-        label1 = new JLabel("Organisational Unit Name");
+        label1 = new JLabel("Unit Name");
         label1.setBounds(30, 50, 150, 20);
 
         t1 = new JTextField();
@@ -830,11 +830,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                                     server.addAssetOwned(assetID, newUnitId, assetQty, false);
                                 }
                                 JOptionPane.showMessageDialog(null,
-                                        unitName + " has been added as a new organisation"  , "Successful",
+                                        unitName + " has been added as a new unit"  , "Successful",
                                         JOptionPane.INFORMATION_MESSAGE);
                             } else {
-                                JOptionPane.showMessageDialog(null, "An organisation with the same name " +
-                                                "has already been created.", "Organisation Error",
+                                JOptionPane.showMessageDialog(null, "A unit with the same name " +
+                                                "has already been created.", "Unit Error",
                                         JOptionPane.ERROR_MESSAGE);
                             }
                         }
