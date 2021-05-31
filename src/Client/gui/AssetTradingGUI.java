@@ -858,21 +858,27 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 boolean boxSelected = terms2.isSelected();
 
                 if(boxSelected) {
-                    if(Arrays.asList(assetNames).contains(newAssetName)) {
-                        JOptionPane.showMessageDialog(null, "An asset with this name already exists " +
-                                        "in the system", "Asset Creation Error",
+                    if (newAssetName.isEmpty()) {
+                        JOptionPane.showMessageDialog(null,
+                                "You must enter an asset name"  , "Invalid",
                                 JOptionPane.ERROR_MESSAGE);
                     } else {
-                        Assets newAsset = new Assets();
-                        newAsset.setAssetName(newAssetName);
-                        server.addAsset(newAsset);
+                        if(Arrays.asList(assetNames).contains(newAssetName)) {
+                            JOptionPane.showMessageDialog(null, "An asset with this name already exists " +
+                                            "in the system", "Asset Creation Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            Assets newAsset = new Assets();
+                            newAsset.setAssetName(newAssetName);
+                            server.addAsset(newAsset);
 
-                        refreshGUI();
-                        cardLayout.show(mainContent, "6");
+                            refreshGUI();
+                            cardLayout.show(mainContent, "6");
 
-                        JOptionPane.showMessageDialog(null,
-                                newAssetName+ " has been added as a new asset"  , "Successful",
-                                JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(null,
+                                    newAssetName+ " has been added as a new asset"  , "Successful",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "You have not accepted " +
