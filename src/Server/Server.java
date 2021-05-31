@@ -1,6 +1,7 @@
 package Server;
 
 import Client.*;
+import common.ServerCommands;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -261,15 +262,6 @@ public class Server {
             }
             break;
 
-            case GET_ASSET_AND_AMOUNTS: {
-                final Integer id = (Integer) inputStream.readObject();
-                synchronized (assets) {
-                    outputStream.writeObject(purchases.getAssetsAndAmounts(id));
-                }
-                outputStream.flush();
-            }
-            break;
-
             case ADD_ASSET_PURCHASED: {
                 final Integer asset = (Integer) inputStream.readObject();
                 final Integer unit = (Integer) inputStream.readObject();
@@ -283,7 +275,7 @@ public class Server {
 
             case GET_ALL_TRADES: {
                 synchronized (trades) {
-                    outputStream.writeObject(trades.getTrades());
+                    outputStream.writeObject(trades.getAllBuyDetails());
                 }
                 outputStream.flush();
             }

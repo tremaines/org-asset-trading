@@ -56,6 +56,15 @@ public class Trades implements Serializable {
         this.date = date;
     }
 
+    public Trades(int id, TradeType type, String userName, int assetId, int quantity, int price) {
+        this.id = id;
+        this.type = type;
+        this.userName = userName;
+        this.assetId = assetId;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     /**
      * Getter for the trade ID
      * @return

@@ -7,14 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * A wrapper for the assets_purchased table. This table deals with the assets an organisational unit has purchased that
  * they DON'T produce. I am working on the assumption that units buy assets and don't re-sell them but this table may
  * allow for that
  */
-public class PurchasesDBSource {
+public class PurchasesDBSource implements PurchasesDB {
 
     // SQL Statements
     private static final String ADD = "INSERT INTO assets_owned (asset_id, unit, quantity)" +
@@ -160,29 +159,6 @@ public class PurchasesDBSource {
     }
 
     /**
-     * Return an array of all assets owned by a unit
-     *
-     * @param id The id of the unit
-     * @return An array of strings (the name of the assets)
-     */
-    public String[] getAssetNamesByUnit(int id) {
-        ArrayList<String> names = new ArrayList<String>();
-        ResultSet rs = null;
-
-        try {
-            getAssetsByUnit.setInt(1, id);
-            rs = getAssetsByUnit.executeQuery();
-            while (rs.next()) {
-                names.add(rs.getString("asset_name"));
-            }
-        } catch(SQLException sqle){
-            System.err.println(sqle);
-        }
-
-        return names.toArray(new String[0]);
-    }
-
-    /**
      * Get an Assets array of all assets a unit produces
      * @param unitID The unit ID
      * @return An array of assets
@@ -234,32 +210,6 @@ public class PurchasesDBSource {
         return assets.toArray(new Assets[0]);
     }
 
-    /**
-     * Takes an unit id and returns each assets and the quantity available
-     * @param id The id of the unit
-     * @return A hashmap in which the asset name is the key and the quantity of the asset is the value
-     */
-    public HashMap<String, Integer> getAssetsAndAmounts(int id) {
-        HashMap<String, Integer> assets = new HashMap<>();
-        ResultSet rs = null;
-
-        try {
-            getAssetsByUnit.setInt(1, id);
-            rs = getAssetsByUnit.executeQuery();
-            while (rs.next()) {
-                String name = rs.getString("asset_name");
-                int qty = rs.getInt("quantity");
-                assets.put(name, qty);
-            }
-
-            return assets;
-        } catch(SQLException sqle) {
-            System.err.println(sqle);
-            return null;
-        }
-    }
-
-    //TODO
     /***
      * Gets the details of an asset stored in the database based on its ID
      *

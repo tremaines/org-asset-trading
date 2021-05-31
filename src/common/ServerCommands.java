@@ -1,4 +1,4 @@
-package Server;
+package common;
 
 public enum ServerCommands {
     // User commands
@@ -18,9 +18,6 @@ public enum ServerCommands {
     GET_ALL_ASSETS_BY_ID,
     ADD_ASSET,
     UPDATE_ASSET,
-    GET_ASST_NAMES_EXCLUDING,
-    GET_ASSETS_BY_UNIT,
-    GET_ASSET_AND_AMOUNTS,
     // Purchases commands
     ADD_ASSET_PURCHASED,
     GET_OWNED_UNOWNED,

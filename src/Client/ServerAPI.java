@@ -1,6 +1,6 @@
 package Client;
 
-import Server.ServerCommands;
+import common.ServerCommands;
 
 import java.io.*;
 import java.net.Socket;
@@ -230,7 +230,7 @@ public class ServerAPI {
         }
     }
 
-    public Assets[] getAllAssets(int unitID) {
+    public Assets[] getAllAssetsOwned(int unitID) {
         try {
             outputStream.writeObject(ServerCommands.GET_ALL_ASSETS_BY_ID);
             outputStream.writeObject(unitID);
@@ -293,24 +293,6 @@ public class ServerAPI {
     }
 
     /**
-     * Get a string array of assets produced by every unit except for the one provided
-     * @param unitID The unit to be excluded
-     * @return A string array of asset names
-     */
-    public String[] getAssetsExcluding(int unitID) {
-        try {
-            outputStream.writeObject(ServerCommands.GET_ASST_NAMES_EXCLUDING);
-            outputStream.writeObject(unitID);
-            outputStream.flush();
-
-            return (String[]) inputStream.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
      * Get the names of all assets held by a unit
      * @param unitID The ID of the unit whose assets we want
      * @return A string array of the names of all assets held by that unit
@@ -351,24 +333,6 @@ public class ServerAPI {
             e.printStackTrace();
         }
         return null;
-    }
-
-    /**
-     * Get all the assets and the amount of that asset available
-     * @param unitID The unit whose assets we want
-     * @return A HashMap where the asset name is the key and the amount is the value
-     */
-    public HashMap<String, Integer> getAssetAndAmounts(int unitID) {
-        try {
-            outputStream.writeObject(ServerCommands.GET_ASSET_AND_AMOUNTS);
-            outputStream.writeObject(unitID);
-            outputStream.flush();
-
-            return (HashMap<String, Integer>) inputStream.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     /**

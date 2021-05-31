@@ -12,7 +12,7 @@ import java.util.HashMap;
 /***
  * A wrapper class for accessing the Trades table in the database
  */
-public class TradeDBSource {
+public class TradeDBSource implements TradeDB {
 
     // SELECT statements
     private static final String GET_TRADES_BY_ASSET = "SELECT asset_name, SUM(trades.quantity), MIN(price) " +
@@ -91,7 +91,7 @@ public class TradeDBSource {
      * @return A hash map with the asset name as the key and an int array containing the total quantity of that asset
      * for sale as well as the lowest listed price
      */
-    public HashMap<String, int[]> getTrades() {
+    public HashMap<String, int[]> getAllBuyDetails() {
         HashMap<String, int[]> trades = new HashMap<>();
         ResultSet rs = null;
 

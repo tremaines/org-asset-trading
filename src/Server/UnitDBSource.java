@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /***
  * A wrapper class for accessing the units table
  */
-public class UnitDBSource {
+public class UnitDBSource implements UnitDB {
     // SELECT statements
     private static final String SELECT = "SELECT * from UNITS;";
     private static final String GET_UNIT = "SELECT * FROM units WHERE unit_id=?";
@@ -30,7 +30,6 @@ public class UnitDBSource {
 
     /***
      * Constructor
-     *
      */
     public UnitDBSource() {
         this.connection = DBConnection.getConnection();

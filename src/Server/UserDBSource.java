@@ -10,7 +10,7 @@ import java.sql.SQLException;
 /***
  * A wrapper class for accessing the users table
  */
-public class UserDBSource {
+public class UserDBSource implements UserDB {
     // SELECT statements
     private static final String GET_PASSWORD = "SELECT password FROM users WHERE user_name=?";
     private static final String CHECK_USERNAME = "SELECT * FROM users WHERE user_name=?";
@@ -43,29 +43,6 @@ public class UserDBSource {
         } catch (SQLException sqle) {
             System.err.println(sqle);
         }
-    }
-
-    /***
-     * Retrieves a user's password as a string (hashed)
-     *
-     * @param username The unique username of the user
-     * @return The user's password (if they exist)
-     */
-    public String userPassword(String username) {
-        String password = "";
-
-        ResultSet rs = null;
-
-        try {
-            getPassword.setString(1, username);
-            rs = getPassword.executeQuery();
-            rs.next();
-            password = rs.getString("password");
-        } catch (SQLException sqle) {
-            System.err.println(sqle);
-        }
-
-        return password;
     }
 
     /***

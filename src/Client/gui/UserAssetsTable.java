@@ -1,5 +1,6 @@
 package Client.gui;
 
+import Client.Assets;
 import Client.ServerAPI;
 import Client.Units;
 import Client.User;
@@ -8,7 +9,6 @@ import Server.AssetDBSource;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.HashMap;
 
 public class UserAssetsTable extends JFrame {
 
@@ -34,11 +34,11 @@ public class UserAssetsTable extends JFrame {
         model.addColumn("Asset");
         model.addColumn("Amount");
 
-        HashMap<String, Integer> assets = server.getAssetAndAmounts(unit.getUnitID());
+        Assets[] assets = server.getAllAssetsOwned(unit.getUnitID());
 
         // Adds a row for each Asset type
-        for(String asset : assets.keySet()) {
-            model.addRow(new Object[]{asset, assets.get(asset)});
+        for(Assets asset : assets) {
+            model.addRow(new Object[]{asset.getAssetName(), asset.getQuantity()});
         }
 
             JScrollPane scrollPane = new JScrollPane(assetsTable);

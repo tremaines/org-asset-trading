@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /***
  * A wrapper class for accessing the assets table
  */
-public class AssetDBSource {
+public class AssetDBSource implements AssetDB {
     // SQL statements
     private static final String GET_ASSET = "SELECT * FROM assets;";
     private static final String GET_ASSET_BY_NAME = "SELECT * FROM assets WHERE asset_name=?;";
@@ -59,9 +59,9 @@ public class AssetDBSource {
     }
 
     /***
-     * Gets the details of an asset stored in the database based on its ID
+     * Gets all the assets from the assets table
      *
-     * @return An instance of the Assets class containing the details of the asset found in the database
+     * @return An array of Assets objects, each containing the ID and name of the asset
      */
     public Assets[] getAllAssets() {
         ArrayList<Assets> assets = new ArrayList<>();
@@ -83,10 +83,10 @@ public class AssetDBSource {
     }
 
     /**
-     * Get an asset based on its name
+     * Get an asset from the assets table based on its name
      *
      * @param name The name of the asset
-     * @return An instance of the Assets class
+     * @return An instance of the Assets class containing the ID and name of the asset
      */
     public Assets getAsset(String name) {
         Assets asset = new Assets();
@@ -106,31 +106,8 @@ public class AssetDBSource {
         return asset;
     }
 
-//    /**
-//     * Gets a list of all asset names excluding those produced by the unit associated with
-//     * the unit ID passed in
-//     * @param unitID The unit to be excluded
-//     * @return A string array of asset names
-//     */
-//    public String[] getNamesExcludingUnit(int unitID) {
-//        ArrayList<String> names = new ArrayList<>();
-//        ResultSet rs = null;
-//
-//        try {
-//            getNamesExcludingUnit.setInt(1, unitID);
-//            rs = getNamesExcludingUnit.executeQuery();
-//            while (rs.next()) {
-//                names.add(rs.getString("asset_name"));
-//            }
-//        }catch (SQLException sqle) {
-//            System.err.println(sqle);
-//        }
-//
-//        return names.toArray(new String[0]);
-//    }
-
     /**
-     * Updates the details of an asset
+     * Updates the details of an asset that already exists in the assets table
      * @param asset The asset to be updated
      */
     public void update(Assets asset) {

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * A wrapper for interacting with the trade_history table in the database
  */
-public class HistoryDBSource {
+public class HistoryDBSource implements HistoryDB {
 
     // SQL Statements
     private static final String ADD = "INSERT INTO trade_history (status, asset, qty, date, seller, buyer, credits) " +
@@ -42,7 +42,7 @@ public class HistoryDBSource {
     }
 
     /**
-     * Adds a new trade to the trade history table
+     * Adds a new trade to the trade_history table
      * @param trade The trade history object to be added
      */
     public void addToHistory(TradeHistory trade) {

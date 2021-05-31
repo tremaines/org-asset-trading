@@ -16,7 +16,7 @@ import java.util.Properties;
  */
 public class DBConnection {
 
-    // The single instance
+    // The singleton instance
     private static Connection connection = null;
 
     // CREATE statement for database
@@ -127,10 +127,8 @@ public class DBConnection {
             insertUnitAndUser();
 
 
-        } catch (SQLException sqle) {
+        } catch (SQLException | FileNotFoundException sqle) {
             System.err.println(sqle);
-        } catch (FileNotFoundException fnfe) {
-            System.err.println(fnfe);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -162,6 +160,9 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Helper method to execute the INSERT statements for the initial unit and user
+     */
     private void insertUnitAndUser() {
         if (!checkTable("units")) {
             addFirstUnit(unit);
@@ -228,8 +229,6 @@ public class DBConnection {
         return exists;
     }
 
-    //TODO: At this stage, I'm not sure how this works as far as differences between client and server go
-    //TODO: Clients will have to have their own .prods file so will need to suss that out later
     /***
      * Public method to create a connection to the database
      * @return A connection to the database

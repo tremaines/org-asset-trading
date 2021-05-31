@@ -8,11 +8,11 @@ import Client.Trades.TradeType;
  */
 public class TradeLogic {
 
-    private UnitDBSource udb;
-    private UserDBSource usdb;
-    private TradeDBSource tdb;
-    private PurchasesDBSource pdb;
-    private HistoryDBSource hdb;
+    private final UnitDB udb;
+    private final UserDB usdb;
+    private final TradeDB tdb;
+    private final PurchasesDB pdb;
+    private final HistoryDB hdb;
 
     private Trades trade;
     private User user;
@@ -23,14 +23,14 @@ public class TradeLogic {
     /**
      * Constructor
      *
-     * @param udb
-     * @param usdb
-     * @param tdb
-     * @param pdb
-     * @param hdb
+     * @param udb Database of units
+     * @param usdb Database of users
+     * @param tdb Database of trades
+     * @param pdb Database of asset ownership
+     * @param hdb Database of trade history
      */
-    public TradeLogic(UnitDBSource udb, UserDBSource usdb, TradeDBSource tdb,
-                      PurchasesDBSource pdb, HistoryDBSource hdb) {
+    public TradeLogic(UnitDB udb, UserDB usdb, TradeDB tdb,
+                      PurchasesDB pdb, HistoryDB hdb) {
         this.udb = udb;
         this.usdb = usdb;
         this.tdb = tdb;
@@ -42,7 +42,6 @@ public class TradeLogic {
      * Sets a trade and calls private methods to deal with matching the trade to other trades
      *
      * @param newTrade The trade to be added to the database
-     * @throws TradesException
      */
     public int setTrade(Trades newTrade) {
         trade = newTrade;
@@ -140,7 +139,7 @@ public class TradeLogic {
      * @param type The type of trade (TradeType.buy or TradeType.sell)
      */
     private void matchTrades(Trades.TradeType type) {
-        int matchingTrade = 0;
+        int matchingTrade;
 
         // Makes it a static variable for trade's initial quantity
         int tradeQuantity = Integer.parseInt(trade.getQuantity() + "");
@@ -186,7 +185,6 @@ public class TradeLogic {
     private void settleTrade(Trades buy, Trades sell) {
 
         TradeHistory newTrade = null;
-        boolean tradeComplete;
 
         // Get the organisational unit each trade belongs to (based on user)
         Units buyerUnit = udb.getUnit(usdb.getUser(buy.getUserName()).getUnit());
