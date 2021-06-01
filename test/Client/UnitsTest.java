@@ -10,13 +10,12 @@ public class UnitsTest {
 
     Units unit1;
 
-    // Creating Organisation object
+    // Creating Unit object
     @BeforeEach
     @Test
-    public void setUpOrganisation() {
+    public void setUpUnit() {
         unit1 = new Units(1, "CPU Cluster Division", 1000);
     }
-
 
     // Checks the getUnitName() method
     @Test
