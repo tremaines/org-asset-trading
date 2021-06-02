@@ -60,4 +60,36 @@ public class TradeHistoryTest {
         tradeHistory1.setStatus(Trades.TradeType.cancelled);
         assertEquals("cancelled", tradeHistory1.getStatus().toString());
     }
+
+    // Checks the getAsset() method
+    @Test
+    public void getAssetCheck(){
+        assertEquals(asset1.getAssetID(), tradeHistory1.getAsset());
+    }
+
+    // Checks the setAsset() method
+    @Test
+    public void setAssetCheck(){
+        tradeHistory1.setAsset(8);
+        assertEquals(8, tradeHistory1.getAsset());
+    }
+
+    // Checks the getQty() method
+    @Test
+    public void getQtyCheck(){
+        assertEquals(1, tradeHistory1.getQty());
+    }
+
+    // Checks the stQty() method
+    @Test
+    public void setQtyCheck(){
+        tradeHistory1.setQty(15);
+        assertEquals(15, tradeHistory1.getQty());
+    }
+
+
+
+
+
+
 }
