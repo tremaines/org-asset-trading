@@ -597,7 +597,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                     if (newPassword.equals(confirmPassword)) {
                         JOptionPane.showMessageDialog(null, "Password has been changed",
                                 "Successful", JOptionPane.INFORMATION_MESSAGE);
-                        userLoggedIn.setPassword(User.hashPassword(newPassword));
+                        try {
+                            userLoggedIn.setPassword(User.hashPassword(newPassword));
+                        } catch (UserException userException) {
+                            userException.printStackTrace();
+                        }
                         server.updateUser(userLoggedIn);
                     } else {
                         JOptionPane.showMessageDialog(null, "Passwords don't match!",

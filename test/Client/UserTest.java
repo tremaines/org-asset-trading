@@ -2,7 +2,9 @@ package Client;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class UserTest {
@@ -51,7 +53,7 @@ public class UserTest {
 
     //  Checks the getHashedPassword() method
     @Test
-    public void getHashedPasswordCheck(){
+    public void getHashedPasswordCheck() throws UserException{
         String originalPwd = "hello123";
         String hashedPwd = (originalPwd.hashCode() * 2.334) + "";
         user.setPassword(hashedPwd);
@@ -100,14 +102,22 @@ public class UserTest {
 
     //  Checks the setPassword() method
     @Test
-    public void setPasswordCheck(){
+    public void setPasswordCheck() throws UserException{
         user.setPassword("dog123");
         assertEquals("dog123", user.getHashedPassword());
     }
 
+    //  Checks the setPassword() method if input is empty
+    @Test
+    public void setPasswordEmptyCheck() throws UserException{
+        assertThrows(UserException.class, () -> {
+            user.setPassword("");
+        });
+    }
+
     //  Checks the password after multiple changes in a row
     @Test
-    public void setPasswordMultipleTimesCheck(){
+    public void setPasswordMultipleTimesCheck() throws UserException{
         user.setPassword("dog123");
         user.setPassword("hello1");
         user.setPassword("cab302");
@@ -123,9 +133,26 @@ public class UserTest {
 
     //  Checks the setUnit() method
     @Test
-    public void setUnit(){
+    public void setUnitCheck() throws UserException {
         user.setUnit(2);
         assertEquals(2, user.getUnit());
+    }
+
+    //  Checks the setUnit() method after multiple uses in a row
+    @Test
+    public void setUnitMultipleTimesCheck() throws UserException{
+        user.setUnit(2);
+        user.setUnit(4);
+        user.setUnit(5);
+        assertEquals(5, user.getUnit());
+    }
+
+    //  Checks that the setUnit() throws exception if set to 0
+    @Test
+    public void setUnitToZeroCheck(){
+        assertThrows(UserException.class, () -> {
+            user.setUnit(0);
+        });
     }
 
     //  Checks the getBuyNotificationStatus() method

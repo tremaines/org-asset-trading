@@ -154,8 +154,12 @@ public class User implements Serializable {
      * Setter for password
      * @param password
      */
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password) throws UserException{
+        if (password.isEmpty()) {
+            throw new UserException("Password cannot be empty");
+        } else {
+            this.password = password;
+        }
     }
 
     /**
@@ -170,8 +174,12 @@ public class User implements Serializable {
      * Setter for the user's unit
      * @param unit
      */
-    public void setUnit(int unit) {
-        this.unit = unit;
+    public void setUnit(int unit) throws UserException{
+        if (unit <= 0) {
+            throw new UserException("Unit for a user has to be a set to integer greater than 0");
+        } else {
+            this.unit = unit;
+        }
     }
 
     /**

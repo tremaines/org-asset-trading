@@ -1,6 +1,7 @@
 package Server;
 
 import Client.User;
+import Client.UserException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -91,6 +92,8 @@ public class UserDBSource implements UserDB {
             user.setNotificationStatus("Sell", rs.getBoolean("notify_sell"));
         } catch(SQLException sqle){
             System.err.println(sqle);
+        } catch (UserException usere) {
+            System.err.println(usere);
         }
 
         return user;
