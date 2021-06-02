@@ -1,83 +1,63 @@
 package Client;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TradeHistoryTest {
+    Units unit1;
+    Units unit2;
+    User user1;
+    User user2;
+    Assets asset1;
+    Trades trade1;
+    Trades trade2;
+    TradeHistory tradeHistory1;
+    TradeHistory tradeHistory2;
 
-//    Organisation org;
-//    User user;
-//    Trades trade;
-//    Trades trade1;
-//    TradeHistory history;
-//    int tradeID;
-//
-//    List<String> assets;
-//    List<Integer> amount;
-//    List<String> assets2;
-//    List<Integer> amount2;
-//
-//    // Trade type (Buy/Sell)
-//    private static final int tradeType = 0;
-//    // Type of asset
-//    private static final int assetType = 1;
-//    // Quantity of the asset
-//    private static final int assetAmount = 2;
-//    // Cost per asset unit
-//    private static final int price = 3;
-//    // Sold amount for a sell listing
-//    private static final int soldAmount = 4;
-//    // Username
-//    private static final int userName = 5;
-//    // Name of the organisation
-//    private static final int orgName = 6;
-//    // Trade fulfilled status (Yes/No/Partial/Cancelled)
-//    private static final int tradeFulfilled = 7;
-//    // Time of the listing
-//    private static final int time = 8;
-//
-//    // Creating TradeHistory object
-//    @BeforeEach @Test
-//    public void setUpTradeHistory() throws UserException {
-//        // Parameters for Organisation object
-//        assets = new ArrayList<>();
-//        amount = new ArrayList<>();
-//        assets2 = new ArrayList<>();
-//        amount2 = new ArrayList<>();
-//
-//        assets.add("Hardware Resources");
-//        amount.add(30);
-//
-//        org = new Organisation();
-//        org.createOrganisation("Microsoft", 200, assets, amount);
-//        org.createOrganisation("Google", 300, assets2, amount2);
-//        user = new User(org);
-//        user.createUser("Tom", "abc123", false, "Microsoft");
-//        user.createUser("Fred", "aaa123", false, "Google");
-//
-//        trade = new Trades(org, user);
-//
-//        // Separate Trade class to test other methods
-//        trade1 = new Trades(org, user);
-//
-//        history = new TradeHistory(trade1);
-//    }
-//
-//    @Test
-//    public void checkSummaryHistory() throws TradesException {
-//        trade1.createListing("Tom","Sell", "Hardware Resources", 10, 5);
-//        trade1.createListing("Fred","Buy", "Hardware Resources", 5, 5);
-//
-//        int size = history.getSummaryTradeHistory().size();
-//
-//        assertEquals(1, size);
-//    }
-//
-//    @Test
-//    public void checkExtendedHistory() throws TradesException {
-//        trade1.createListing("Tom","Sell", "Hardware Resources", 10, 5);
-//        trade1.createListing("Fred","Buy", "Hardware Resources", 5, 5);
-//
-//        // Adding both buy and sell listings at the SAME index
-//        int size = history.getExtendedTradeHistory().size();
-//        assertEquals(2, size);
-//    }
+    // Creating TradeHistory object
+    @BeforeEach
+    @Test
+    public void setUpTradeHistory() throws UserException {
+        unit1 = new Units(1, "Human Resources", 1000);
+        unit2 = new Units(2, "IT", 250);
+        user1 = new User("Tom", "Smith", "tom@gmail.com", "tom123", "password", false, 1);
+        user2 = new User("Joe", "Dobbs", "joe@gmail.com", "joe123", "password", false, 2);
+        asset1 = new Assets(1, "CPU Hours", 300, 1);
+        trade1 = new Trades(1, Trades.TradeType.buy, "tom123", 1, 10, 1);
+        trade2 = new Trades(2, Trades.TradeType.sell, "joe123", 1, 10, 1);
+        tradeHistory1 = new TradeHistory(Trades.TradeType.buy, 1, 1, 10, user1.getUsername(),
+                user2.getUsername());
+        tradeHistory2 = new TradeHistory(Trades.TradeType.sell, 1, 1, 10, user1.getUsername(),
+                user2.getUsername());
+        java.util.Date javaUtilDate = new java.util.Date();
+        java.sql.Date javaSQLDate = new java.sql.Date(javaUtilDate.getTime());
+    }
+
+    // Checks the getID() method
+    @Test
+    public void getIdCheck(){
+        assertEquals(0, tradeHistory1.getId());
+    }
+
+    // Checks the setId() method
+    @Test
+    public void setIdCheck(){
+        tradeHistory1.setId(5);
+        assertEquals(5, tradeHistory1.getId());
+    }
+
+    // Checks the getStatus() method
+    @Test
+    public void getStatusCheck(){
+        assertEquals("buy", tradeHistory1.getStatus().toString());
+    }
+
+    // Checks the setStatus() method
+    @Test
+    public void setStatusCheck(){
+        tradeHistory1.setStatus(Trades.TradeType.cancelled);
+        assertEquals("cancelled", tradeHistory1.getStatus().toString());
+    }
 }
