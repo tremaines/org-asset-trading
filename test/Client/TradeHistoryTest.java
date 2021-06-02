@@ -87,9 +87,42 @@ public class TradeHistoryTest {
         assertEquals(15, tradeHistory1.getQty());
     }
 
+    // Checks the getCredits() method
+    @Test
+    public void getCreditsCheck(){
+        assertEquals(10, tradeHistory1.getCredits());
+    }
 
+    // Checks the setCredits() method
+    @Test
+    public void setCreditsCheck(){
+        tradeHistory1.setCredits(12);
+        assertEquals(12, tradeHistory1.getCredits());
+    }
 
+    // Checks the getBuyer() method
+    @Test
+    public void getBuyerCheck(){
+        assertEquals(user1.getUsername(), tradeHistory1.getBuyer());
+    }
 
+    // Checks the setBuyer() method
+    @Test
+    public void setBuyerCheck(){
+        tradeHistory1.setBuyer("abc");
+        assertEquals("abc", tradeHistory1.getBuyer());
+    }
 
+    // Checks the getSeller() method
+    @Test
+    public void getSellerCheck(){
+        assertEquals(user2.getUsername(), tradeHistory2.getSeller());
+    }
 
+    // Checks the setSeller() method
+    @Test
+    public void setSellerCheck(){
+        tradeHistory2.setSeller("def");
+        assertEquals("def", tradeHistory2.getSeller());
+    }
 }
