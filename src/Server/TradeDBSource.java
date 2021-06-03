@@ -1,6 +1,7 @@
 package Server;
 
 import Client.Trades;
+import Client.TradesException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -241,7 +242,7 @@ public class TradeDBSource implements TradeDB {
             trade.setQuantity(rs.getInt("quantity"));
             trade.setPrice(rs.getInt("price"));
             trade.setDate(rs.getDate("date"));
-        } catch(SQLException sqle){
+        } catch(SQLException | TradesException sqle){
             System.err.println(sqle);
         }
 

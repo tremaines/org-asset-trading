@@ -43,7 +43,7 @@ public class TradeLogic {
      *
      * @param newTrade The trade to be added to the database
      */
-    public int setTrade(Trades newTrade) {
+    public int setTrade(Trades newTrade) throws TradesException {
         trade = newTrade;
         trade.setId(generateTradeID());
         user = usdb.getUser(trade.getUserName());
@@ -138,7 +138,7 @@ public class TradeLogic {
      *
      * @param type The type of trade (TradeType.buy or TradeType.sell)
      */
-    private void matchTrades(Trades.TradeType type) {
+    private void matchTrades(Trades.TradeType type) throws TradesException {
         int matchingTrade;
 
         // Makes it a static variable for trade's initial quantity
@@ -182,7 +182,7 @@ public class TradeLogic {
      * @param buy The buy trade
      * @param sell The sell trade
      */
-    private void settleTrade(Trades buy, Trades sell) {
+    private void settleTrade(Trades buy, Trades sell) throws TradesException {
 
         TradeHistory newTrade = null;
 

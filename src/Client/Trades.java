@@ -77,8 +77,12 @@ public class Trades implements Serializable {
      * Setter for the trade ID
      * @param id
      */
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int id) throws TradesException {
+        if(id >= 0) {
+            this.id = id;
+        } else {
+            throw new TradesException("The trade ID has to be a non-negative integer");
+        }
     }
 
     /**
@@ -125,8 +129,12 @@ public class Trades implements Serializable {
      * Setter for the ID of the asset being bought/sold
      * @param assetId
      */
-    public void setAssetId(int assetId) {
-        this.assetId = assetId;
+    public void setAssetId(int assetId) throws TradesException {
+        if(assetId >= 0) {
+            this.assetId = assetId;
+        } else {
+            throw new TradesException("The asset ID has to be a non-negative integer");
+        }
     }
 
     /**
@@ -141,8 +149,13 @@ public class Trades implements Serializable {
      * Setter for the quantity being bought/sold
      * @param quantity
      */
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setQuantity(int quantity) throws TradesException {
+        if(quantity > 0) {
+            this.quantity = quantity;
+        } else {
+            throw new TradesException("The quantity has to be a positive integer");
+        }
+
     }
 
     /**
@@ -157,8 +170,12 @@ public class Trades implements Serializable {
      * Setter for the price per unit of asset
      * @return
      */
-    public void setPrice(int price) {
-        this.price = price;
+    public void setPrice(int price) throws TradesException {
+        if(price > 0) {
+            this.price = price;
+        } else {
+            throw new TradesException("The price has to be a positive integer");
+        }
     }
 
     /**

@@ -100,7 +100,7 @@ public class TradeLogicTest {
      * Add a BUY that does not match with any other trades, unit has enough credits
      */
     @Test
-    public void addUnmatchedBuy() {
+    public void addUnmatchedBuy() throws TradesException {
         Trades trade = new Trades(Trades.TradeType.buy, "userB", 3, 30, 100);
         tradeLogic.setTrade(trade);
         assertNotNull(tradeDB.getTrade(3));
@@ -110,7 +110,7 @@ public class TradeLogicTest {
      * Add a SELL that does not match with any other trades, unit has enough asset
      */
     @Test
-    public void addUnmatchedSell() {
+    public void addUnmatchedSell() throws TradesException {
         Trades trade = new Trades(Trades.TradeType.sell, "userB", 2, 10, 55);
         tradeLogic.setTrade(trade);
         assertNotNull(tradeDB.getTrade(3));
@@ -120,7 +120,7 @@ public class TradeLogicTest {
      * Add a BUY that can be filled by a pre-existing SELL and confirm it is removed
      */
     @Test
-    public void newBuyRemovedAfterMatch() {
+    public void newBuyRemovedAfterMatch() throws TradesException {
         Trades trade = new Trades(Trades.TradeType.buy, "userB", 1, 50, 12);
         tradeLogic.setTrade(trade);
         assertNull(tradeDB.getTrade(3));
@@ -130,7 +130,7 @@ public class TradeLogicTest {
      * Add a SELL that can be filled by a pre-existing BUY and confirm it is removed
      */
     @Test
-    public void newSellRemovedAfterMatch() {
+    public void newSellRemovedAfterMatch() throws TradesException {
         Trades trade = new Trades(Trades.TradeType.sell, "userB", 2, 10, 20);
         tradeLogic.setTrade(trade);
         assertNull(tradeDB.getTrade(3));
@@ -140,7 +140,7 @@ public class TradeLogicTest {
      * In the presence of multiple matching sells, a BUY should match the sell with the LOWEST price
      */
     @Test
-    public void buyMatchesCheapestSell() {
+    public void buyMatchesCheapestSell() throws TradesException {
         Trades sellTrade = new Trades(Trades.TradeType.sell, "userC", 1, 30, 8);
         tradeLogic.setTrade(sellTrade);
         Trades buyTrade = new Trades(Trades.TradeType.buy, "userD", 1, 20, 15);
@@ -153,7 +153,7 @@ public class TradeLogicTest {
      * BUYS can partially match, with the remaining quantity of the BUY remaining up for trade
      */
     @Test
-    public void partialMatches() {
+    public void partialMatches() throws TradesException {
         Trades trade = new Trades(Trades.TradeType.sell, "userB", 2, 3, 15);
         tradeLogic.setTrade(trade);
         assertEquals(7, trade2.getQuantity());

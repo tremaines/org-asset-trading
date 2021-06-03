@@ -107,6 +107,8 @@ public class Server {
                     implementCommands(inputStream, outputStream, command);
                 } catch (SocketTimeoutException ste) {
                     continue;
+                } catch (TradesException e) {
+                    e.printStackTrace();
                 }
             }
         } catch (IOException | ClassCastException | ClassNotFoundException err) {
@@ -123,7 +125,7 @@ public class Server {
      * @throws ClassNotFoundException
      */
     private void implementCommands(ObjectInputStream inputStream, ObjectOutputStream outputStream,
-                                   ServerCommands command) throws IOException, ClassNotFoundException {
+                                   ServerCommands command) throws IOException, ClassNotFoundException, TradesException {
         switch (command) {
 
             case GET_USER: {
