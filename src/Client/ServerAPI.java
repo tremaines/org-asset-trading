@@ -56,6 +56,18 @@ public class ServerAPI {
     }
 
     /**
+     * Close the connection to the server
+     */
+    public void closeServerConnection() {
+        try {
+            socket.close();
+            System.out.println("Server closed");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Retrieve a user
      * @param username The username of the user to be retrieved
      * @return An instance of the user

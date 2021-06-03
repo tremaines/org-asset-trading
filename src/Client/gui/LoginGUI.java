@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 
 public class LoginGUI extends JFrame {
 
@@ -15,8 +16,7 @@ public class LoginGUI extends JFrame {
 
     public LoginGUI(ServerAPI server) {
         super("LOGIN");
-
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        addClosingListener(new ClosingListener(server));
         setPreferredSize(new Dimension(500, 500));
         setResizable(false);
 
@@ -55,7 +55,7 @@ public class LoginGUI extends JFrame {
 
         // Password textbox
         passwordInput = new JPasswordField();
-        passwordInput.setBounds(140, 250, 200, 25);;
+        passwordInput.setBounds(140, 250, 200, 25);
         loginPanel.add(passwordInput);
 
         // Login button
@@ -91,5 +91,13 @@ public class LoginGUI extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    /**
+     * Listener that closes the server connection when the application is closed
+     * @param listener
+     */
+    private void addClosingListener(WindowListener listener) {
+        addWindowListener(listener);
     }
 }

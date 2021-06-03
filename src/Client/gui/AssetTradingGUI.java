@@ -5,10 +5,7 @@ import Client.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -68,7 +65,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         this.userLoggedIn = user;
 
         // Setup of main frame
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        addClosingListener(new ClosingListener(server));
         setPreferredSize(new Dimension(1000, 700));
         setLayout(new BorderLayout(0, 0));
 
@@ -112,6 +109,15 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    /**
+     * Adds a listening for when the window closes, shuts the application down and closes
+     * the connection to the server. Taken from CAB302 prac 8
+     * @param listener
+     */
+    private void addClosingListener(WindowListener listener) {
+        addWindowListener(listener);
     }
 
     public void refreshGUI() {

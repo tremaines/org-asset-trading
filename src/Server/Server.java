@@ -110,6 +110,10 @@ public class Server {
                 } catch (TradesException e) {
                     e.printStackTrace();
                 }
+                catch (EOFException eof) {
+                    System.err.println("Client has disconnected");
+                    return;
+                }
             }
         } catch (IOException | ClassCastException | ClassNotFoundException err) {
             err.printStackTrace();
