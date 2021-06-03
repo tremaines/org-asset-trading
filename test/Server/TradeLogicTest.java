@@ -153,9 +153,91 @@ public class TradeLogicTest {
      * BUYS can partially match, with the remaining quantity of the BUY remaining up for trade
      */
     @Test
-    public void partialMatches() throws TradesException {
+    public void partialMatchesBuy() throws TradesException {
         Trades trade = new Trades(Trades.TradeType.sell, "userB", 2, 3, 15);
         tradeLogic.setTrade(trade);
         assertEquals(7, trade2.getQuantity());
+    }
+
+    /**
+     * SELLS can partially match, with the remaining quantity of the SELL remaining up for trade
+     */
+    @Test
+    public void partialMatchesSell() throws TradesException {
+        Trades trade = new Trades(Trades.TradeType.buy, "userC", 1, 30, 12);
+        tradeLogic.setTrade(trade);
+        assertEquals(20, trade1.getQuantity());
+    }
+
+    /**
+     * Cancelling a SELL removes the trade from active trades
+     */
+    @Test
+    public void cancelTradeSell() {
+        tradeLogic.cancelTrade(trade1);
+        assertNull(tradeDB.getTrade(1));
+    }
+
+    /**
+     * Cancelling a BUY removes the trade from active trades
+     */
+    @Test
+    public void cancelTradeBuy() {
+        tradeLogic.cancelTrade(trade2);
+        assertNull(tradeDB.getTrade(2));
+    }
+
+    /**
+     * A perfectly matching BUY and SELL order removes both trades from active trades
+     */
+    @Test
+    public void perfectMatchRemoval() throws TradesException {
+        Trades trade = new Trades(Trades.TradeType.buy, "userC", 1, 50, 12);
+        tradeLogic.setTrade(trade);
+        assertTrue(tradeDB.getTrade(1) == null && tradeDB.getTrade(3) == null);
+    }
+
+    /**
+     * Cancelling a trade adds the trade to trade history with a CANCELLED status
+     */
+    @Test
+    public void tradeHistoryCancelled() {
+        tradeLogic.cancelTrade(trade1);
+        TradeHistory trade =  historyDB.getRecord(1);
+        assertEquals(trade.getStatus(), Trades.TradeType.cancelled);
+    }
+
+    /**
+     * Attempting to place a BUY with insufficient credits will throw an exception
+     * internally and TradeLogic.setTrade() will return -1
+     */
+    @Test
+    public void insufficientCredits() throws TradesException {
+        Trades trade = new Trades(Trades.TradeType.buy, "userD", 1, 600, 10);
+        int foo = tradeLogic.setTrade(trade);
+        assertEquals(-1, foo);
+    }
+
+    /**
+     * Attempting to place a SELL with insufficient assets will throw an exception
+     * internally and TradeLogic.setTrade() will return -1
+     */
+    @Test
+    public void insufficientAsset() throws TradesException {
+        Trades trade = new Trades(Trades.TradeType.sell, "userB", 2, 155, 20);
+        int foo = tradeLogic.setTrade(trade);
+        assertEquals(-1, foo);
+    }
+
+    /**
+     * A unit that has a BUY and SELL order for the same asset will not match with itself
+     */
+    @Test
+    public void sameUnitBuySell() throws TradesException {
+        Trades trade1 = new Trades(Trades.TradeType.buy, "userB", 2, 40, 30);
+        tradeLogic.setTrade(trade1);
+        Trades trade2 = new Trades(Trades.TradeType.sell, "userC", 2, 10, 25);
+        tradeLogic.setTrade(trade2);
+        assertEquals(10, tradeDB.getTrade(4).getQuantity());
     }
 }

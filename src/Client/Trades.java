@@ -150,7 +150,7 @@ public class Trades implements Serializable {
      * @param quantity
      */
     public void setQuantity(int quantity) throws TradesException {
-        if(quantity > 0) {
+        if(quantity >= 0) {
             this.quantity = quantity;
         } else {
             throw new TradesException("The quantity has to be a positive integer");
