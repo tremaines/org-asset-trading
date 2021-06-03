@@ -8,33 +8,27 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests for the TradeLogic class using a mock database
+ */
 public class TradeLogicTest {
 
-    UserDBMock userDB;
-    UnitDBMock unitDB;
-    PurchasesDBMock purchasesDB;
-    TradeDBMock tradeDB;
-    HistoryDBMock historyDB;
+    private UserDBMock userDB;
+    private UnitDBMock unitDB;
+    private PurchasesDBMock purchasesDB;
+    private TradeDBMock tradeDB;
+    private HistoryDBMock historyDB;
 
-    User userA;
-    User userB;
-    User userC;
-    User userD;
-    Units unitA;
-    Units unitB;
-    Units unitC;
-    Assets assetA1;
-    Assets assetA2;
-    Assets assetB2;
-    Assets assetB3;
-    Trades trade1;
-    Trades trade2;
+    private User userA, userB, userC, userD;;
+    private Units unitA, unitB, unitC;
+    private Assets assetA1, assetA2, assetB2, assetB3;
+    private Trades trade1, trade2;
 
-    ArrayList<User> users;
-    ArrayList<Units> units;
-    ArrayList<Assets> owned;
-    ArrayList<Trades> trades;
-    TradeLogic tradeLogic;
+    private ArrayList<User> users;
+    private ArrayList<Units> units;
+    private ArrayList<Assets> owned;
+    private ArrayList<Trades> trades;
+    private TradeLogic tradeLogic;
 
     /**
      * Reset mock DBs before each test to maintain test independence

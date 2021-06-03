@@ -118,6 +118,10 @@ public class ServerAPI {
         }
     }
 
+    /**
+     * Update a user stored in the database
+     * @param user A User object with the updated details
+     */
     public void updateUser(User user) {
         try {
             outputStream.writeObject(ServerCommands.UPDATE_USER);
@@ -242,6 +246,11 @@ public class ServerAPI {
         }
     }
 
+    /**
+     * Get all the assets owned by a unit
+     * @param unitID The unit's ID
+     * @return An array of Assets that are owned by the unit
+     */
     public Assets[] getAllAssetsOwned(int unitID) {
         try {
             outputStream.writeObject(ServerCommands.GET_ALL_ASSETS_BY_ID);
@@ -408,7 +417,8 @@ public class ServerAPI {
     /**
      * Sends a trade over to be handled by the server
      * @param newTrade The new trade
-     * @throws TradesException
+     * @throws TradesException Thrown if there is insufficient credits or assets
+     * to place the trade
      */
     public void addTrade(Trades newTrade) throws TradesException {
         try {

@@ -2,6 +2,9 @@ package Server;
 
 import Client.Units;
 
+/**
+ * An interface for the units table
+ */
 public interface UnitDB {
 
     /**

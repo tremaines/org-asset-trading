@@ -1,5 +1,8 @@
 package common;
 
+/**
+ * Commands used by the server and client to talk to each other
+ */
 public enum ServerCommands {
     // User commands
     GET_USER,

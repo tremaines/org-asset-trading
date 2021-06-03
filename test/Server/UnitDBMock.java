@@ -4,6 +4,9 @@ import Client.Units;
 
 import java.util.ArrayList;
 
+/**
+ * A mock implementation of the units table database
+ */
 public class UnitDBMock implements UnitDB{
 
     private final ArrayList<Units> units;

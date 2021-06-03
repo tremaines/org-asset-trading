@@ -4,6 +4,9 @@ import Client.Trades;
 
 import java.util.HashMap;
 
+/**
+ * An interface for the trades database table
+ */
 public interface TradeDB {
 
     /**

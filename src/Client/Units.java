@@ -10,25 +10,32 @@ import java.io.Serializable;
 public class Units implements Serializable {
     private static final long serialVersionUID = -6210314430585695691L;
 
-    // Name of the organisation
     private String unitName;
     private int unitID;
-    // Electronic credits available to the organisation
     private int credits;
 
-    public Units() {
-    }
+    /**
+     * Constructor
+     */
+    public Units() { }
 
+    /**
+     * Constructor for a Units object
+     *
+     * @param unitName The name of the unit
+     * @param credits The number of credits the unit has
+     */
     public Units(String unitName, int credits) {
         this.unitName = unitName;
         this.credits = credits;
     }
 
     /**
-     * Units constructor that initialises an organisational unit
+     * Constructor for a Units object
      *
-     * @param unitName Name of the organisation
-     * @param credits Number of electronic credits
+     * @param unitID The unit's ID
+     * @param unitName The name of the unit
+     * @param credits The number of credits the unit has
      */
     public Units(int unitID, String unitName, int credits) {
         this.unitName = unitName;

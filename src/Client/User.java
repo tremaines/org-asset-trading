@@ -13,28 +13,30 @@ public class User implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
-    // Username to login to the marketplace
     private String username;
-    // Hashed value of the password
-    private String password;
-    // Type of account (admin or non-admin)
+    private String password; // Hashed value of the password
     private boolean admin;
-    // Units name the account is registered to
     private int unit;
     // Notification status on a sell listing
     private boolean notifySell;
     // Notification status
     private boolean notifyBuy;
 
+    /**
+     * Constructor for a user object
+     */
     public User() { }
 
     /**
-     * User constructor that creates an authorised account from an organisation
+     * Constructor for a User object
      *
-     * @param username Name of the user's account
+     * @param firstName The user's first name
+     * @param lastName The user's last name
+     * @param email  The user's email
+     * @param username User's username
      * @param password Password to log in to the account
      * @param admin Admin status (true/false)
-     * @param unit Name of the unit the user is associated with
+     * @param unit ID of the unit the user is associated with
      */
     public User (String firstName, String lastName, String email, String username,
                  String password, boolean admin, int unit) {
@@ -50,6 +52,15 @@ public class User implements Serializable {
         notifySell = false;
         notifyBuy = false;
     }
+
+    /**
+     * Constructor for a User object
+     *
+     * @param username The user's username
+     * @param admin Admin status
+     * @param unit ID of the unit the user is associated with
+     * @param password Their password (pre-hash)
+     */
     public User (String username, boolean admin, int unit, String password) {
         this.username = username;
         this.admin = admin;
@@ -57,12 +68,26 @@ public class User implements Serializable {
         this.password = hashPassword(password);
     }
 
+    /**
+     * Get the user's first name
+     * @return The user's first name
+     */
     public String getFirstName() {
         return firstName;
     }
+
+    /**
+     * Get the user's last name
+     * @return The user's last name
+     */
     public String getLastName() {
         return lastName;
     }
+
+    /**
+     * Get the user's email
+     * @return The user's email
+     */
     public String getEmail() { return email; }
 
     /**
@@ -75,31 +100,12 @@ public class User implements Serializable {
     }
 
     /**
-     * Hashes the plain-text password value - public so we can use it to has the user input
-     * at login time
-     *
-     * @param password Password for a user account
-     * @return Hashed string value of plain-text password
-     */
-    public static String hashPassword(String password) {
-        String hashedPassword = (password.hashCode() * 2.334) + "";
-        return hashedPassword;
-    }
-
-    /**
-     * Hashes a plain-text password
+     * Get the user's hashed password
      *
      * @return hashed password
      */
     public String getHashedPassword() {
         return password;
-    }
-
-    /**
-     * Changes user password
-     */
-    public void changePassword(String newPassword) {
-        password = hashPassword(newPassword);
     }
 
     /**
@@ -112,14 +118,15 @@ public class User implements Serializable {
     }
 
     /**
-     * Gets the the organisation name associated with the instance of the user
+     * Gets the unit ID associated with the instance of the user
      *
-     * @return Units name of the user
+     * @return Unit's ID
      */
     public int getUnit() { return unit; }
 
     /**
      * Setter for user's first name
+     *
      * @param firstName
      */
     public void setFirstName(String firstName) {
@@ -128,6 +135,7 @@ public class User implements Serializable {
 
     /**
      * Setter for user's last name
+     *
      * @param lastName
      */
     public void setLastName(String lastName) {
@@ -136,6 +144,7 @@ public class User implements Serializable {
 
     /**
      * Setter for user's email
+     *
      * @param email
      */
     public void setEmail(String email) {
@@ -144,6 +153,7 @@ public class User implements Serializable {
 
     /**
      * Setter for username (login id)
+     *
      * @param username
      */
     public void setUsername(String username) {
@@ -152,6 +162,7 @@ public class User implements Serializable {
 
     /**
      * Setter for password
+     *
      * @param password
      */
     public void setPassword(String password) throws UserException{
@@ -164,6 +175,7 @@ public class User implements Serializable {
 
     /**
      * Setter for user's admin status
+     *
      * @param admin
      */
     public void setAdmin(boolean admin) {
@@ -172,6 +184,7 @@ public class User implements Serializable {
 
     /**
      * Setter for the user's unit
+     *
      * @param unit
      */
     public void setUnit(int unit) throws UserException{
@@ -211,5 +224,17 @@ public class User implements Serializable {
         } else if(type == "Sell") {
             notifySell = status;
         }
+    }
+
+    /**
+     * Hashes the plain-text password value - public so we can use it to has the user input
+     * at login time
+     *
+     * @param password Password for a user account
+     * @return Hashed string value of plain-text password
+     */
+    public static String hashPassword(String password) {
+        String hashedPassword = (password.hashCode() * 2.334) + "";
+        return hashedPassword;
     }
 }

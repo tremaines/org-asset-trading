@@ -15,24 +15,30 @@ public class Assets implements Serializable {
     private int unitID;
 
     /**
-     * Constructor of the asset classes that initialises the list of assets and adds the default
-     * assets available onto the marketplace.
+     * Constructor for an Assets object
      */
     public Assets() {
     }
 
-    public Assets(String assetName, int quantity, int unitID) {
-        this.assetName = assetName;
-        this.quantity = quantity;
-        this.unitID = unitID;
-    }
-
+    /**
+     * Constructor for an Assets object
+     * @param assetID The asset's ID
+     * @param assetName The asset's name
+     * @param quantity The quantity of the asset
+     */
     public Assets(int assetID, String assetName, int quantity) {
         this.assetID = assetID;
         this.assetName = assetName;
         this.quantity = quantity;
     }
 
+    /**
+     * Constructor for an Assets object
+     * @param assetID The asset's ID
+     * @param assetName The asset's name
+     * @param quantity The asset's quantity
+     * @param unitID The unit that owns this instance of the asset
+     */
     public Assets(int assetID, String assetName, int quantity, int unitID) {
         this.assetID = assetID;
         this.assetName = assetName;
@@ -40,34 +46,66 @@ public class Assets implements Serializable {
         this.unitID = unitID;
     }
 
+    /**
+     * Get the asset ID
+     * @return The asset's ID
+     */
     public int getAssetID() {
         return assetID;
     }
 
+    /**
+     * Get the asset's name
+     * @return The asset's name
+     */
     public String getAssetName() {
         return assetName;
     }
 
+    /**
+     * Get the quantity of the asset
+     * @return The quantity of the asset
+     */
     public int getQuantity() {
         return quantity;
     }
 
+    /**
+     * Get the ID of the unit that owns the asset
+     * @return The unit's ID
+     */
     public int getUnitID() {
         return unitID;
     }
 
+    /**
+     * Set the asset's ID
+     * @param assetID The ID to be assigned to the asset
+     */
     public void setAssetID(int assetID) {
         this.assetID = assetID;
     }
 
+    /**
+     * Set the asset's name
+     * @param assetName The name of the asset
+     */
     public void setAssetName(String assetName) {
         this.assetName = assetName;
     }
 
+    /**
+     * Set the quantity of the asset
+     * @param quantity The quantity
+     */
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
+    /**
+     * Set the ID of the unit that owns the asset
+     * @param unitID The unit's ID
+     */
     public void setUnitID(int unitID) {
         this.unitID = unitID;
     }

@@ -45,7 +45,7 @@ public class TradeHistory implements Serializable {
     }
 
     /**
-     * Used for instantiating a trade object
+     * Constructor for TradeHistory object
      *
      * @param status Cancelled or complete
      * @param asset The asset id

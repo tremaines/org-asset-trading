@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-//TODO: This only deals with open trades, need to suss out trade history stuff later
 /***
  * A wrapper class for accessing the Trades table in the database
  */

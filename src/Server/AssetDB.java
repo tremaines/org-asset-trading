@@ -2,6 +2,9 @@ package Server;
 
 import Client.Assets;
 
+/**
+ * An interface for the assets database table
+ */
 public interface AssetDB {
 
     /**

@@ -2,6 +2,9 @@ package Server;
 
 import Client.Assets;
 
+/**
+ * An interface for the trades assets_owned/purchases table
+ */
 public interface PurchasesDB {
 
     /**

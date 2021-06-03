@@ -4,6 +4,9 @@ import Client.User;
 
 import java.util.ArrayList;
 
+/**
+ * A mock implementation of the users table database
+ */
 public class UserDBMock implements UserDB{
 
     private final ArrayList<User> users;

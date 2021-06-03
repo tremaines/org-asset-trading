@@ -1,5 +1,8 @@
 package Client;
 
+/**
+ * Thrown when a trade is being placed but the unit does not have enough credits (buy) or assets (sell)
+ */
 public class TradesException extends Exception{
 
     public TradesException(){
@@ -8,14 +11,6 @@ public class TradesException extends Exception{
 
     public TradesException(String message){
         super(message);
-    }
-
-    public TradesException(String message, Throwable cause){
-        super(message, cause);
-    }
-
-    public TradesException(Throwable cause) {
-        super(cause);
     }
 }
 

@@ -5,6 +5,9 @@ import Client.Trades;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * A mock implementation of the trades table database
+ */
 public class TradeDBMock implements TradeDB {
     private int currentTradeID;
 

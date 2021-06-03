@@ -125,8 +125,8 @@ public class Server {
      * @param inputStream The input stream to read from the client
      * @param outputStream The output stream to send back to the client
      * @param command The client's command
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws IOException Issue with input/output of an object
+     * @throws ClassNotFoundException Class not found
      */
     private void implementCommands(ObjectInputStream inputStream, ObjectOutputStream outputStream,
                                    ServerCommands command) throws IOException, ClassNotFoundException, TradesException {

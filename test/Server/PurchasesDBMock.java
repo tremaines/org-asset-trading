@@ -4,6 +4,9 @@ import Client.Assets;
 
 import java.util.ArrayList;
 
+/**
+ * A mock implementation of the assets_owned table database
+ */
 public class PurchasesDBMock implements PurchasesDB {
 
     private final ArrayList<Assets> owned;

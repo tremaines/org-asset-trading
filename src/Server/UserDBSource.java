@@ -139,15 +139,4 @@ public class UserDBSource implements UserDB {
             System.err.println(sqle);
         }
     }
-
-    /***
-     * Closes the connection to the database
-     */
-    public void closeConnection(){
-        try{
-            connection.close();
-        } catch (SQLException sqle){
-            System.err.println(sqle);
-        }
-    }
 }

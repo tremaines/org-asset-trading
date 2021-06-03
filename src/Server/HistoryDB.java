@@ -4,6 +4,9 @@ import Client.TradeHistory;
 
 import java.util.ArrayList;
 
+/**
+ * An interface for the trade_history table
+ */
 public interface HistoryDB {
 
     /**

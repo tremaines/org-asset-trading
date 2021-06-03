@@ -42,6 +42,7 @@ public class TradeLogic {
      * Sets a trade and calls private methods to deal with matching the trade to other trades
      *
      * @param newTrade The trade to be added to the database
+     * @throws TradesException Throws a trade exception if there is insufficient credits/assets
      */
     public int setTrade(Trades newTrade) throws TradesException {
         trade = newTrade;

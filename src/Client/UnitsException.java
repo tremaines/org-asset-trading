@@ -1,5 +1,8 @@
 package Client;
 
+/**
+ * Thrown due to an exception with a Units object
+ */
 public class UnitsException extends Exception {
 
     public UnitsException(){

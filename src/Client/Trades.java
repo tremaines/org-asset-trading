@@ -29,8 +29,7 @@ public class Trades implements Serializable {
     private String userName;
     private int assetId;
     private int quantity;
-    // Price = price per unit
-    private int price;
+    private int price; // price is price per unit
     private Date date;
 
     /**
@@ -39,13 +38,13 @@ public class Trades implements Serializable {
     public Trades() { }
 
     /***
-     * Trade constructor that takes instances of the organisational and user classes
+     * Trade constructor
      *
-     * @param type
-     * @param userName
-     * @param assetId
-     * @param quantity
-     * @param price
+     * @param type Type of trade (Buy or sell)
+     * @param userName The username of the user
+     * @param assetId The ID of the asset being traded
+     * @param quantity The quantity of the asset being traded
+     * @param price The price per unit of asset
      */
     public Trades(TradeType type, String userName, int assetId, int quantity, int price) {
         this.type = type;
@@ -56,6 +55,16 @@ public class Trades implements Serializable {
         this.date = date;
     }
 
+    /**
+     * Trade constructor
+     *
+     * @param id The trade's ID
+     * @param type Type of trade (Buy or sell)
+     * @param userName The username of the user
+     * @param assetId The ID of the asset being traded
+     * @param quantity The quantity of the asset being traded
+     * @param price The price per unit of asset
+     */
     public Trades(int id, TradeType type, String userName, int assetId, int quantity, int price) {
         this.id = id;
         this.type = type;

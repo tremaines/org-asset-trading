@@ -4,6 +4,9 @@ import Client.TradeHistory;
 
 import java.util.ArrayList;
 
+/**
+ * A mock implementation of the trade_history table database
+ */
 public class HistoryDBMock implements HistoryDB{
 
     int currentID;
