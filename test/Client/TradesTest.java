@@ -106,11 +106,11 @@ public class TradesTest {
         assertEquals(20, trade1.getQuantity());
     }
 
-    // Checks if an exception is thrown when setQuantity() sets the quantity to zero
+    // Checks if an exception is thrown when setQuantity() sets the quantity to a negative number
     @Test
-    public void setQuantityZeroCheck() throws TradesException {
+    public void setQuantityNegativeCheck() throws TradesException {
         assertThrows(TradesException.class, () -> {
-            trade1.setQuantity(0);
+            trade1.setQuantity(-1);
         });
     }
 
@@ -127,11 +127,11 @@ public class TradesTest {
         assertEquals(5, trade1.getPrice());
     }
 
-    // Checks if an exception is thrown when setPrice() sets the quantity to zero
+    // Checks if an exception is thrown when setPrice() sets the quantity to a negative number
     @Test
-    public void setPriceZeroCheck() throws TradesException {
+    public void setPriceNegativeCheck() throws TradesException {
         assertThrows(TradesException.class, () -> {
-            trade1.setPrice(0);
+            trade1.setPrice(-1);
         });
     }
 

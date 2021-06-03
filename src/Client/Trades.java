@@ -153,7 +153,7 @@ public class Trades implements Serializable {
         if(quantity >= 0) {
             this.quantity = quantity;
         } else {
-            throw new TradesException("The quantity has to be a positive integer");
+            throw new TradesException("The quantity has to be a non-negative integer");
         }
 
     }
@@ -171,10 +171,10 @@ public class Trades implements Serializable {
      * @return
      */
     public void setPrice(int price) throws TradesException {
-        if(price > 0) {
+        if(price >= 0) {
             this.price = price;
         } else {
-            throw new TradesException("The price has to be a positive integer");
+            throw new TradesException("The price has to be a non-negative integer");
         }
     }
 
