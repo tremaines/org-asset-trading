@@ -33,17 +33,24 @@ public class TradesTest {
 
     // Checks the setId() method for a trade
     @Test
-    public void setIdCheck() throws TradesException {
-        trade1.setId(2);
-        assertEquals(2, trade1.getId());
+    public void setIdPositiveCheck() throws TradesException {
+        // Check boundary
+        trade1.setId(0);
+
+        trade1.setId(5);
+        assertEquals(5, trade1.getId());
     }
 
     // Checks that an exception is thrown if the setId() method is set to a negative number
     @Test
     public void setIdNegativeCheck() throws TradesException {
+        trade1.setId(3);
         assertThrows(TradesException.class, () -> {
             trade1.setId(-5);
         });
+
+        // Check that tradeID is unchanged
+        assertEquals(3, trade1.getId());
     }
 
     // Checks the getType() method for a trade

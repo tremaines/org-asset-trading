@@ -95,6 +95,7 @@ public class UnitsTest {
         assertThrows(UnitsException.class, () -> {
             unit1.setUnitID(-5);
         });
+        // Check that unitID is unchanged
         assertEquals(5, unit1.getUnitID());
     }
 }
