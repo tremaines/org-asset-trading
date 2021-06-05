@@ -173,6 +173,20 @@ public class UserTest {
         });
     }
 
+    //  Checks that the setUnit() doesn't allow negatives
+    @Test
+    public void setUnitNegativeCheck(){
+        // Check zero
+        assertThrows(UserException.class, () -> {
+            user.setUnit(0);
+        });
+
+        // Check negative
+        assertThrows(UserException.class, () -> {
+            user.setUnit(-23);
+        });
+    }
+
     //  Checks the getBuyNotificationStatus() method
     @Test
     public void getBuyNotificationStatusCheck(){

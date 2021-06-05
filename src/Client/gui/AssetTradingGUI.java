@@ -16,9 +16,13 @@ import java.util.List;
  */
 public class AssetTradingGUI extends JFrame implements ActionListener {
 
+    // Login field
     private JTextField loginField;
+
+    // Password field
     private JPasswordField passwordField;
 
+    // GUI Panels
     private JPanel mainContent;
     private JPanel buyPanel;
     private JPanel sellPanel;
