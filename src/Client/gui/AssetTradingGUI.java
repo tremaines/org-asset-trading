@@ -1153,10 +1153,15 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         // Display asset names in ComboBox
         JComboBox assets = new JComboBox(assetNames);
         assets.setBounds(220, 40, 150, 20);
+
+        topPanel.add(assets);
+
         assets.setSelectedItem(assetName);
 
         tableBorder = new JPanel(new BorderLayout());
         tableBorder.setBorder(BorderFactory.createTitledBorder(assetName + " Sales History"));
+
+        SellHistoryTable historyTable = new SellHistoryTable(gridPanel, assetName, server);
 
         assets.addActionListener(new ActionListener() {
             @Override
@@ -1168,7 +1173,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             }
         });
 
-        topPanel.add(assets);
         sellHistoryPanel.add(topPanel, BorderLayout.NORTH);
         sellHistoryPanel.add(gridPanel);
         mainContent.add(sellHistoryPanel, "9");
