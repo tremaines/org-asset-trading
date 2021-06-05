@@ -36,7 +36,9 @@ public class TradesTest {
     public void setIdPositiveCheck() throws TradesException {
         // Check boundary
         trade1.setId(0);
+        assertEquals(0, trade1.getId());
 
+        // Check good value (< 0)
         trade1.setId(5);
         assertEquals(5, trade1.getId());
     }
@@ -44,13 +46,17 @@ public class TradesTest {
     // Checks that an exception is thrown if the setId() method is set to a negative number
     @Test
     public void setIdNegativeCheck() throws TradesException {
-        trade1.setId(3);
+        // Check boundary
+        trade1.setId(0);
+        assertEquals(0, trade1.getId());
+
+        // Check negative
         assertThrows(TradesException.class, () -> {
             trade1.setId(-5);
         });
 
         // Check that tradeID is unchanged
-        assertEquals(3, trade1.getId());
+        assertEquals(0, trade1.getId());
     }
 
     // Checks the getType() method for a trade
@@ -116,9 +122,26 @@ public class TradesTest {
     // Checks if an exception is thrown when setQuantity() sets the quantity to a negative number
     @Test
     public void setQuantityNegativeCheck() throws TradesException {
+        // Boundary case
+        trade1.setQuantity(0);
+        assertEquals(0, trade1.getQuantity());
+
+        // Check negative
         assertThrows(TradesException.class, () -> {
             trade1.setQuantity(-1);
         });
+    }
+
+    // Checks setQuantity() when set to a positive number
+    @Test
+    public void setQuantityPositiveCheck() throws TradesException {
+        // Boundary case
+        trade1.setQuantity(0);
+        assertEquals(0, trade1.getQuantity());
+
+        // Check positive
+        trade1.setQuantity(12);
+        assertEquals(12, trade1.getQuantity());
     }
 
     // Checks the getPrice() method for a trade
@@ -137,9 +160,26 @@ public class TradesTest {
     // Checks if an exception is thrown when setPrice() sets the quantity to a negative number
     @Test
     public void setPriceNegativeCheck() throws TradesException {
+        // Boundary case
+        trade1.setPrice(0);
+        assertEquals(0, trade1.getPrice());
+
+        // Check negative
         assertThrows(TradesException.class, () -> {
             trade1.setPrice(-1);
         });
+    }
+
+    // Checks setPrice() when the the quantity is set to a positive number
+    @Test
+    public void setPricePositiveCheck() throws TradesException {
+        // Boundary case
+        trade1.setPrice(0);
+        assertEquals(0, trade1.getPrice());
+
+        // Check positive
+        trade1.setPrice(5);
+        assertEquals(5, trade1.getPrice());
     }
 
     // Checks the getDate() returns a variable of type Date
