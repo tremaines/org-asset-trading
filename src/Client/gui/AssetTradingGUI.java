@@ -57,6 +57,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     // Server connection
     private static final ServerAPI server = new ServerAPI();
 
+    /**
+     * Constructor for the main GUI platform
+     * @param user User object of the user logging in
+     */
     public AssetTradingGUI(User user) {
 
         super("Asset Trading");
@@ -88,7 +92,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupSellHistoryPanel();
         setupAssetListingPanel();
 
-
+        // Checks if the user has any new notifications on login
         if(userLoggedIn.getBuyNotificationStatus()) {
             JOptionPane.showMessageDialog(null, "One of your buy orders was recently " +
                             "partially or fully completed",
@@ -120,7 +124,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         addWindowListener(listener);
     }
 
+    /**
+     * Updates the GUI whenever the method is called
+     */
     public void refreshGUI() {
+        // Setting up GUI
         topMenuRight.setVisible(false);
         topMenuContainer.setVisible(false);
         topMenuLeft.setVisible(false);
@@ -137,8 +145,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setupSellHistoryPanel();
         setupAssetListingPanel();
 
+        // Gets the user object for the current user logged in
         userLoggedIn = server.getUser(userLoggedIn.getUsername());
 
+        // Checks if the user has any new notifications
         if(userLoggedIn.getBuyNotificationStatus()) {
             JOptionPane.showMessageDialog(null, "One of your buy orders was recently " +
                             "partially or fully completed",
@@ -154,10 +164,20 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Main method that runs the AssetTradingGUI
+     * @param args Arguments
+     * @throws UserException Exception for the User class
+     * @throws TradesException Exception for the Trades class
+     * @throws AssetsException Exception for the Assets class
+     */
     public static void main(String[] args) throws UserException, TradesException, AssetsException {
         new LoginGUI(server);
     }
 
+    /**
+     * Sets up the top panel for the menu
+     */
     public void addTopMenu() {
         // Contains all components
         topMenuContainer = new JPanel(new BorderLayout());
@@ -183,7 +203,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         // Set initial icon and then change it in loop below for other buttons
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/bell.png"));
 
-        // Create buttons for top menu
+        // Create buttons for the top menu for an admin account
         if(userLoggedIn.getAdminStatus() == true) {
             for (int i = 0; i < 5; i++) {
                 String btnName = "";
@@ -217,7 +237,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 btn.addActionListener(this);
                 topMenuRight.add(btn);
             }
-        } else {
+        }
+        // Create buttons for the top menu for a user account
+        else {
             for (int i = 0; i < 3; i++) {
                 String btnName = "";
                 switch (i) {
@@ -251,6 +273,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         topMenuRight.add(creditsLabel);
     }
 
+    /**
+     * Sets up the left panel for the side menu on the GUI
+     */
     public void addSideMenu() {
         // Panel setup
         JPanel leftMenuPanel = new JPanel();
@@ -313,6 +338,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Sets up the buy panel page that allows users to create buy listings
+     */
     public void setupBuyPanel() {
         // Panel setup
         buyPanel = new JPanel(new BorderLayout(0, 0));
@@ -401,6 +429,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
     }
 
+    /**
+     * Sets up the sell panel page that allows users to create sell listings if they own an asset
+     */
     public void setupSellPanel() {
         // Panel setup
         JPanel sellPanelContainer = new JPanel(new GridLayout(1, 2));
@@ -439,6 +470,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         submit.setBounds(30 , 180, 100 , 20);
         msg.setBounds(140 , 230, 100 , 20);
 
+        // When the submit button is clicked
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -500,6 +532,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         mainContent.add(sellPanelContainer, "2");
     }
 
+    /**
+     * Sets up the account panel page that allows users to change their password. Admins also
+     * have the ability to create new users.
+     */
     public void setupAccountPanel() {
         // Panel setup
         accountPanel = new JPanel(new BorderLayout(0, 0));
@@ -599,6 +635,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             }
         });
 
+        // When the button is clicked for change password
         changePassword.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -629,6 +666,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         msg = new JLabel("");
         msg.setBounds(140 , 230, 100 , 20);
 
+        // If the current user logged in is not an admin
         if(userLoggedIn.getAdminStatus() == false) {
             label6.setBounds(30, 50, 130, 20);
             accountPanel.add(label6);
@@ -640,7 +678,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             confirmPasswordInput.setBounds(160, 80, 100, 20);
             accountPanel.add(changePassword);
             changePassword.setBounds(30 , 110, 100 , 20);
-        } else {
+        }
+        // If the current user logged in is an admin
+        else {
             accountPanel.add(label1);
             accountPanel.add(t1);
             accountPanel.add(label2);
@@ -661,6 +701,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         mainContent.add(accountPanel, "3");
     }
 
+    /**
+     * Summary page for assets that shows the current quantity available for an asset and the
+     * lowest sell listing price for that particular asset
+     */
     public void setupAssetsPanel() {
         assetsPanel = new JPanel(new BorderLayout(0, 0));
         assetsPanel.setBorder(BorderFactory.createTitledBorder("Asset Summary"));
@@ -668,6 +712,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         AssetsTable table = new AssetsTable(assetsPanel, server);
     }
 
+    /**
+     * Sets up the my listings page which shows all buy and sell listings made by the user
+     * currently logged in
+     */
     public void setupMyListingsPanel() {
         // Panel setup
         myListingsPanel = new JPanel(new BorderLayout());
@@ -725,6 +773,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         mainContent.add(myListingsPanel, "5");
     }
 
+    /**
+     * Sets up the create panel which allows an admin user to create a new asset or organisation
+     */
     public void setupCreatePanel() {
         // Panel setup
         JPanel createPanelContainer = new JPanel(new GridLayout(1, 2));
@@ -904,6 +955,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         mainContent.add(createPanelContainer, "6");
     }
 
+    /**
+     * Sets up the modify panel which allows an admin user to modify an asset's credits or asset
+     * quantity
+     */
     public void setupModifyPanel() {
         // Panels setup
         JPanel modifyPanelContainer = new JPanel(new GridLayout(1, 2));
@@ -1084,6 +1139,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         mainContent.add(modifyPanelContainer, "7");
     }
 
+    /**
+     * Sets up the all listings panel which allows a user to view all active trade listings
+     * currently unfulfilled
+     */
     public void setupAllListingsPanel() {
         // Panel setup
         allListingsPanel = new JPanel(new BorderLayout());
@@ -1098,6 +1157,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         mainContent.add(allListingsPanel, "8");
     }
 
+    /**
+     * Sets up the asset listing panel which allows a user to view all active trade listings
+     * for a particular asset
+     */
     private void setupAssetListingPanel() {
         // Setup panel
         assetListingPanel = new JPanel(new BorderLayout());
@@ -1135,6 +1198,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         mainContent.add(assetListingPanel, "10");
     }
 
+    /**
+     * Sets up the sell history panel which allows a user to view all fulfilled sell listings
+     * for a particular asset
+     */
     public void setupSellHistoryPanel() {
         // Panel setup
         sellHistoryPanel = new JPanel(new BorderLayout());
@@ -1178,6 +1245,11 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         mainContent.add(sellHistoryPanel, "9");
     }
 
+    /**
+     * Methods transitions from the current panel the user is on, to the new panel the user has
+     * clicked on
+     * @param e A mouse click
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String btnSrcTxt = e.getActionCommand();
