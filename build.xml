@@ -3,7 +3,8 @@
     <property name="testBase" value="build/testClasses" />
     <property name="testResults" value="build/testResults" />
     <property name="javadocDir" value="build/doc" />
-    <property name="outputJar" value="build/AssetTradingPlatform.jar" />
+    <property name="outputServer" value="build/AssetTradingPlatformServer.jar" />
+    <property name="outputClient" value="build/AssetTradingPlatformClient.jar" />
     <property name="sourceZip" value="build/assetTradingPlatformSrc.zip" />
 
     <path id="junit.classpath">
@@ -21,8 +22,9 @@
 
     <target name="compile" depends="prepare" description="Compile Java code">
         <javac srcdir="src" classpath="${base}" destdir="${base}" includeantruntime="false">
-            <include name="Client/*.java" />
-            <include name="Client/gui/*.java" />
+            <include name="Client/" />
+            <include name="Client/gui/" />
+            <include name="Client/gui/images" />
             <include name="common/*.java"/>
             <include name="Server/*.java" />
         </javac>
@@ -46,12 +48,22 @@
     </target>
 
     <target name="jar" depends="test" description="Creating jar archive">
-        <jar destfile="${outputJar}" basedir="${base}">
+        <jar destfile="${outputServer}" basedir="${base}">
             <manifest>
-                <attribute name="Built-By" value="${user.name}" />
-                <attribute name="Implementation-Vendor" value="QUT" />
-                <attribute name="Implementation-Title" value="CAB302 Exercise" />
+                <attribute name="Built-By" value="$Group 60" />
+                <attribute name="Implementation-Vendor" value="Group 60" />
+                <attribute name="Implementation-Title" value="Asset Trading Platform Server" />
                 <attribute name="Implementation-Version" value="1.0.0" />
+                <attribute name="Main-Class" value="Server.RunServer"/>
+            </manifest>
+        </jar>
+        <jar destfile="${outputClient}" basedir="${base}">
+            <manifest>
+                <attribute name="Built-By" value="$Group 60" />
+                <attribute name="Implementation-Vendor" value="Group 60" />
+                <attribute name="Implementation-Title" value="Asset Trading Platform Client" />
+                <attribute name="Implementation-Version" value="1.0.0" />
+                <attribute name="Main-Class" value="Client.gui.AssetTradingGUI"/>
             </manifest>
         </jar>
     </target>
@@ -70,7 +82,8 @@
     </target>
 
     <target name="clean" description="Cleanup build files">
-        <delete file="${outputJar}" />
+        <delete file="${outputServer}" />
+        <delete file="${outputClient}" />
         <delete file="${sourceZip}" />
         <delete dir="${base}" />
         <delete dir="${testResults}" />
