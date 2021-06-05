@@ -88,7 +88,7 @@ public class UserTest {
 
     //  Checks the setEmail() method
     @Test
-    public void setEmailCheck(){
+    public void setEmailCheck() {
         user.setEmail("test@mail.com");
         assertEquals("test@mail.com", user.getEmail());
     }
@@ -134,9 +134,19 @@ public class UserTest {
 
     //  Checks the setAdmin() method
     @Test
-    public void setAdminCheck(){
+    public void setAdminCheck() {
         user.setAdmin(false);
         assertEquals(false, user.getAdminStatus());
+    }
+
+    //  Checks the setAdmin() method after multiple changes
+    @Test
+    public void setAdminMultipleTimesCheck() {
+        user.setAdmin(false);
+        user.setAdmin(true);
+        user.setAdmin(false);
+        user.setAdmin(true);
+        assertEquals(true, user.getAdminStatus());
     }
 
     //  Checks the setUnit() method

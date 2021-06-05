@@ -669,16 +669,17 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public void setupMyListingsPanel() {
+        // Panel setup
         myListingsPanel = new JPanel(new BorderLayout());
         myListingsPanel.setBorder(BorderFactory.createTitledBorder("My Listings"));
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,15));
         JPanel gridPanel = new JPanel(new GridLayout(1, 2, 10, 20));
+
+        // Panel elements
         JButton cancelOrderBtn = new JButton("Cancel Order");
         topPanel.add(cancelOrderBtn);
-
         MyListingsTableBuy buyTable = new MyListingsTableBuy(gridPanel, unit, userLoggedIn, server);
         MyListingsTableSell sellTable = new MyListingsTableSell(gridPanel, unit, userLoggedIn, server);
-
         JTable buyTableClick = buyTable.getBuyTable();
         JTable sellTableClick = sellTable.getSellTable();
 
@@ -725,16 +726,17 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public void setupCreatePanel() {
+        // Panel setup
         JPanel createPanelContainer = new JPanel(new GridLayout(1, 2));
         JPanel leftPanel = new JPanel(new BorderLayout(0, 0));
         JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
         rightPanel.setBorder(new EmptyBorder(30,0,30,30));
-
         createPanelContainer.add(leftPanel);
         createPanelContainer.add(rightPanel);
         createPanelContainer.setBorder(BorderFactory.createTitledBorder("Create"));
-
         setSize(1000, 700);
+
+        // Panel elements
         JLabel label1 , label2, label3, label4;
         JSpinner s1;
         JTextField t1, t2, t3;
@@ -742,53 +744,37 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         JButton submitOrg, submitAsset;
         JLabel msg;
 
-
-        // Create organisation elements
-
         label1 = new JLabel("Unit Name");
-        label1.setBounds(30, 50, 150, 20);
-
-        t1 = new JTextField();
-        t1.setBounds(220 , 50, 150 , 20);
-
         label2 = new JLabel("Credits");
-        label2.setBounds(30 , 80, 100 , 20);
-
+        label3 = new JLabel("Asset Name");
+        t1 = new JTextField();
+        t2 = new JTextField();
         s1 = new JSpinner();
+        terms = new JCheckBox("Please confirm that the " +
+                "details you have entered are correct");
+        terms2 = new JCheckBox("Please confirm that the " +
+                "details you have entered are correct");
+        submitOrg = new JButton("Create");
+        submitAsset = new JButton("Create Asset");
+        msg = new JLabel("");
+        OrganisationAssetsTable organisationAssetsTable = new OrganisationAssetsTable(rightPanel, server);
+
+        // Position elements
+        label1.setBounds(30, 50, 150, 20);
+        t1.setBounds(220 , 50, 150 , 20);
+        label2.setBounds(30 , 80, 100 , 20);
         s1.setBounds(220 , 80, 150 , 20);
+        terms.setBounds(30 , 110, 400 , 20);
+        terms2.setBounds(30 , 260, 400 , 20);
+        submitOrg.setBounds(30 , 140, 100 , 20);
+        msg.setBounds(140 , 180, 100 , 20);
+        label3.setBounds(30, 230, 150, 20);
+        t2.setBounds(220 , 230, 150 , 20);
+        submitAsset.setBounds(30 , 290, 140 , 20);
 
         JComponent editor = s1.getEditor();
         JSpinner.DefaultEditor spinnerEditor = (JSpinner.DefaultEditor)editor;
         spinnerEditor.getTextField().setHorizontalAlignment(JTextField.LEFT);
-
-        terms = new JCheckBox("Please confirm that the " +
-                "details you have entered are correct");
-        terms.setBounds(30 , 110, 400 , 20);
-
-        terms2 = new JCheckBox("Please confirm that the " +
-                "details you have entered are correct");
-        terms2.setBounds(30 , 260, 400 , 20);
-
-
-        submitOrg = new JButton("Create");
-        submitOrg.setBounds(30 , 140, 100 , 20);
-
-        msg = new JLabel("");
-        msg.setBounds(140 , 180, 100 , 20);
-
-        OrganisationAssetsTable organisationAssetsTable = new OrganisationAssetsTable(rightPanel, server);
-        // Create Asset elements
-
-        label3 = new JLabel("Asset Name");
-        label3.setBounds(30, 230, 150, 20);
-
-        t2 = new JTextField();
-        t2.setBounds(220 , 230, 150 , 20);
-
-
-        submitAsset = new JButton("Create Asset");
-        submitAsset.setBounds(30 , 290, 140 , 20);
-
         organisationAssetsTable.getAssetsTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
         submitOrg.addActionListener(new ActionListener() {
@@ -919,63 +905,61 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public void setupModifyPanel() {
+        // Panels setup
         JPanel modifyPanelContainer = new JPanel(new GridLayout(1, 2));
         JPanel leftPanel = new JPanel(new BorderLayout(0, 0));
         JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
         rightPanel.setBorder(new EmptyBorder(30, 0, 30, 30));
-
-        String[] unitNames = server.getUnitNames();
-        List<String> sortedNames = new ArrayList(Arrays.asList(unitNames));
-//        if(sortedNames.contains("None (Admin)")) {
-//            sortedNames.remove("None (Admin)");
-//        }
-        java.util.Collections.sort(sortedNames);
-        unitNames = sortedNames.toArray(new String[0]);
-
-        JComboBox units = new JComboBox(unitNames);
-        units.setBounds(220, 40, 150, 20);
-        String unitName = units.getSelectedItem().toString();
-        Units selectedOrg = server.getUnit(unitName);
-
-        tableBordered = new JPanel(new BorderLayout());
-        tableBordered.setBorder(BorderFactory.createTitledBorder(unitName + "'s Assets"));
-        rightPanel.add(tableBordered);
-
-        modifyPanelContainer.add(leftPanel);
-        modifyPanelContainer.add(rightPanel);
-        modifyPanelContainer.setBorder(BorderFactory.createTitledBorder("Modify"));
-
         setSize(1000, 700);
+
+        // Panel elements
         JLabel label1, label2;
         JSpinner creditsSpinner;
         JCheckBox terms;
         JButton submit;
         JLabel msg;
-
         label1 = new JLabel("Select Unit");
-        label1.setBounds(30, 40, 150, 20);
-
         label2 = new JLabel("Set Credits");
-        label2.setBounds(30 , 70, 100 , 20);
-
         creditsSpinner = new JSpinner();
-        creditsSpinner.setValue(selectedOrg.getCredits());
-        creditsSpinner.setBounds(220 , 70, 150 , 20);
+        terms = new JCheckBox("Please confirm that the " +
+                "details you have entered are correct");
+        submit = new JButton("Submit");
+        msg = new JLabel("");
 
+        // Get unit names and put them into ComboBox
+        String[] unitNames = server.getUnitNames();
+        List<String> sortedNames = new ArrayList(Arrays.asList(unitNames));
+        java.util.Collections.sort(sortedNames);
+        unitNames = sortedNames.toArray(new String[0]);
+        JComboBox units = new JComboBox(unitNames);
+        units.setBounds(220, 40, 150, 20);
+
+        // Selected unit from ComboBox
+        String unitName = units.getSelectedItem().toString();
+        Units selectedOrg = server.getUnit(unitName);
+
+        // Container and border for modify table
+        tableBordered = new JPanel(new BorderLayout());
+        tableBordered.setBorder(BorderFactory.createTitledBorder(unitName + "'s Assets"));
+        modifyPanelContainer.setBorder(BorderFactory.createTitledBorder("Modify"));
+
+        // Position elements
+        label1.setBounds(30, 40, 150, 20);
+        label2.setBounds(30 , 70, 100 , 20);
+        creditsSpinner.setBounds(220 , 70, 150 , 20);
+        terms.setBounds(30 , 100, 400 , 20);
+        submit.setBounds(30 , 130, 100 , 20);
+        msg.setBounds(140 , 180, 100 , 20);
+
+        // Set credits spinner initial value
+        creditsSpinner.setValue(selectedOrg.getCredits());
+
+        // Left align text in spinner box
         JComponent editor = creditsSpinner.getEditor();
         JSpinner.DefaultEditor spinnerEditor = (JSpinner.DefaultEditor)editor;
         spinnerEditor.getTextField().setHorizontalAlignment(JTextField.LEFT);
 
-        terms = new JCheckBox("Please confirm that the " +
-                "details you have entered are correct");
-        terms.setBounds(30 , 100, 400 , 20);
-
-        submit = new JButton("Submit");
-        submit.setBounds(30 , 130, 100 , 20);
-
-        msg = new JLabel("");
-        msg.setBounds(140 , 180, 100 , 20);
-
+        // Modify assets table
         modifyAssetsTable = new ModifyAssetsTable(tableBordered, server.getUnit(unitName), server);
         modifyAssetsTable.getModifyTable().putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
@@ -1007,7 +991,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             }
         });
 
-
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1021,7 +1004,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
                 if(creditsInput >= 0) {
                     try {
-
                         for (int i = 0; i < modifyAssetsTable.getModifyTable().getRowCount(); i++) {
                             int assetId = Integer.parseInt(modifyAssetsTable.getModifyTable().getValueAt(i, 0).toString());
                             String assetName = modifyAssetsTable.getModifyTable().getValueAt(i, 1).toString();
@@ -1051,7 +1033,6 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                             server.updateUnit(selectedUnit);
 
                             if (hasNegativeInput) {
-                                // TODO: Put following code in rerender table function
                                 // Rerender table
                                 rightPanel.remove(tableBordered);
                                 rightPanel.revalidate();
@@ -1089,6 +1070,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             }
         });
 
+        modifyPanelContainer.add(leftPanel);
+        modifyPanelContainer.add(rightPanel);
+        rightPanel.add(tableBordered);
         leftPanel.add(label1);
         leftPanel.add(label2);
         leftPanel.add(units);
@@ -1101,38 +1085,39 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public void setupAllListingsPanel() {
+        // Panel setup
         allListingsPanel = new JPanel(new BorderLayout());
         allListingsPanel.setBorder(BorderFactory.createTitledBorder("All Listings"));
         JPanel gridPanel = new JPanel(new GridLayout(1, 2, 10, 20));
 
+        // Panel elements
         AllListingsTableBuy buyTable = new AllListingsTableBuy(gridPanel, server);
         AllListingsTableSell sellTable  = new AllListingsTableSell(gridPanel, server);
 
         allListingsPanel.add(gridPanel);
-
         mainContent.add(allListingsPanel, "8");
     }
 
     private void setupAssetListingPanel() {
+        // Setup panel
         assetListingPanel = new JPanel(new BorderLayout());
         assetListingPanel.setBorder(BorderFactory.createTitledBorder("Assets List"));
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,10,15));
         JPanel gridPanel = new JPanel(new GridLayout(1, 2, 10, 20));
 
+        // Get asset names
         String[] assetNames = server.getAssetNames();
         assetName = assetName == null ? assetNames[0] : assetName;
-
         JComboBox assets = new JComboBox(assetNames);
         assets.setBounds(220, 40, 150, 20);
 
-        topPanel.add(assets);
-
+        // Get selected asset
         assets.setSelectedItem(assetName);
 
         AssetListingsTableBuy buyTable = new AssetListingsTableBuy(gridPanel, assetName, server);
-
         AssetListingsTableSell sellTable = new AssetListingsTableSell(gridPanel, assetName, server);
 
+        // Set selected asset
         assets.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1143,6 +1128,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             }
         });
 
+        topPanel.add(assets);
         assetListingPanel.add(topPanel, BorderLayout.NORTH);
         assetListingPanel.add(gridPanel);
 
@@ -1150,13 +1136,13 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     }
 
     public void setupSellHistoryPanel() {
+        // Panel setup
         sellHistoryPanel = new JPanel(new BorderLayout());
         sellHistoryPanel.setBorder(BorderFactory.createTitledBorder("Asset Sell History"));
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,10,15));
         JPanel gridPanel = new JPanel(new GridLayout(1, 2, 10, 20));
 
-
-
+        // Get asset names
         String[] assetNames = server.getAssetNames();
         try {
             assetName = assetName == null ? assetNames[0] : assetName;
@@ -1164,18 +1150,13 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             assetName = "No Assets Found!";
         }
 
-
+        // Display asset names in ComboBox
         JComboBox assets = new JComboBox(assetNames);
         assets.setBounds(220, 40, 150, 20);
-
-        topPanel.add(assets);
-
         assets.setSelectedItem(assetName);
 
         tableBorder = new JPanel(new BorderLayout());
         tableBorder.setBorder(BorderFactory.createTitledBorder(assetName + " Sales History"));
-
-        SellHistoryTable historyTable = new SellHistoryTable(gridPanel, assetName, server);
 
         assets.addActionListener(new ActionListener() {
             @Override
@@ -1187,7 +1168,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
             }
         });
 
-
+        topPanel.add(assets);
         sellHistoryPanel.add(topPanel, BorderLayout.NORTH);
         sellHistoryPanel.add(gridPanel);
         mainContent.add(sellHistoryPanel, "9");
@@ -1197,6 +1178,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String btnSrcTxt = e.getActionCommand();
 
+        // Actions for top and side bar
         if (btnSrcTxt.equals("Buy")) {
             refreshGUI();
             cardLayout.show(mainContent, "1");

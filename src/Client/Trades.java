@@ -162,9 +162,9 @@ public class Trades implements Serializable {
         if(quantity >= 0) {
             this.quantity = quantity;
         } else {
+            this.quantity = 0;
             throw new TradesException("The quantity has to be a non-negative integer");
         }
-
     }
 
     /**
