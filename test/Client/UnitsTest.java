@@ -40,9 +40,10 @@ public class UnitsTest {
     public void setCreditsPositiveCheck() throws UnitsException {
         // Check boundary
         unit1.setCredits(0);
+        assertEquals(0, unit1.getCredits());
 
+        // Check good value (< 0)
         unit1.setCredits(1500);
-
         assertEquals(1500, unit1.getCredits());
     }
 
@@ -80,23 +81,31 @@ public class UnitsTest {
     public void setUnitIDPositiveCheck() throws UnitsException {
         // Check boundary
         unit1.setUnitID(0);
+        assertEquals(0, unit1.getUnitID());
 
-        unit1.setUnitID(10);
-
+        // Check good value (< 0)
         unit1.setUnitID(8);
-
         assertEquals(8, unit1.getUnitID());
+
+        // Good value check 2 (< 0)
+        unit1.setUnitID(10);
+        assertEquals(10, unit1.getUnitID());
     }
 
     // Checks the setUnitID() method with negative value
     @Test
     public void setUnitIDNegativeCheck() throws UnitsException {
-        unit1.setUnitID(5);
+        // Boundary case
+        unit1.setUnitID(0);
+        assertEquals(0, unit1.getUnitID());
+
+        // Check set unitID Negative
         assertThrows(UnitsException.class, () -> {
             unit1.setUnitID(-5);
         });
+
         // Check that unitID is unchanged
-        assertEquals(5, unit1.getUnitID());
+        assertEquals(0, unit1.getUnitID());
     }
 }
 
