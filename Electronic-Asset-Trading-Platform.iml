@@ -27,5 +27,6 @@
     <orderEntry type="library" name="org.mariadb.jdbc:mariadb-java-client:2.7.2" level="project" />
     <orderEntry type="library" name="org.junit.jupiter:junit-jupiter:5.4.2" level="project" />
     <orderEntry type="library" name="org.apache.ant:ant-junitlauncher:1.10.9" level="project" />
+    <orderEntry type="library" name="org.junit.platform:junit-platform-launcher:1.4.2" level="project" />
   </component>
 </module>

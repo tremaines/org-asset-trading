@@ -1,3 +1,86 @@
-<project>
+<project name="AssetTradingPlatform" basedir="." default="jar">
+    <property name="base" value="build/artifacts" />
+    <property name="testBase" value="build/testClasses" />
+    <property name="testResults" value="build/testResults" />
+    <property name="javadocDir" value="build/doc" />
+    <property name="outputJar" value="build/AssetTradingPlatform.jar" />
+    <property name="sourceZip" value="build/assetTradingPlatformSrc.zip" />
 
+    <path id="junit.classpath">
+        <fileset dir="lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="prepare" description="Create target directories">
+        <mkdir dir="${base}" />
+        <mkdir dir="${testResults}" />
+        <mkdir dir="${javadocDir}" />
+        <mkdir dir="${testBase}" />
+    </target>
+
+    <target name="compile" depends="prepare" description="Compile Java code">
+        <javac srcdir="src" classpath="${base}" destdir="${base}" includeantruntime="false">
+            <include name="Client/*.java" />
+            <include name="Client/gui/*.java" />
+            <include name="common/*.java"/>
+            <include name="Server/*.java" />
+        </javac>
+    </target>
+
+    <target name="test" depends="compile" description="Compile unit tests">
+        <javac srcdir="test" destdir="${testBase}" includeantruntime="false">
+            <classpath path="${base}"/>
+            <classpath refid="junit.classpath"/>
+            <include name="Client/*.java" />
+            <include name="Server/*.java" />
+        </javac>
+        <junitlauncher printSummary="true" failureProperty="junit.failure">
+            <classpath path="${testBase}:${base}"/>
+            <testclasses outputDir="${testResults}">
+                <fileset dir="${testBase}" includes="**/*Test.class"/>
+                <listener type="legacy-xml"/>
+            </testclasses>
+        </junitlauncher>
+        <fail if="junit.failure" message="junit tests failed - aborting" />
+    </target>
+
+    <target name="jar" depends="test" description="Creating jar archive">
+        <jar destfile="${outputJar}" basedir="${base}">
+            <manifest>
+                <attribute name="Built-By" value="${user.name}" />
+                <attribute name="Implementation-Vendor" value="QUT" />
+                <attribute name="Implementation-Title" value="CAB302 Exercise" />
+                <attribute name="Implementation-Version" value="1.0.0" />
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="doc" description="Create Javadoc">
+        <javadoc packagenames="Client, common, Server"
+                 sourcepath="src"
+                 destdir="${javadocDir}"
+                 author="true"
+                 version="true"
+                 use="true"
+                 windowtitle="Warehouse Ledger Project API">
+            <doctitle><![CDATA[<h1>Warehouse Ledger Simulation</h1>]]></doctitle>
+            <bottom><![CDATA[<i>Copyright &#169;  QUT. All Rights Reserved.</i>]]></bottom>
+        </javadoc>
+    </target>
+
+    <target name="clean" description="Cleanup build files">
+        <delete file="${outputJar}" />
+        <delete file="${sourceZip}" />
+        <delete dir="${base}" />
+        <delete dir="${testResults}" />
+        <delete dir="${javadocDir}" />
+        <delete dir="${testBase}" />
+    </target>
+
+    <target name="zipSource" depends="compile" description="Creating source zip file">
+        <zip destfile="${sourceZip}"
+             basedir="src"
+             update="true" />
+    </target>
 </project>
