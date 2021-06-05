@@ -22,4 +22,4 @@ jobs:
         java-version: '15'
         distribution: 'adopt'
     - name: Build with Ant
-      run: ant -lib lib -noinput -buildfile build.xml
+      run: ant -lib lib/build_lib -noinput -buildfile build.xml

@@ -8,7 +8,7 @@
     <property name="sourceZip" value="build/assetTradingPlatformSrc.zip" />
 
     <path id="junit.classpath">
-        <fileset dir="lib">
+        <fileset dir="lib/build_lib">
             <include name="*.jar"/>
         </fileset>
     </path>
