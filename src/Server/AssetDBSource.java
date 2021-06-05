@@ -1,6 +1,7 @@
 package Server;
 
 import Client.Assets;
+import Client.AssetsException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -75,7 +76,7 @@ public class AssetDBSource implements AssetDB {
                 asset.setAssetName(rs.getString("asset_name"));
                 assets.add(asset);
             }
-        } catch(SQLException sqle){
+        } catch(SQLException | AssetsException sqle){
             System.err.println(sqle);
         }
 
@@ -99,7 +100,7 @@ public class AssetDBSource implements AssetDB {
 
             asset.setAssetID(rs.getInt("asset_id"));
             asset.setAssetName(rs.getString("asset_name"));
-        } catch(SQLException sqle){
+        } catch(SQLException | AssetsException sqle){
             System.err.println(sqle);
         }
 

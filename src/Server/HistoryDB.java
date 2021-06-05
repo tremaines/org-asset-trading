@@ -1,6 +1,7 @@
 package Server;
 
 import Client.TradeHistory;
+import Client.TradesException;
 
 import java.util.ArrayList;
 
@@ -13,7 +14,7 @@ public interface HistoryDB {
      * Add a new recorded trade
      * @param trade An instance of the TradeHistory class with details of the trade
      */
-    public void addToHistory(TradeHistory trade);
+    public void addToHistory(TradeHistory trade) throws TradesException;
 
     /**
      * Get the trading history of a specific asset

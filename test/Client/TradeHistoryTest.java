@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TradeHistoryTest {
     Units unit1;
@@ -43,9 +44,34 @@ public class TradeHistoryTest {
 
     // Checks the setId() method
     @Test
-    public void setIdCheck(){
+    public void setIdCheck() throws TradesException {
         tradeHistory1.setId(5);
         assertEquals(5, tradeHistory1.getId());
+    }
+
+    // Checks the setId() method for a negative integer
+    @Test
+    public void setIdNegativeCheck() throws TradesException {
+        // Boundary case
+        tradeHistory1.setId(0);
+        assertEquals(0, tradeHistory1.getId());
+
+        // Check negative
+        assertThrows(TradesException.class, () -> {
+            tradeHistory1.setId(-3);
+        });
+    }
+
+    // Checks the setId() method for a positive integer
+    @Test
+    public void setIdPositiveCheck() throws TradesException {
+        // Boundary case
+        tradeHistory1.setId(0);
+        assertEquals(0, tradeHistory1.getId());
+
+        // Check positive
+        tradeHistory1.setId(15);
+        assertEquals(15, tradeHistory1.getId());
     }
 
     // Checks the getStatus() method
@@ -69,9 +95,34 @@ public class TradeHistoryTest {
 
     // Checks the setAsset() method
     @Test
-    public void setAssetCheck(){
+    public void setAssetCheck() throws TradesException {
         tradeHistory1.setAsset(8);
         assertEquals(8, tradeHistory1.getAsset());
+    }
+
+    // Checks the setAsset() method for a negative integer
+    @Test
+    public void setAssetNegativeCheck() throws TradesException {
+        // Boundary case
+        tradeHistory1.setAsset(0);
+        assertEquals(0, tradeHistory1.getAsset());
+
+        // Check negative
+        assertThrows(TradesException.class, () -> {
+            tradeHistory1.setAsset(-3);
+        });
+    }
+
+    // Checks the setAsset() method for a positive integer
+    @Test
+    public void setAssetPositiveCheck() throws TradesException {
+        // Boundary case
+        tradeHistory1.setAsset(0);
+        assertEquals(0, tradeHistory1.getAsset());
+
+        // Check positive
+        tradeHistory1.setAsset(5);
+        assertEquals(5, tradeHistory1.getAsset());
     }
 
     // Checks the getQty() method
@@ -82,9 +133,34 @@ public class TradeHistoryTest {
 
     // Checks the stQty() method
     @Test
-    public void setQtyCheck(){
+    public void setQtyCheck() throws TradesException {
         tradeHistory1.setQty(15);
         assertEquals(15, tradeHistory1.getQty());
+    }
+
+    // Checks the stQty() method for a negative integer
+    @Test
+    public void setQtyNegativeCheck() throws TradesException {
+        // Boundary case
+        tradeHistory1.setQty(0);
+        assertEquals(0, tradeHistory1.getQty());
+
+        // Check negative
+        assertThrows(TradesException.class, () -> {
+            tradeHistory1.setQty(-5);
+        });
+    }
+
+    // Checks the stQty() method for a positive integer
+    @Test
+    public void setQtyPositiveCheck() throws TradesException {
+        // Boundary case
+        tradeHistory1.setQty(0);
+        assertEquals(0, tradeHistory1.getQty());
+
+        // Check positive
+        tradeHistory1.setQty(5);
+        assertEquals(5, tradeHistory1.getQty());
     }
 
     // Checks the getCredits() method
@@ -95,9 +171,34 @@ public class TradeHistoryTest {
 
     // Checks the setCredits() method
     @Test
-    public void setCreditsCheck(){
+    public void setCreditsCheck() throws TradesException {
         tradeHistory1.setCredits(12);
         assertEquals(12, tradeHistory1.getCredits());
+    }
+
+    // Checks the setCredits() method for a negative integer
+    @Test
+    public void setCreditsNegativeCheck() throws TradesException {
+        // Boundary case
+        tradeHistory1.setCredits(0);
+        assertEquals(0, tradeHistory1.getCredits());
+
+        // Check negative
+        assertThrows(TradesException.class, () -> {
+            tradeHistory1.setCredits(-2);
+        });
+    }
+
+    // Checks the setCredits() method for a positive integer
+    @Test
+    public void setCreditsPositiveCheck() throws TradesException {
+        // Boundary case
+        tradeHistory1.setCredits(0);
+        assertEquals(0, tradeHistory1.getCredits());
+
+        // Check positive
+        tradeHistory1.setCredits(10);
+        assertEquals(10, tradeHistory1.getCredits());
     }
 
     // Checks the getBuyer() method

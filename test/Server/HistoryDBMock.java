@@ -1,6 +1,7 @@
 package Server;
 
 import Client.TradeHistory;
+import Client.TradesException;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,7 @@ public class HistoryDBMock implements HistoryDB{
     }
 
     @Override
-    public void addToHistory(TradeHistory trade) {
+    public void addToHistory(TradeHistory trade) throws TradesException {
         trade.setId(currentID);
         currentID++;
         history.add(trade);

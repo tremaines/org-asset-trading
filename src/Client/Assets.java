@@ -82,8 +82,12 @@ public class Assets implements Serializable {
      * Set the asset's ID
      * @param assetID The ID to be assigned to the asset
      */
-    public void setAssetID(int assetID) {
-        this.assetID = assetID;
+    public void setAssetID(int assetID) throws AssetsException {
+        if(assetID >= 0) {
+            this.assetID = assetID;
+        } else {
+            throw new AssetsException("The Asset ID cannot be a negative integer");
+        }
     }
 
     /**

@@ -1,6 +1,7 @@
 package Server;
 
 import Client.Assets;
+import Client.AssetsException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -178,7 +179,7 @@ public class PurchasesDBSource implements PurchasesDB {
                 asset.setUnitID(rs.getInt("unit"));
                 assets.add(asset);
             }
-        } catch (SQLException sqle) {
+        } catch (SQLException | AssetsException sqle) {
             System.err.println(sqle);
         }
         return assets.toArray(new Assets[0]);
@@ -204,7 +205,7 @@ public class PurchasesDBSource implements PurchasesDB {
                 asset.setQuantity(rs.getInt("quantity"));
                 assets.add(asset);
             }
-        } catch (SQLException sqle) {
+        } catch (SQLException | AssetsException sqle) {
             System.err.println(sqle);
         }
         return assets.toArray(new Assets[0]);
@@ -229,7 +230,7 @@ public class PurchasesDBSource implements PurchasesDB {
             asset.setUnitID(rs.getInt("unit"));
             asset.setQuantity(rs.getInt("quantity"));
             asset.setAssetName(rs.getString("asset_name"));
-        } catch(SQLException sqle){
+        } catch(SQLException | AssetsException sqle){
             System.err.println(sqle);
         }
 

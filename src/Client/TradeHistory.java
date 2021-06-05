@@ -75,8 +75,12 @@ public class TradeHistory implements Serializable {
      * Setter for trade history ID
      * @param id
      */
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int id) throws TradesException {
+        if(id >= 0) {
+            this.id = id;
+        } else {
+            throw new TradesException("The ID of the trade cannot be a negative integer");
+        }
     }
 
     /**
@@ -107,8 +111,12 @@ public class TradeHistory implements Serializable {
      * Setter for the asset traded
      * @param asset
      */
-    public void setAsset(int asset) {
-        this.asset = asset;
+    public void setAsset(int asset) throws TradesException {
+        if(asset >= 0) {
+            this.asset = asset;
+        } else {
+            throw new TradesException("The asset cannot be a negative number");
+        }
     }
 
     /**
@@ -123,8 +131,12 @@ public class TradeHistory implements Serializable {
      * Setter for the quantity traded
      * @param qty
      */
-    public void setQty(int qty) {
-        this.qty = qty;
+    public void setQty(int qty) throws TradesException {
+        if(qty >= 0) {
+            this.qty = qty;
+        } else {
+            throw new TradesException("The quantity cannot be a negative number");
+        }
     }
 
     /**
@@ -139,8 +151,12 @@ public class TradeHistory implements Serializable {
      * Setter for the cost per unit
      * @param credits
      */
-    public void setCredits(int credits) {
-        this.credits = credits;
+    public void setCredits(int credits) throws TradesException {
+        if(credits >= 0) {
+            this.credits = credits;
+        } else {
+            throw new TradesException("The credits cannot be a negative number");
+        }
     }
 
     /**

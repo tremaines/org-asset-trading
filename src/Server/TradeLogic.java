@@ -69,7 +69,7 @@ public class TradeLogic {
      *
      * @param cancelledTrade The trade to be cancelled
      */
-    public void cancelTrade(Trades cancelledTrade) throws UnitsException {
+    public void cancelTrade(Trades cancelledTrade) throws UnitsException, TradesException {
         trade = cancelledTrade;
         user = usdb.getUser(trade.getUserName());
         unit = udb.getUnit(user.getUnit());
