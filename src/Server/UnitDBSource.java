@@ -1,6 +1,7 @@
 package Server;
 
 import Client.Units;
+import Client.UnitsException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -61,7 +62,7 @@ public class UnitDBSource implements UnitDB {
             unit.setUnitID(rs.getInt("unit_id"));
             unit.setUnitName(rs.getString("unit_name"));
             unit.setCredits(rs.getInt("credits"));
-        } catch(SQLException sqle){
+        } catch(SQLException | UnitsException sqle){
             System.err.println(sqle);
         }
 
@@ -137,7 +138,7 @@ public class UnitDBSource implements UnitDB {
             unit.setUnitID(rs.getInt("unit_id"));
             unit.setUnitName(rs.getString("unit_name"));
             unit.setCredits(rs.getInt("credits"));
-        } catch(SQLException sqle){
+        } catch(SQLException | UnitsException sqle){
             System.err.println(sqle);
         }
 

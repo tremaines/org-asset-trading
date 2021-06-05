@@ -113,6 +113,8 @@ public class Server {
                 catch (EOFException eof) {
                     System.err.println("Client has disconnected");
                     return;
+                } catch (UnitsException e) {
+                    e.printStackTrace();
                 }
             }
         } catch (IOException | ClassCastException | ClassNotFoundException err) {
@@ -129,7 +131,7 @@ public class Server {
      * @throws ClassNotFoundException Class not found
      */
     private void implementCommands(ObjectInputStream inputStream, ObjectOutputStream outputStream,
-                                   ServerCommands command) throws IOException, ClassNotFoundException, TradesException {
+                                   ServerCommands command) throws IOException, ClassNotFoundException, TradesException, UnitsException {
         switch (command) {
 
             case GET_USER: {
