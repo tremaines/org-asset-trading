@@ -167,7 +167,7 @@ public class TradeLogicTest {
      * Cancelling a SELL removes the trade from active trades
      */
     @Test
-    public void cancelTradeSell() {
+    public void cancelTradeSell() throws UnitsException {
         tradeLogic.cancelTrade(trade1);
         assertNull(tradeDB.getTrade(1));
     }
@@ -176,7 +176,7 @@ public class TradeLogicTest {
      * Cancelling a BUY removes the trade from active trades
      */
     @Test
-    public void cancelTradeBuy() {
+    public void cancelTradeBuy() throws UnitsException {
         tradeLogic.cancelTrade(trade2);
         assertNull(tradeDB.getTrade(2));
     }
@@ -195,7 +195,7 @@ public class TradeLogicTest {
      * Cancelling a trade adds the trade to trade history with a CANCELLED status
      */
     @Test
-    public void tradeHistoryCancelled() {
+    public void tradeHistoryCancelled() throws UnitsException {
         tradeLogic.cancelTrade(trade1);
         TradeHistory trade =  historyDB.getRecord(1);
         assertEquals(trade.getStatus(), Trades.TradeType.cancelled);

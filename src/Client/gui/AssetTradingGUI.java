@@ -1054,7 +1054,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                                             "the terms. Please select the checkbox.", "Checkbox Error",
                                     JOptionPane.ERROR_MESSAGE);
                         }
-                    } catch (NumberFormatException nfe) {
+                    } catch (NumberFormatException | UnitsException nfe) {
                         refreshGUI();
                         JOptionPane.showMessageDialog(null, "Invalid entry for an asset quantity, " +
                                         "please only enter integer values.",
