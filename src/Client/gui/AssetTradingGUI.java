@@ -885,6 +885,8 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
                                     server.addAssetOwned(assetID, newUnitId, assetQty, false);
                                 }
+                                refreshGUI();
+                                cardLayout.show(mainContent, "6");
                                 JOptionPane.showMessageDialog(null,
                                         unitName + " has been added as a new unit"  , "Successful",
                                         JOptionPane.INFORMATION_MESSAGE);
