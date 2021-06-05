@@ -90,7 +90,11 @@ public class Units implements Serializable {
      * Setter for the unit ID
      * @param unitID
      */
-    public void setUnitID(int unitID) {
-        this.unitID = unitID;
+    public void setUnitID(int unitID) throws UnitsException {
+        if (unitID < 0) {
+            throw new UnitsException("Unit ID cannot be negative");
+        } else {
+            this.unitID = unitID;
+        }
     }
 }
