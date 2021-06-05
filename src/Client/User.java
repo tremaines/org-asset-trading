@@ -156,8 +156,12 @@ public class User implements Serializable {
      *
      * @param username
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String username) throws UserException {
+        if (username.isEmpty()) {
+            throw new UserException("Username cannot be set to empty string");
+        } else {
+            this.username = username;
+        }
     }
 
     /**

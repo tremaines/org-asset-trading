@@ -561,35 +561,40 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
                 boolean boxSelected = terms.isSelected();
                 boolean admin = userType.trim() == messageStrings[1];
 
-                if (admin && !unit.equals("IT Administration")) {
-                    JOptionPane.showMessageDialog(null, "Only IT Admin staff can be admins!",
-                            "Invalid Unit For Admin", JOptionPane.ERROR_MESSAGE);
+                if (username.isEmpty() || password.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Username and password cannot be empty", "Empty field", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    if (boxSelected) {
-                        try {
-                            // Initialise new user object
-                            User newUser = new User(null, null, null, username, password,
-                                    admin, server.getUnit(unit).getUnitID());
-                            // Check username doesn't exist already
-                            if (server.checkUser(newUser.getUsername())) {
-                                JOptionPane.showMessageDialog(null, "This username already exists" +
-                                                " in the system.",
-                                        "Username Error", JOptionPane.ERROR_MESSAGE);
-                                throw new UserException("Username already exists!");
-
-                            } else {
-                                server.addUser(newUser);
-                                JOptionPane.showMessageDialog(null, username +
-                                        " was added to the " + unit + " organisational unit!",
-                                        "User added", JOptionPane.INFORMATION_MESSAGE);
-                            }
-                        } catch (UserException userException) {
-                            userException.printStackTrace();
-                        }
+                    if (admin && !unit.equals("IT Administration")) {
+                        JOptionPane.showMessageDialog(null, "Only IT Admin staff can be admins!",
+                                "Invalid Unit For Admin", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(null, "The terms box was not selected",
-                                "Error", JOptionPane.ERROR_MESSAGE);
+                        if (boxSelected) {
+                            try {
+                                // Initialise new user object
+                                User newUser = new User(null, null, null, username, password,
+                                        admin, server.getUnit(unit).getUnitID());
+                                // Check username doesn't exist already
+                                if (server.checkUser(newUser.getUsername())) {
+                                    JOptionPane.showMessageDialog(null, "This username already exists" +
+                                                    " in the system.",
+                                            "Username Error", JOptionPane.ERROR_MESSAGE);
+                                    throw new UserException("Username already exists!");
+
+                                } else {
+                                    server.addUser(newUser);
+                                    JOptionPane.showMessageDialog(null, username +
+                                                    " was added to the " + unit + " organisational unit!",
+                                            "User added", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            } catch (UserException userException) {
+                                userException.printStackTrace();
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "The terms box was not selected",
+                                    "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
+
                 }
             }
         });

@@ -95,9 +95,17 @@ public class UserTest {
 
     //  Checks the setUsername() method
     @Test
-    public void setUsernameCheck(){
+    public void setUsernameCheck() throws UserException{
         user.setUsername("tom456");
         assertEquals("tom456", user.getUsername());
+    }
+
+    // Checks the setUsername() method if input is empty
+    @Test
+    public void setUserNameEmptyCheck() throws UserException{
+        assertThrows(UserException.class, () -> {
+            user.setUsername("");
+        });
     }
 
     //  Checks the setPassword() method
