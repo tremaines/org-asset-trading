@@ -37,8 +37,34 @@ public class AssetTest {
 
     // Checks the setQuantity() method for an asset
     @Test
-    public void setAssetQuantityCheck() {
-        assertEquals(300, asset1.getQuantity());
+    public void setAssetQuantityCheck() throws AssetsException {
+        asset1.setQuantity(111);
+        assertEquals(111, asset1.getQuantity());
+    }
+
+    // Checks the setQuantity() method for a negative integer
+    @Test
+    public void setAssetQuantityNegativeCheck() throws AssetsException {
+        // Boundary case
+        asset1.setQuantity(0);
+        assertEquals(0, asset1.getQuantity());
+
+        // Check negative
+        assertThrows(AssetsException.class, () -> {
+            asset1.setQuantity(-5);
+        });
+    }
+
+    // Checks the setQuantity() method for a positive integer
+    @Test
+    public void setAssetQuantityPositiveCheck() throws AssetsException {
+        // Boundary case
+        asset1.setQuantity(0);
+        assertEquals(0, asset1.getQuantity());
+
+        // Check positive
+        asset1.setQuantity(55);
+        assertEquals(55, asset1.getQuantity());
     }
 
 
@@ -46,6 +72,38 @@ public class AssetTest {
     @Test
     public void getUnitIDAssetCheck() {
         assertEquals(1, asset1.getUnitID());
+    }
+
+    // Checks the setUnitID() method for an asset
+    @Test
+    public void setUnitIDAssetCheck() throws AssetsException {
+        asset1.setUnitID(23);
+        assertEquals(23, asset1.getUnitID());
+    }
+
+    // Checks the setUnitID() when a negative integer is set
+    @Test
+    public void setUnitIDNegativeAssetCheck() throws AssetsException {
+        // Boundary case
+        asset1.setUnitID(0);
+        assertEquals(0, asset1.getUnitID());
+
+        // Check negative
+        assertThrows(AssetsException.class, () -> {
+            asset1.setUnitID(-27);
+        });
+    }
+
+    // Checks the setUnitID() when a positive integer is set
+    @Test
+    public void setUnitIDPositiveAssetCheck() throws AssetsException {
+        // Boundary case
+        asset1.setUnitID(0);
+        assertEquals(0, asset1.getUnitID());
+
+        // Check positive
+        asset1.setUnitID(123);
+        assertEquals(123, asset1.getUnitID());
     }
 
     // Checks the setAssetID() method for an asset

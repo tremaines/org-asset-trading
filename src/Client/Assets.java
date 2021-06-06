@@ -102,16 +102,23 @@ public class Assets implements Serializable {
      * Set the quantity of the asset
      * @param quantity The quantity
      */
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setQuantity(int quantity) throws AssetsException {
+        if(quantity >= 0) {
+            this.quantity = quantity;
+        } else {
+            throw new AssetsException("The quantity cannot be a negative integer");
+        }
     }
 
     /**
      * Set the ID of the unit that owns the asset
      * @param unitID The unit's ID
      */
-    public void setUnitID(int unitID) {
-        this.unitID = unitID;
+    public void setUnitID(int unitID) throws AssetsException {
+        if(unitID >= 0) {
+            this.unitID = unitID;
+        } else {
+            throw new AssetsException("The unit ID cannot be a negative integer");
+        }
     }
-
 }

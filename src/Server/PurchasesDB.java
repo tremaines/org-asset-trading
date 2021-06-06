@@ -1,6 +1,7 @@
 package Server;
 
 import Client.Assets;
+import Client.AssetsException;
 
 /**
  * An interface for the trades assets_owned/purchases table
@@ -15,7 +16,7 @@ public interface PurchasesDB {
      * @param replace If the relationship already exists, True will replace the existing quantity. False will add
      *                the new quantity to the old quantity.
      */
-    void addToPurchases(int asset, int unit, int qty, boolean replace);
+    void addToPurchases(int asset, int unit, int qty, boolean replace) throws AssetsException;
 
     /**
      * Get all assets owned by a specific unit

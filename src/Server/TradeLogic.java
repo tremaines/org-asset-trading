@@ -58,7 +58,7 @@ public class TradeLogic {
                 sellListing();
             }
             matchTrades(trade.getType());
-        } catch (TradesException | UnitsException te) {
+        } catch (TradesException | UnitsException | AssetsException te) {
             return -1;
         }
         return 0;
@@ -69,7 +69,7 @@ public class TradeLogic {
      *
      * @param cancelledTrade The trade to be cancelled
      */
-    public void cancelTrade(Trades cancelledTrade) throws UnitsException, TradesException {
+    public void cancelTrade(Trades cancelledTrade) throws UnitsException, TradesException, AssetsException {
         trade = cancelledTrade;
         user = usdb.getUser(trade.getUserName());
         unit = udb.getUnit(user.getUnit());
@@ -119,7 +119,7 @@ public class TradeLogic {
      *
      * @throws TradesException If the unit the user belongs to does not have enough of the asset it is selling.
      */
-    private void sellListing() throws TradesException {
+    private void sellListing() throws TradesException, AssetsException {
         int quantityOwned = asset.getQuantity();
         int quantitySelling = trade.getQuantity();
 
@@ -139,7 +139,7 @@ public class TradeLogic {
      *
      * @param type The type of trade (TradeType.buy or TradeType.sell)
      */
-    private void matchTrades(Trades.TradeType type) throws TradesException, UnitsException {
+    private void matchTrades(Trades.TradeType type) throws TradesException, UnitsException, AssetsException {
         int matchingTrade;
 
         // Makes it a static variable for trade's initial quantity
@@ -183,7 +183,7 @@ public class TradeLogic {
      * @param buy The buy trade
      * @param sell The sell trade
      */
-    private void settleTrade(Trades buy, Trades sell) throws TradesException, UnitsException {
+    private void settleTrade(Trades buy, Trades sell) throws TradesException, UnitsException, AssetsException {
 
         TradeHistory newTrade = null;
 

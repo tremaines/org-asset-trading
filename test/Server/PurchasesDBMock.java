@@ -1,6 +1,7 @@
 package Server;
 
 import Client.Assets;
+import Client.AssetsException;
 
 import java.util.ArrayList;
 
@@ -16,7 +17,7 @@ public class PurchasesDBMock implements PurchasesDB {
     }
 
     @Override
-    public void addToPurchases(int asset, int unit, int qty, boolean replace) {
+    public void addToPurchases(int asset, int unit, int qty, boolean replace) throws AssetsException {
         boolean relationshipExists = false;
         for (int i = 0; i < owned.size(); i++) {
             int assetID = owned.get(i).getAssetID();

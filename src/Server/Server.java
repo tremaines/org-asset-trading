@@ -115,6 +115,8 @@ public class Server {
                     return;
                 } catch (UnitsException e) {
                     e.printStackTrace();
+                } catch (AssetsException e) {
+                    e.printStackTrace();
                 }
             }
         } catch (IOException | ClassCastException | ClassNotFoundException err) {
@@ -131,7 +133,7 @@ public class Server {
      * @throws ClassNotFoundException Class not found
      */
     private void implementCommands(ObjectInputStream inputStream, ObjectOutputStream outputStream,
-                                   ServerCommands command) throws IOException, ClassNotFoundException, TradesException, UnitsException {
+                                   ServerCommands command) throws IOException, ClassNotFoundException, TradesException, UnitsException, AssetsException {
         switch (command) {
 
             case GET_USER: {
