@@ -547,7 +547,7 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         setSize(1000, 700);
 
         // Panel elements
-        JLabel label1 , label2, label4, label5, label6, label7;
+        JLabel label1 , label2, label4, label5, label6, label7, label8, label9;
         JTextField t1;
         JPasswordField userPassword, newPasswordInput, confirmPasswordInput;
         String[] messageStrings = {"User", "Admin"};
@@ -562,6 +562,10 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label5 = new JLabel("Access Level");
         label6 = new JLabel("New Password");
         label7 = new JLabel("Confirm Password");
+        label9 = new JLabel("Unit");
+        int userUnitID = userLoggedIn.getUnit();
+        Units userUnit = server.getUnit(userUnitID);
+        label8 = new JLabel(userUnit.getUnitName());
         t1 = new JTextField();
         userPassword = new JPasswordField();
         JComboBox units = new JComboBox(unitNames);
@@ -580,6 +584,9 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
         label5.setBounds(30 , 140, 100 , 20);
         label6.setBounds(30 , 340, 100 , 20);
         label7.setBounds(30 , 370, 130 , 20);
+        label8.setBounds(30 , 400, 130 , 20);
+        label8.setBounds(30 , 400, 130 , 20);
+
         t1.setBounds(140 , 50, 100 , 20);
         units.setBounds(140 , 110, 100 , 20);
         userPassword.setBounds(140 , 80, 100 , 20);
@@ -672,16 +679,21 @@ public class AssetTradingGUI extends JFrame implements ActionListener {
 
         // If the current user logged in is not an admin
         if(userLoggedIn.getAdminStatus() == false) {
-            label6.setBounds(30, 50, 130, 20);
+            label6.setBounds(30, 80, 130, 20);
             accountPanel.add(label6);
-            label7.setBounds(30, 80, 130, 20);
+            label7.setBounds(30, 110, 130, 20);
             accountPanel.add(label7);
-            newPasswordInput.setBounds(160 , 50, 100 , 20);
+            newPasswordInput.setBounds(160 , 80, 100 , 20);
             accountPanel.add(newPasswordInput);
             accountPanel.add(confirmPasswordInput);
-            confirmPasswordInput.setBounds(160, 80, 100, 20);
+            confirmPasswordInput.setBounds(160, 110, 100, 20);
             accountPanel.add(changePassword);
-            changePassword.setBounds(30 , 110, 100 , 20);
+            changePassword.setBounds(30 , 140, 100 , 20);
+            accountPanel.add(label8);
+            label8.setBounds(160 , 50, 150 , 20);
+            accountPanel.add(label9);
+            label9.setBounds(30 , 50, 100 , 20);
+
         }
         // If the current user logged in is an admin
         else {
